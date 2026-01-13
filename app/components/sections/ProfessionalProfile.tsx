@@ -33,15 +33,13 @@ const credentials = [
   }
 ];
 
-// --- CORRECCIÓN FINAL DEL TIPADO ---
-// Quitamos el 'as const' general y lo aplicamos SOLO a "easeInOut".
-// Esto mantiene el array 'y' editable (number[]) y arregla el error de readonly.
+// --- ANIMACIÓN ---
 const floatAnimation = {
   y: [-10, 10, -10],
   transition: { 
     duration: 6, 
     repeat: Infinity, 
-    ease: "easeInOut" as const // <--- Aquí es donde debe ir
+    ease: "easeInOut" as const 
   }
 };
 
@@ -57,17 +55,17 @@ export default function ProfessionalProfile() {
         {/* --- COLUMNA 1: DISEÑO DE IMAGEN "DISRUPTIVO" --- */}
         <div className="relative w-full max-w-md mx-auto lg:max-w-full">
             
-            {/* 1. CAPA DE FONDO (Bloque Sólido Oscuro - Anchor) */}
+            {/* 1. CAPA DE FONDO */}
             <div className="absolute top-10 -left-10 w-full h-full bg-stone-900 rounded-3xl -z-20 opacity-10 transform -rotate-3 scale-105" />
 
-            {/* 2. CAPA DE ACENTO (Marco delineado Teal - Offset) */}
+            {/* 2. CAPA DE ACENTO */}
             <motion.div 
                 animate={{ rotate: [3, 0, 3] }}
                 transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
                 className="absolute -top-6 -right-6 w-full h-full border-2 border-teal-500/30 rounded-3xl -z-10"
             />
 
-            {/* 3. CONTENEDOR PRINCIPAL DE LA FOTO (Masking & Effects) */}
+            {/* 3. CONTENEDOR PRINCIPAL DE LA FOTO */}
             <motion.div 
                 className="relative rounded-2xl overflow-hidden shadow-2xl shadow-stone-900/20 aspect-[4/5] group"
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -84,43 +82,49 @@ export default function ProfessionalProfile() {
                     priority
                 />
                 
-                {/* Overlay Gradiente "Cinemático" (Mejora fotos no transparentes) */}
+                {/* Overlay Gradiente */}
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-transparent to-transparent opacity-60" />
-                
-                {/* Efecto de Brillo en el borde (Glass Border) */}
                 <div className="absolute inset-0 border border-white/20 rounded-2xl pointer-events-none" />
             </motion.div>
 
-            {/* 4. ELEMENTOS FLOTANTES (Rompen la caja rectangular) */}
+            {/* 4. ELEMENTOS FLOTANTES (AJUSTADOS PARA RESPONSIVE) */}
             
             {/* Badge Flotante 1: Experiencia */}
+            {/* CAMBIOS: 
+                - Mobile: -top-4, -right-2, p-3, text-2xl (Arriba a la derecha y pequeño)
+                - Desktop: md:top-auto, md:-bottom-8, md:-right-4, md:p-6 (Abajo derecha y grande) 
+            */}
             <motion.div 
-                className="absolute -bottom-8 -right-4 z-20 bg-white p-6 rounded-2xl shadow-xl shadow-stone-900/10 border border-stone-100 max-w-[180px]"
+                className="absolute -top-4 -right-2 md:top-auto md:-bottom-8 md:-right-4 z-20 bg-white p-3 md:p-6 rounded-2xl shadow-xl shadow-stone-900/10 border border-stone-100 max-w-[120px] md:max-w-[180px]"
                 animate={floatAnimation}
             >
-                <div className="flex items-center gap-3 mb-1">
-                    <div className="p-2 bg-teal-100/50 rounded-lg text-teal-700">
-                        <Award size={20} />
+                <div className="flex items-center gap-2 md:gap-3 mb-1">
+                    <div className="p-1.5 md:p-2 bg-teal-100/50 rounded-lg text-teal-700">
+                        <Award size={16} className="md:w-5 md:h-5" /> {/* Icono más pequeño en móvil */}
                     </div>
-                    <span className="text-4xl font-bold text-stone-800 font-serif">20</span>
+                    <span className="text-2xl md:text-4xl font-bold text-stone-800 font-serif">20</span>
                 </div>
-                <p className="text-stone-500 text-xs font-bold uppercase tracking-wider leading-tight">
+                <p className="text-stone-500 text-[9px] md:text-xs font-bold uppercase tracking-wider leading-tight">
                     Años de<br/>Trayectoria
                 </p>
             </motion.div>
 
             {/* Badge Flotante 2: Verificado */}
+            {/* CAMBIOS:
+                - Mobile: -top-4, -left-2, px-3 py-2 (Arriba a la izquierda y pequeño)
+                - Desktop: md:top-8, md:-left-8 (Posición original más grande)
+            */}
             <motion.div 
-                 className="absolute top-8 -left-8 z-20 bg-stone-900/95 backdrop-blur-md px-5 py-3 rounded-xl shadow-lg border border-stone-700 flex items-center gap-3"
+                 className="absolute -top-4 -left-2 md:top-8 md:-left-8 z-20 bg-stone-900/95 backdrop-blur-md px-3 py-2 md:px-5 md:py-3 rounded-xl shadow-lg border border-stone-700 flex items-center gap-2 md:gap-3"
                  initial={{ x: -20, opacity: 0 }}
                  whileInView={{ x: 0, opacity: 1 }}
                  viewport={{ once: true }}
                  transition={{ delay: 0.5 }}
             >
-                <CheckCircle2 size={18} className="text-teal-400" />
+                <CheckCircle2 size={14} className="text-teal-400 md:w-[18px] md:h-[18px]" />
                 <div className="text-left">
-                    <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Colegio Colombiano</p>
-                    <p className="text-xs font-bold text-white tracking-wide">TP #143530</p>
+                    <p className="text-[8px] md:text-[10px] font-bold text-stone-400 uppercase tracking-widest">Colegio Colombiano</p>
+                    <p className="text-[10px] md:text-xs font-bold text-white tracking-wide">TP #143530</p>
                 </div>
             </motion.div>
         </div>
@@ -143,7 +147,7 @@ export default function ProfessionalProfile() {
                 </h2>
                 <h3 className="text-lg md:text-xl text-stone-500 font-sans font-light mb-8 flex items-center gap-2">
                     <span className="w-8 h-[1px] bg-teal-500 inline-block"></span>
-                    Psicólogo & Especialista SST
+                    Psicólogo Clínico & Especialista SST
                 </h3>
             </motion.div>
 
