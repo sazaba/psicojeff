@@ -2,49 +2,102 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, ArrowRight, ArrowRightCircle } from "lucide-react";
+import { ArrowRight, ArrowRightCircle } from "lucide-react";
 
-// --- SVG ANIMADOS ---
+// --- CONFIGURACIÓN DE ACTIVACIÓN PARA MÓVIL ---
+// amount: 0.1 -> Se activa apenas se ve el 10% del icono (Super sensible para móvil)
+// once: true -> Evita parpadeos, se dibuja y se queda ahí.
+const drawConfig = { once: true, amount: 0.1 };
+
+// --- SVG ANIMADOS CON FIX DE VIEWPORT ---
 
 const ProductivityIcon = () => (
-  <svg viewBox="0 0 100 60" className="w-full h-full text-teal-100" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <motion.line x1="10" y1="50" x2="90" y2="50" className="opacity-30" />
-    <motion.rect x="10" y="35" width="15" height="15" rx="2" initial={{ y: -10, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} transition={{ duration: 0.5 }} />
-    <motion.rect x="35" y="25" width="15" height="25" rx="2" initial={{ y: -10, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.2 }} />
-    <motion.rect x="60" y="15" width="15" height="35" rx="2" initial={{ y: -10, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.4 }} />
-    <motion.path d="M85 40 L 85 20 L 90 25 M 85 20 L 80 25" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} transition={{ delay: 0.8, duration: 0.8 }} className="text-white" />
+  <svg viewBox="0 0 100 60" className="w-full h-full text-teal-100" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ overflow: "visible" }}>
+    <motion.line 
+        x1="10" y1="50" x2="90" y2="50" 
+        className="opacity-30" 
+        viewport={drawConfig}
+    />
+    <motion.rect 
+        x="10" y="35" width="15" height="15" rx="2" 
+        initial={{ y: -10, opacity: 0 }} 
+        whileInView={{ y: 0, opacity: 1 }} 
+        viewport={drawConfig}
+        transition={{ duration: 0.5 }} 
+    />
+    <motion.rect 
+        x="35" y="25" width="15" height="25" rx="2" 
+        initial={{ y: -10, opacity: 0 }} 
+        whileInView={{ y: 0, opacity: 1 }} 
+        viewport={drawConfig}
+        transition={{ duration: 0.5, delay: 0.2 }} 
+    />
+    <motion.rect 
+        x="60" y="15" width="15" height="35" rx="2" 
+        initial={{ y: -10, opacity: 0 }} 
+        whileInView={{ y: 0, opacity: 1 }} 
+        viewport={drawConfig}
+        transition={{ duration: 0.5, delay: 0.4 }} 
+    />
+    <motion.path 
+        d="M85 40 L 85 20 L 90 25 M 85 20 L 80 25" 
+        initial={{ pathLength: 0, opacity: 0 }} 
+        whileInView={{ pathLength: 1, opacity: 1 }} 
+        viewport={drawConfig}
+        transition={{ delay: 0.8, duration: 0.8 }} 
+        className="text-white" 
+    />
   </svg>
 );
 
 const ChaosToCalmIcon = () => (
-  <svg viewBox="0 0 100 60" className="w-full h-full text-teal-600" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <motion.path d="M5 30 Q 15 5, 25 30 T 45 30 T 65 30 L 95 30" initial={{ pathLength: 0, opacity: 0 }} whileInView={{ pathLength: 1, opacity: 1 }} transition={{ duration: 2 }} />
-    <motion.circle cx="95" cy="30" r="3" fill="currentColor" initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ delay: 1.5 }} />
+  <svg viewBox="0 0 100 60" className="w-full h-full text-teal-600" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ overflow: "visible" }}>
+    <motion.path 
+        d="M5 30 Q 15 5, 25 30 T 45 30 T 65 30 L 95 30" 
+        initial={{ pathLength: 0, opacity: 0 }} 
+        whileInView={{ pathLength: 1, opacity: 1 }} 
+        viewport={drawConfig}
+        transition={{ duration: 2 }} 
+    />
+    <motion.circle 
+        cx="95" cy="30" r="3" 
+        fill="currentColor" 
+        initial={{ scale: 0 }} 
+        whileInView={{ scale: 1 }} 
+        viewport={drawConfig}
+        transition={{ delay: 1.5 }} 
+    />
   </svg>
 );
 
 const ConnectingDotsIcon = () => (
-  <svg viewBox="0 0 100 60" className="w-full h-full text-teal-600" fill="none" stroke="currentColor" strokeWidth="2">
-    <motion.path d="M20 50 L 50 20 L 80 50" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} transition={{ duration: 1.5 }} />
-    <motion.circle cx="20" cy="50" r="4" initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ delay: 0.2 }} className="fill-teal-100" />
-    <motion.circle cx="50" cy="20" r="4" initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ delay: 0.8 }} className="fill-teal-100" />
-    <motion.circle cx="80" cy="50" r="4" initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ delay: 1.5 }} className="fill-teal-600" />
+  <svg viewBox="0 0 100 60" className="w-full h-full text-teal-600" fill="none" stroke="currentColor" strokeWidth="2" style={{ overflow: "visible" }}>
+    <motion.path 
+        d="M20 50 L 50 20 L 80 50" 
+        initial={{ pathLength: 0, opacity: 0 }} 
+        whileInView={{ pathLength: 1, opacity: 1 }} 
+        viewport={drawConfig}
+        transition={{ duration: 1.5 }} 
+    />
+    <motion.circle cx="20" cy="50" r="4" initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={drawConfig} transition={{ delay: 0.2 }} className="fill-teal-100" />
+    <motion.circle cx="50" cy="20" r="4" initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={drawConfig} transition={{ delay: 0.8 }} className="fill-teal-100" />
+    <motion.circle cx="80" cy="50" r="4" initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={drawConfig} transition={{ delay: 1.5 }} className="fill-teal-600" />
   </svg>
 );
 
 const SafeSpaceIcon = () => (
-  <svg viewBox="0 0 100 60" className="w-full h-full text-teal-600" fill="none" stroke="currentColor" strokeWidth="2">
-    <motion.path d="M30 30 A 20 20 0 0 1 70 30" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} transition={{ duration: 1 }} />
-    <motion.path d="M20 30 A 30 30 0 0 1 80 30" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} transition={{ duration: 1, delay: 0.3 }} className="opacity-60" />
-    <motion.path d="M50 45 L 50 15" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} transition={{ duration: 0.5, delay: 1 }} />
+  <svg viewBox="0 0 100 60" className="w-full h-full text-teal-600" fill="none" stroke="currentColor" strokeWidth="2" style={{ overflow: "visible" }}>
+    <motion.path d="M30 30 A 20 20 0 0 1 70 30" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={drawConfig} transition={{ duration: 1 }} />
+    <motion.path d="M20 30 A 30 30 0 0 1 80 30" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={drawConfig} transition={{ duration: 1, delay: 0.3 }} className="opacity-60" />
+    <motion.path d="M50 45 L 50 15" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={drawConfig} transition={{ duration: 0.5, delay: 1 }} />
   </svg>
 );
 
 const BreakthroughIcon = () => (
-  <svg viewBox="0 0 100 60" className="w-full h-full text-teal-600" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg viewBox="0 0 100 60" className="w-full h-full text-teal-600" fill="none" stroke="currentColor" strokeWidth="2" style={{ overflow: "visible" }}>
     <motion.line x1="80" y1="10" x2="80" y2="50" strokeDasharray="4 4" className="opacity-50" />
-    <motion.path d="M10 30 L 40 30 C 60 30, 60 10, 90 10" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} transition={{ duration: 1.5, ease: "circOut" }} />
-    <motion.path d="M85 15 L 90 10 L 85 5" initial={{ opacity: 0, x: -5 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 1.4 }} />
+    <motion.path d="M10 30 L 40 30 C 60 30, 60 10, 90 10" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={drawConfig} transition={{ duration: 1.5, ease: "circOut" }} />
+    <motion.path d="M85 15 L 90 10 L 85 5" initial={{ opacity: 0, x: -5 }} whileInView={{ opacity: 1, x: 0 }} viewport={drawConfig} transition={{ delay: 1.4 }} />
   </svg>
 );
 
@@ -154,7 +207,7 @@ export default function TargetAudience() {
             <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={drawConfig}
                 className={`p-8 rounded-3xl relative overflow-hidden ${primaryCard.bg}`}
             >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-teal-800 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-50"></div>
@@ -175,10 +228,10 @@ export default function TargetAudience() {
                 </div>
             </motion.div>
 
-            {/* 2. SLIDER HORIZONTAL CON ARREGLO DE TEXTO */}
+            {/* 2. SLIDER HORIZONTAL */}
             <div className="flex flex-col gap-3">
                 
-                {/* Indicador de scroll (Bloque propio, no absolute para no pisarse) */}
+                {/* Indicador de scroll */}
                 <div className="flex justify-end px-2">
                     <div className="flex items-center gap-2 text-teal-600/70 text-xs font-bold uppercase tracking-widest animate-pulse">
                         <span>Desliza</span>
@@ -211,7 +264,7 @@ export default function TargetAudience() {
             className="mt-6 md:mt-8 bg-stone-900 rounded-3xl p-8 relative overflow-hidden flex flex-col items-center text-center gap-6"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
+            viewport={drawConfig}
         >
              <div className="relative z-10 max-w-xl">
                 <p className="text-stone-300 font-sans text-sm md:text-base mb-4">
