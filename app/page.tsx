@@ -6,6 +6,7 @@ import ValueProposition from "@/app/components/sections/ValueProposition"; // An
 import ProcessAndLocation from "@/app/components/sections/ProcessAndLocation"; // Antes "ComoTrabajo"
 import FinalActions from "@/app/components/sections/FinalActions"; // Combina Agenda, FAQ y Contacto
 import Footer from "@/app/components/sections/Footer";
+import TargetAudience from "@/app/components/sections/TargetAudience";
 
 export default function Home() {
   return (
@@ -15,15 +16,18 @@ export default function Home() {
       
       <main className="flex-1">
         <Hero />
-        {<PainPoints />
-        /* 
-        <ProfessionalProfile />
-        <ValueProposition />
-        <ProcessAndLocation />
-        <FinalActions /> */}
+        <PainPoints />
+        <TargetAudience/>
       </main>
 
       <Footer />
     </div>
   );
 }
+
+
+  /* 
+        <ProfessionalProfile />
+        <ValueProposition />
+        <ProcessAndLocation />
+        <FinalActions /> */
