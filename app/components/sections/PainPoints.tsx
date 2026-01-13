@@ -219,8 +219,7 @@ export default function PainPoints() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            No estás "roto". Simplemente, tu sistema nervioso está respondiendo a
-            un entorno complejo. <br className="hidden md:block" />
+           
             <span className="text-teal-700 font-medium italic font-serif relative inline-block mt-2">
                Validemos lo que sientes.
                <svg className="absolute w-full h-2 -bottom-1 left-0 text-teal-300 opacity-60" viewBox="0 0 100 10" preserveAspectRatio="none">

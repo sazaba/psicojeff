@@ -86,43 +86,7 @@ export default function ProfessionalProfile() {
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-transparent to-transparent opacity-60" />
                 <div className="absolute inset-0 border border-white/20 rounded-2xl pointer-events-none" />
             </motion.div>
-
-            {/* 4. ELEMENTOS FLOTANTES */}
-            
-            {/* Badge Flotante 1: Experiencia (Abajo Derecha en Desktop) */}
-            <motion.div 
-                className="absolute -top-4 -right-2 md:top-auto md:-bottom-8 md:-right-4 z-20 bg-white p-3 md:p-6 rounded-2xl shadow-xl shadow-stone-900/10 border border-stone-100 max-w-[120px] md:max-w-[180px]"
-                animate={floatAnimation}
-            >
-                <div className="flex items-center gap-2 md:gap-3 mb-1">
-                    <div className="p-1.5 md:p-2 bg-teal-100/50 rounded-lg text-teal-700">
-                        <Award size={16} className="md:w-5 md:h-5" /> 
-                    </div>
-                    <span className="text-2xl md:text-4xl font-bold text-stone-800 font-serif">20</span>
-                </div>
-                <p className="text-stone-500 text-[9px] md:text-xs font-bold uppercase tracking-wider leading-tight">
-                    Años de<br/>Trayectoria
-                </p>
-            </motion.div>
-
-            {/* Badge Flotante 2: Verificado */}
-            {/* CAMBIO REALIZADO AQUI:
-               - Mobile: -top-4 -left-2 (Se mantiene igual, izquierda arriba)
-               - Desktop: md:top-8 md:-right-8 md:left-auto (Se mueve a la derecha arriba)
-            */}
-            <motion.div 
-                 className="absolute -top-4 -left-2 md:top-8 md:-right-8 md:left-auto z-20 bg-stone-900/95 backdrop-blur-md px-3 py-2 md:px-5 md:py-3 rounded-xl shadow-lg border border-stone-700 flex items-center gap-2 md:gap-3"
-                 initial={{ x: -20, opacity: 0 }}
-                 whileInView={{ x: 0, opacity: 1 }}
-                 viewport={{ once: true }}
-                 transition={{ delay: 0.5 }}
-            >
-                <CheckCircle2 size={14} className="text-teal-400 md:w-[18px] md:h-[18px]" />
-                <div className="text-left">
-                    <p className="text-[8px] md:text-[10px] font-bold text-stone-400 uppercase tracking-widest">Colegio Colombiano</p>
-                    <p className="text-[10px] md:text-xs font-bold text-white tracking-wide">TP #143530</p>
-                </div>
-            </motion.div>
+          
         </div>
 
 

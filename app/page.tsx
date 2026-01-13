@@ -7,6 +7,7 @@ import ProcessAndLocation from "@/app/components/sections/ProcessAndLocation"; /
 import FinalActions from "@/app/components/sections/FinalActions"; // Combina Agenda, FAQ y Contacto
 import Footer from "@/app/components/sections/Footer";
 import TargetAudience from "@/app/components/sections/TargetAudience";
+import Transformation from "./components/sections/Transformation";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
         <TargetAudience/>
         <ProfessionalProfile/>
         <ValueProposition/>
+        <Transformation/>
       </main>
       <Footer />
     </div>
