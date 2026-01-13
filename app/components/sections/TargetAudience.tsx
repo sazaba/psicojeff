@@ -257,20 +257,27 @@ export default function TargetAudience() {
 
         </div>
 
-        {/* CTA FINAL */}
+        {/* CTA FINAL - DISEÑO SUTIL & PREMIUM */}
         <motion.div 
-            className="mt-6 md:mt-8 bg-stone-900 rounded-3xl p-8 relative overflow-hidden flex flex-col items-center text-center gap-6"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            className="mt-8 md:mt-16 p-8 md:p-10 rounded-3xl relative overflow-hidden flex flex-col items-center text-center border border-teal-100 bg-gradient-to-b from-white to-teal-50/40 shadow-sm"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
         >
+             {/* Decoración superior sutil */}
+             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-1 bg-gradient-to-r from-transparent via-teal-300/30 to-transparent" />
+
              <div className="relative z-10 max-w-xl">
-                <p className="text-stone-300 font-sans text-sm md:text-base mb-4">
-                  Si te reconoces en estos puntos, mi consultorio está diseñado para ti.
+                <h3 className="text-xl md:text-2xl font-serif text-teal-900 mb-3">
+                    ¿Te resuena lo que lees?
+                </h3>
+                <p className="text-stone-600 font-sans text-sm md:text-base mb-8 leading-relaxed">
+                  Si identificas estos patrones en tu vida actual, mi consultorio está diseñado específicamente para abordarlos con precisión clínica.
                 </p>
-                <button className="text-white font-bold text-lg flex items-center justify-center gap-2 hover:gap-4 transition-all group w-full md:w-auto">
+                
+                <button className="px-8 py-3.5 rounded-full bg-teal-700 hover:bg-teal-800 text-white font-bold text-base transition-all shadow-lg shadow-teal-900/10 flex items-center justify-center gap-3 group mx-auto hover:-translate-y-0.5">
                     Solicitar Evaluación Inicial
-                    <ArrowRightCircle className="text-teal-500 group-hover:text-teal-400 transition-colors" />
+                    <ArrowRightCircle className="text-teal-200 group-hover:text-white transition-colors" size={20} />
                 </button>
              </div>
         </motion.div>
