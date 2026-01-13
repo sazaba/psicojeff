@@ -107,7 +107,7 @@ export default function ProfessionalProfile() {
                 </h2>
                 <h3 className="text-lg md:text-xl text-stone-500 font-sans font-light mb-8 flex items-center gap-2">
                     <span className="w-8 h-[1px] bg-teal-500 inline-block"></span>
-                    Psicólogo Clínico & Especialista SST
+                    Psicólogo & Especialista SST
                 </h3>
             </motion.div>
 
