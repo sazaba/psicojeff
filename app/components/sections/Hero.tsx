@@ -4,7 +4,9 @@ import Headerpsicojeff from '@/app/assets/Headerpsicojeff.webp';
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[90vh] flex items-center pt-12 md:pt-20 overflow-visible">
+    // CAMBIO 1: Aumenté 'pt-12' a 'pt-32' para móviles. 
+    // Esto asegura que el contenido baje lo suficiente y no choque con el Navbar.
+    <section className="relative min-h-[90vh] flex items-center pt-32 md:pt-20 overflow-visible">
       
       {/* LUZ DE FONDO AMBIENTAL (Atrás, muy suave) */}
       <div className="absolute top-1/2 right-0 md:right-20 -translate-y-1/2 w-[600px] h-[600px] bg-teal-50/40 rounded-full blur-[120px] -z-10" />
@@ -15,15 +17,12 @@ export default function Hero() {
             {/* COLUMNA 1: SOLUCIÓN "GHOST FADE" (MOCKUP STYLE) */}
             <div className="relative order-last md:order-first flex justify-center md:justify-end">
                 
-                <div className="relative w-full max-w-[500px]"> {/* Aumenté un poco el tamaño máximo */}
+                <div className="relative w-full max-w-[500px]"> 
                     
                     {/* 1. GLOW TRASERO (Sutil) */}
-                    {/* Esto le da volumen por detrás para que no se vea plano, como un mockup 3D */}
                     <div className="absolute top-10 left-1/2 -translate-x-1/2 w-3/4 h-3/4 bg-teal-200/30 rounded-full blur-[60px] -z-10"></div>
 
                     {/* 2. IMAGEN CON MÁSCARA DE DESVANECIMIENTO */}
-                    {/* [mask-image:linear-gradient...] -> Esto borra digitalmente el corte recto de abajo. 
-                        La imagen se vuelve transparente en el último 15% de abajo. */}
                     <Image
                         src={Headerpsicojeff}
                         alt="Psicólogo Jefferson Bastidas"
@@ -34,11 +33,12 @@ export default function Hero() {
                 </div>
             </div>
 
-            {/* COLUMNA 2: TEXTO (Sin cambios) */}
+            {/* COLUMNA 2: TEXTO */}
             <div className="text-center md:text-left z-10 relative">
                 
-                {/* BADGE */}
-                <div className="inline-block mb-8 px-5 py-2 rounded-full border border-teal-100 bg-white/50 backdrop-blur-sm">
+                {/* BADGE / ETIQUETA */}
+                {/* CAMBIO 2: Agregué 'mt-4 md:mt-0' para darle un respiro extra en móvil respecto al tope */}
+                <div className="inline-block mb-8 mt-4 md:mt-0 px-5 py-2 rounded-full border border-teal-100 bg-white/50 backdrop-blur-sm">
                     <span className="text-xs md:text-sm font-bold text-teal-700 tracking-widest uppercase font-sans">
                         Psicólogo en Manizales y Online
                     </span>
