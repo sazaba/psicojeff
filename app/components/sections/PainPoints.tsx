@@ -200,17 +200,7 @@ export default function PainPoints() {
         
         {/* CABECERA */}
         <div className="text-center mb-16 md:mb-20 max-w-3xl mx-auto">
-           {/* Badge */}
-           <motion.div 
-               initial={{ opacity: 0, scale: 0.9 }}
-               whileInView={{ opacity: 1, scale: 1 }}
-               viewport={{ once: true }}
-               className="inline-block mb-4 px-4 py-1.5 rounded-full border border-teal-100 bg-teal-50/50 backdrop-blur-sm shadow-sm"
-           >
-               <span className="text-xs font-bold text-teal-800 tracking-widest uppercase font-sans">
-                   Identificación
-               </span>
-           </motion.div>
+       
 
           <motion.h2
             className="text-3xl md:text-5xl font-medium font-serif text-stone-800 mb-6 tracking-tight leading-tight"
