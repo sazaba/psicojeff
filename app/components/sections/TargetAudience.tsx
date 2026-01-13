@@ -4,11 +4,18 @@ import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, ArrowRightCircle } from "lucide-react";
 
-// --- CORRECCIÓN DEL ERROR DE TIPADO ---
-// Agregamos 'as const' al final para que TypeScript entienda que "easeInOut" es un valor fijo válido.
-const iconTransition = { duration: 1.5, ease: "easeInOut" } as const;
+// --- CONFIGURACIÓN DE ANIMACIÓN PERPETUA ---
+// duration: 2.5s (lento y suave)
+// repeat: Infinity (nunca para)
+// repeatType: "reverse" (va y vuelve, efecto respiración)
+const perpetualTransition = {
+  duration: 2.5,
+  ease: "easeInOut",
+  repeat: Infinity,
+  repeatType: "reverse",
+} as const;
 
-// --- SVG ANIMADOS (OPTIMIZADOS PARA MÓVIL) ---
+// --- SVG ANIMADOS (MODO PERPETUO) ---
 
 const ProductivityIcon = () => (
   <svg viewBox="0 0 100 60" className="w-full h-full text-teal-100" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ overflow: "visible" }}>
@@ -16,25 +23,27 @@ const ProductivityIcon = () => (
         x1="10" y1="50" x2="90" y2="50" 
         className="opacity-30" 
     />
+    {/* Bloques flotando secuencialmente */}
     <motion.rect 
         x="10" y="35" width="15" height="15" rx="2" 
-        animate={{ opacity: [0, 1], y: [10, 0] }}
-        transition={{ duration: 0.5 }} 
+        animate={{ y: [0, -4, 0], opacity: [0.6, 1, 0.6] }}
+        transition={perpetualTransition} 
     />
     <motion.rect 
         x="35" y="25" width="15" height="25" rx="2" 
-        animate={{ opacity: [0, 1], y: [10, 0] }}
-        transition={{ duration: 0.5, delay: 0.2 }} 
+        animate={{ y: [0, -4, 0], opacity: [0.6, 1, 0.6] }}
+        transition={{ ...perpetualTransition, delay: 0.3 }} 
     />
     <motion.rect 
         x="60" y="15" width="15" height="35" rx="2" 
-        animate={{ opacity: [0, 1], y: [10, 0] }}
-        transition={{ duration: 0.5, delay: 0.4 }} 
+        animate={{ y: [0, -4, 0], opacity: [0.6, 1, 0.6] }}
+        transition={{ ...perpetualTransition, delay: 0.6 }} 
     />
+    {/* Flecha pulsando hacia adelante */}
     <motion.path 
         d="M85 40 L 85 20 L 90 25 M 85 20 L 80 25" 
-        animate={{ pathLength: [0, 1], opacity: [0, 1] }} 
-        transition={{ delay: 0.8, duration: 1 }} 
+        animate={{ x: [0, 3, 0], opacity: [0.7, 1, 0.7] }} 
+        transition={{ ...perpetualTransition, duration: 1.5 }} 
         className="text-white" 
     />
   </svg>
@@ -42,16 +51,18 @@ const ProductivityIcon = () => (
 
 const ChaosToCalmIcon = () => (
   <svg viewBox="0 0 100 60" className="w-full h-full text-teal-600" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ overflow: "visible" }}>
+    {/* La línea respira suavemente dibujándose y desdibujándose un poco */}
     <motion.path 
         d="M5 30 Q 15 5, 25 30 T 45 30 T 65 30 L 95 30" 
-        animate={{ pathLength: [0, 1], opacity: [0, 1] }} 
-        transition={iconTransition} 
+        animate={{ pathLength: [0.8, 1, 0.8], opacity: [0.7, 1, 0.7] }} 
+        transition={perpetualTransition} 
     />
+    {/* El punto final pulsa de tamaño */}
     <motion.circle 
         cx="95" cy="30" r="3" 
         fill="currentColor" 
-        animate={{ scale: [0, 1] }} 
-        transition={{ delay: 1.5 }} 
+        animate={{ scale: [0.8, 1.2, 0.8] }} 
+        transition={perpetualTransition} 
     />
   </svg>
 );
@@ -60,28 +71,31 @@ const ConnectingDotsIcon = () => (
   <svg viewBox="0 0 100 60" className="w-full h-full text-teal-600" fill="none" stroke="currentColor" strokeWidth="2" style={{ overflow: "visible" }}>
     <motion.path 
         d="M20 50 L 50 20 L 80 50" 
-        animate={{ pathLength: [0, 1], opacity: [0, 1] }} 
-        transition={iconTransition} 
+        animate={{ opacity: [0.4, 1, 0.4] }} 
+        transition={perpetualTransition} 
     />
-    <motion.circle cx="20" cy="50" r="4" animate={{ scale: [0, 1] }} transition={{ delay: 0.2 }} className="fill-teal-100" />
-    <motion.circle cx="50" cy="20" r="4" animate={{ scale: [0, 1] }} transition={{ delay: 0.8 }} className="fill-teal-100" />
-    <motion.circle cx="80" cy="50" r="4" animate={{ scale: [0, 1] }} transition={{ delay: 1.5 }} className="fill-teal-600" />
+    {/* Los puntos se encienden en secuencia */}
+    <motion.circle cx="20" cy="50" r="4" animate={{ scale: [0.9, 1.1, 0.9], opacity: [0.6, 1, 0.6] }} transition={perpetualTransition} className="fill-teal-100" />
+    <motion.circle cx="50" cy="20" r="4" animate={{ scale: [0.9, 1.1, 0.9], opacity: [0.6, 1, 0.6] }} transition={{ ...perpetualTransition, delay: 0.5 }} className="fill-teal-100" />
+    <motion.circle cx="80" cy="50" r="4" animate={{ scale: [0.9, 1.1, 0.9], opacity: [0.6, 1, 0.6] }} transition={{ ...perpetualTransition, delay: 1 }} className="fill-teal-600" />
   </svg>
 );
 
 const SafeSpaceIcon = () => (
   <svg viewBox="0 0 100 60" className="w-full h-full text-teal-600" fill="none" stroke="currentColor" strokeWidth="2" style={{ overflow: "visible" }}>
-    <motion.path d="M30 30 A 20 20 0 0 1 70 30" animate={{ pathLength: [0, 1] }} transition={{ duration: 1 }} />
-    <motion.path d="M20 30 A 30 30 0 0 1 80 30" animate={{ pathLength: [0, 1] }} transition={{ duration: 1, delay: 0.3 }} className="opacity-60" />
-    <motion.path d="M50 45 L 50 15" animate={{ pathLength: [0, 1] }} transition={{ duration: 0.5, delay: 1 }} />
+    {/* Los círculos protectores expanden y contraen como una respiración */}
+    <motion.path d="M30 30 A 20 20 0 0 1 70 30" animate={{ scale: [0.98, 1.02, 0.98] }} style={{ originX: "50%", originY: "50%" }} transition={perpetualTransition} />
+    <motion.path d="M20 30 A 30 30 0 0 1 80 30" animate={{ scale: [0.98, 1.02, 0.98], opacity: [0.4, 0.7, 0.4] }} style={{ originX: "50%", originY: "50%" }} transition={{ ...perpetualTransition, delay: 0.2 }} className="opacity-60" />
+    <motion.path d="M50 45 L 50 15" animate={{ height: [100, 110, 100] }} transition={perpetualTransition} />
   </svg>
 );
 
 const BreakthroughIcon = () => (
   <svg viewBox="0 0 100 60" className="w-full h-full text-teal-600" fill="none" stroke="currentColor" strokeWidth="2" style={{ overflow: "visible" }}>
     <motion.line x1="80" y1="10" x2="80" y2="50" strokeDasharray="4 4" className="opacity-50" />
-    <motion.path d="M10 30 L 40 30 C 60 30, 60 10, 90 10" animate={{ pathLength: [0, 1] }} transition={{ duration: 1.5, ease: "circOut" }} />
-    <motion.path d="M85 15 L 90 10 L 85 5" animate={{ opacity: [0, 1], x: [-5, 0] }} transition={{ delay: 1.4 }} />
+    <motion.path d="M10 30 L 40 30 C 60 30, 60 10, 90 10" animate={{ pathLength: [0.9, 1, 0.9] }} transition={perpetualTransition} />
+    {/* La flecha intenta romper la barrera constantemente */}
+    <motion.path d="M85 15 L 90 10 L 85 5" animate={{ x: [0, 5, 0] }} transition={{ ...perpetualTransition, duration: 1 }} />
   </svg>
 );
 
@@ -184,7 +198,7 @@ export default function TargetAudience() {
         </div>
 
 
-        {/* --- LAYOUT MÓVIL (CORREGIDO: INDICADOR + SLIDER) --- */}
+        {/* --- LAYOUT MÓVIL (INDICADOR + SLIDER) --- */}
         <div className="md:hidden flex flex-col gap-8">
             
             {/* 1. TARJETA INSIGNIA */}
@@ -200,7 +214,7 @@ export default function TargetAudience() {
                     <div className="flex justify-between items-start mb-6">
                         <div className="w-16 h-12 text-teal-200">{primaryCard.icon}</div>
                         <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-wider border border-white/10">
-                            Filtro
+                            Filtro N.1
                         </span>
                     </div>
                     <h3 className="text-2xl font-serif font-bold text-white mb-3">
