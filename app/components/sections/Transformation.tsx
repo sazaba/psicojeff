@@ -147,8 +147,9 @@ export default function Transformation() {
             </div>
 
             {/* --- IMAGEN HANDSHAKE CON FONDO PASTEL TIERRA --- */}
+           {/* --- IMAGEN HANDSHAKE CON FONDO TIERRA (CORREGIDO PARA MAYOR CONTRASTE) --- */}
             <motion.div 
-                className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-black/40 group aspect-video lg:aspect-[4/3] bg-gradient-to-br from-[#F2EAE4] to-[#E6DCCF]" // <--- AQUI ESTA EL COLOR PASTEL TIERRA
+                className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-black/40 group aspect-video lg:aspect-[4/3] bg-gradient-to-br from-[#E8DCCA] via-[#D6C0B0] to-[#BFA08E]" // <--- CAMBIO CLAVE: Tonos Mocha/Arcilla suaves
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
@@ -158,11 +159,11 @@ export default function Transformation() {
                     src={handshake} 
                     alt="Alianza Terapéutica"
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100 mix-blend-multiply" // Mix blend ayuda a que se integre mejor con el color de fondo
+                    className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-100" // Eliminé 'mix-blend' para que la foto se vea nítida y natural sobre el color
                 />
                 
-                {/* Overlay Gradiente Oscuro en la base (Para que se lea el texto blanco) */}
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/20 to-transparent opacity-90" />
+                {/* Overlay Gradiente Oscuro en la base (Más fuerte para asegurar lectura del texto) */}
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/90 via-stone-900/10 to-transparent" />
                 
                 {/* Texto sobre imagen */}
                 <div className="absolute bottom-6 left-6 right-6 z-10">
