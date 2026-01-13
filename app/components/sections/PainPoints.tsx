@@ -23,6 +23,7 @@ const IconWrapper = ({ children }: { children: React.ReactNode }) => (
       strokeLinecap="round"
       strokeLinejoin="round"
       className="w-8 h-8 text-teal-700 relative z-10"
+      style={{ overflow: 'visible' }} // Importante para evitar cortes en animaciones
     >
       {children}
     </svg>
@@ -37,21 +38,21 @@ const ShieldAlertIcon = () => (
       d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
       initial={{ pathLength: 0 }}
       whileInView={{ pathLength: 1 }}
-      viewport={{ once: false }}
+      viewport={{ once: false, margin: "-20%" }}
       transition={{ duration: 1.5, ease: "easeInOut" }}
     />
     <motion.path
       d="M12 8v4"
       initial={{ pathLength: 0, opacity: 0 }}
       whileInView={{ pathLength: 1, opacity: 1 }}
-      viewport={{ once: false }}
+      viewport={{ once: false, margin: "-20%" }}
       transition={{ duration: 0.5, delay: 0.5 }}
     />
     <motion.path
       d="M12 16h.01"
       initial={{ scale: 0 }}
       whileInView={{ scale: 1 }}
-      viewport={{ once: false }}
+      viewport={{ once: false, margin: "-20%" }}
       transition={{ duration: 0.3, delay: 0.8 }}
     />
   </IconWrapper>
@@ -63,7 +64,7 @@ const HeartbeatBatteryIcon = () => (
       d="M22 12h-4l-3 9L9 3l-3 9H2"
       initial={{ pathLength: 0 }}
       whileInView={{ pathLength: 1 }}
-      viewport={{ once: false }}
+      viewport={{ once: false, margin: "-20%" }}
       transition={{ duration: 2, ease: "easeInOut" }}
     />
   </IconWrapper>
@@ -71,12 +72,14 @@ const HeartbeatBatteryIcon = () => (
 
 const MoonThoughtsIcon = () => (
   <IconWrapper>
+    {/* CORRECCIÓN CRÍTICA: Eliminado 'rotate'. Solo dibuja el trazo. 
+        Esto soluciona el problema en móviles donde el transform-origin fallaba. */}
     <motion.path
       d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
-      initial={{ pathLength: 0, rotate: -45 }}
-      whileInView={{ pathLength: 1, rotate: 0 }}
-      viewport={{ once: false }}
-      transition={{ duration: 1.5, ease: "easeOut" }}
+      initial={{ pathLength: 0 }}
+      whileInView={{ pathLength: 1 }}
+      viewport={{ once: false, margin: "-20%" }}
+      transition={{ duration: 1.5, ease: "easeInOut" }}
     />
   </IconWrapper>
 );
@@ -87,28 +90,26 @@ const CloudRainIcon = () => (
       d="M20 16.2A4.5 4.5 0 0 0 21 12a4.5 4.5 0 0 0-3.6-4.4 6 6 0 0 0-11 1.1 5 5 0 1 0 9 10.1"
       initial={{ pathLength: 0 }}
       whileInView={{ pathLength: 1 }}
-      viewport={{ once: false }}
+      viewport={{ once: false, margin: "-20%" }}
       transition={{ duration: 1.5 }}
     />
+    {/* Gotas: Animación simple de opacidad y posición para evitar bloqueos */}
     <motion.path
       d="M8 19v2"
-      initial={{ pathLength: 0, y: -5 }}
-      whileInView={{ pathLength: 1, y: 0 }}
-      viewport={{ once: false }}
+      initial={{ opacity: 0, y: -2 }}
+      whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.5, repeat: Infinity, repeatType: "reverse" }}
     />
     <motion.path
       d="M12 19v2"
-      initial={{ pathLength: 0, y: -5 }}
-      whileInView={{ pathLength: 1, y: 0 }}
-      viewport={{ once: false }}
+      initial={{ opacity: 0, y: -2 }}
+      whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.7, repeat: Infinity, repeatType: "reverse" }}
     />
     <motion.path
       d="M16 19v2"
-      initial={{ pathLength: 0, y: -5 }}
-      whileInView={{ pathLength: 1, y: 0 }}
-      viewport={{ once: false }}
+      initial={{ opacity: 0, y: -2 }}
+      whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.9, repeat: Infinity, repeatType: "reverse" }}
     />
   </IconWrapper>
@@ -118,10 +119,10 @@ const LightningBoltIcon = () => (
   <IconWrapper>
     <motion.path
       d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"
-      initial={{ pathLength: 0, fillOpacity: 0 }}
-      whileInView={{ pathLength: 1, fillOpacity: 0.2 }}
-      viewport={{ once: false }}
-      transition={{ duration: 0.8, ease: "easeInOut" }}
+      initial={{ pathLength: 0 }}
+      whileInView={{ pathLength: 1 }}
+      viewport={{ once: false, margin: "-20%" }}
+      transition={{ duration: 1, ease: "easeInOut" }}
     />
   </IconWrapper>
 );
@@ -132,14 +133,14 @@ const BrainIcon = () => (
       d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 2.96-3.08A2.5 2.5 0 0 1 9.5 2z"
       initial={{ pathLength: 0 }}
       whileInView={{ pathLength: 1 }}
-      viewport={{ once: false }}
+      viewport={{ once: false, margin: "-20%" }}
       transition={{ duration: 1.5 }}
     />
     <motion.path
       d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-2.96-3.08A2.5 2.5 0 0 0 14.5 2z"
       initial={{ pathLength: 0 }}
       whileInView={{ pathLength: 1 }}
-      viewport={{ once: false }}
+      viewport={{ once: false, margin: "-20%" }}
       transition={{ duration: 1.5 }}
     />
   </IconWrapper>
@@ -185,19 +186,19 @@ const containerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15,
+      staggerChildren: 0.1, // Un poco más rápido para que se sienta ágil en móvil
     },
   },
 };
 
 const cardVariants: Variants = {
-  hidden: { y: 30, opacity: 0 },
+  hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
     opacity: 1,
     transition: {
       type: "spring",
-      stiffness: 50,
+      stiffness: 70, // Ajustado para ser suave pero firme
       damping: 20,
     },
   },
@@ -205,9 +206,7 @@ const cardVariants: Variants = {
 
 export default function PainPoints() {
   return (
-    // SECCIÓN TRANSPARENTE: Dejamos que el fondo del Layout (RootLayout) se vea
     <section className="py-24 px-6 relative z-10">
-      
       <div className="max-w-7xl mx-auto">
         
         {/* CABECERA */}
@@ -259,7 +258,7 @@ export default function PainPoints() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: false, margin: "-50px" }}
+          viewport={{ once: false, margin: "-10%" }} // Margen seguro para activación móvil
         >
           {painPoints.map((item, index) => (
             <motion.div
@@ -272,7 +271,7 @@ export default function PainPoints() {
                  <item.icon />
               </div>
 
-              {/* Texto: Título con Serif, cuerpo con Sans */}
+              {/* Texto */}
               <h3 className="text-xl font-bold font-serif text-stone-800 mb-3 group-hover:text-teal-700 transition-colors">
                 {item.title}
               </h3>
