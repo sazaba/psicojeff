@@ -18,8 +18,8 @@ export default function Home() {
         <Hero />
         <PainPoints />
         <TargetAudience/>
+        <ProfessionalProfile/>
       </main>
-
       <Footer />
     </div>
   );

@@ -23,13 +23,13 @@ export default function Hero() {
                     <div className="absolute top-10 left-1/2 -translate-x-1/2 w-3/4 h-3/4 bg-teal-200/30 rounded-full blur-[60px] -z-10"></div>
 
                     {/* 2. IMAGEN CON MÁSCARA DE DESVANECIMIENTO */}
-                    {/* <Image
+                    <Image
                         src={Headerpsicojeff}
                         alt="Psicólogo Jefferson Bastidas"
                         className="w-full h-auto object-contain drop-shadow-2xl z-10 [mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)]" 
                         priority
                         sizes="(max-width: 768px) 100vw, 500px"
-                    /> */}
+                    />
                 </div>
             </div>
 
