@@ -214,7 +214,7 @@ export default function TargetAudience() {
                     <div className="flex justify-between items-start mb-6">
                         <div className="w-16 h-12 text-teal-200">{primaryCard.icon}</div>
                         <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-wider border border-white/10">
-                            Filtro N.1
+                            Filtro
                         </span>
                     </div>
                     <h3 className="text-2xl font-serif font-bold text-white mb-3">
