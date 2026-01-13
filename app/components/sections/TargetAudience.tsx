@@ -187,7 +187,7 @@ export default function TargetAudience() {
              <div key={card.id} className={`p-8 rounded-3xl relative group ${card.bg} ${card.isPrimary ? 'col-span-2' : 'col-span-1'} min-h-[300px] flex flex-col justify-between transition-all hover:-translate-y-1 hover:shadow-lg`}>
                 <div className="flex justify-between items-start">
                     <div className="w-20 h-16">{card.icon}</div>
-                    {card.isPrimary && <span className="px-3 py-1 rounded-full bg-teal-800 text-teal-100 text-xs font-bold uppercase">Requisito</span>}
+                    {card.isPrimary && <span className="px-3 py-1 rounded-full bg-teal-800 text-teal-100 text-xs font-bold uppercase">Filtro</span>}
                 </div>
                 <div>
                     <h3 className={`text-xl font-bold font-serif mb-3 ${card.titleColor}`}>{card.title}</h3>
