@@ -4,9 +4,9 @@ import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Star, CheckCircle2 } from "lucide-react";
+import google from "@/public/Logo.webp";
 
-import google from "@/app/assets/logo.svg";
-
+// --- TUS DATOS ---
 const reviews = [
   {
     id: 1,
@@ -62,11 +62,10 @@ const infiniteReviews = [...reviews, ...reviews];
 
 export default function Testimonials() {
   return (
-    // CORRECCIÓN: Usar 'w-full' en vez de 'max-w-[100vw]'
-    <section className="py-24 relative overflow-hidden border-t border-stone-100 w-full">
+    // BLINDAJE 1: Section con w-full y overflow-hidden estricto
+    <section className="py-24 relative w-full overflow-hidden border-t border-stone-100 bg-white">
       
-      {/* --- HEADER --- */}
-      <div className="max-w-7xl mx-auto px-6 mb-16 flex flex-col items-center">
+      <div className="max-w-7xl mx-auto px-6 mb-16 flex flex-col items-center relative z-10">
         <a 
             href="https://share.google/5gs2judHeh0di1b4W" 
             target="_blank"
@@ -76,92 +75,82 @@ export default function Testimonials() {
             <span className="text-4xl font-serif font-bold text-stone-800 tracking-tight mb-1">
                 Excelente
             </span>
-
             <div className="flex gap-1.5 mb-2">
                 {[...Array(5)].map((_, i) => (
-                    <Star 
-                        key={i} 
-                        size={32} 
-                        className="text-[#FFB400] fill-[#FFB400]" 
-                    />
+                    <Star key={i} size={32} className="text-[#FFB400] fill-[#FFB400]" />
                 ))}
             </div>
-
             <p className="text-stone-600 text-base md:text-lg">
                 A base de <strong className="text-stone-900">88 reseñas</strong>
             </p>
-
             <div className="mt-3 relative w-24 h-8 md:w-28 md:h-10">
-                <Image 
-                    src={google} 
-                    alt="Google Logo" 
-                    fill
-                    className="object-contain" 
-                />
+                <Image src={google} alt="Google Logo" fill className="object-contain" />
             </div>
         </a>
       </div>
 
-      {/* --- MARQUEE INFINITO --- */}
-      <div 
-        className="relative w-full overflow-hidden"
-        style={{
-            maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
-            WebkitMaskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)"
-        }}
-      >
-        <motion.div 
-            className="flex gap-4 md:gap-6 w-max px-4 md:px-6"
-            animate={{ x: ["0%", "-50%"] }} 
-            transition={{ 
-                duration: 50, 
-                ease: "linear", 
-                repeat: Infinity 
+      {/* BLINDAJE 2: Contenedor Wrapper que fuerza el corte */}
+      <div className="w-full max-w-full overflow-hidden">
+        <div 
+            className="relative w-full overflow-hidden"
+            style={{
+                maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+                WebkitMaskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)"
             }}
-            whileHover={{ animationPlayState: "paused" }} 
         >
-            {infiniteReviews.map((review, index) => (
-                <div 
-                    key={`${review.id}-${index}`} 
-                    // TAMAÑO SEGURO PARA MÓVIL (280px)
-                    className="w-[280px] sm:w-[320px] md:w-[400px] flex-shrink-0 bg-white p-6 md:p-8 rounded-2xl border border-stone-100 relative group hover:shadow-xl hover:border-teal-100 transition-all duration-300 shadow-sm flex flex-col"
-                >
-                    <div className="absolute top-6 right-6 opacity-10 group-hover:opacity-100 transition-opacity">
-                          <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M23.5 12.28c0-.86-.07-1.7-.22-2.5H12v4.86h6.47c-.28 1.48-1.12 2.73-2.4 3.58v3h3.86c2.26-2.09 3.57-5.17 3.57-8.94z" fill="#4285F4"/>
-                            <path d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.3v3.12C3.32 21.43 7.37 24 12 24z" fill="#34A853"/>
-                            <path d="M5.27 14.28c-.24-.72-.38-1.49-.38-2.28s.14-1.56.38-2.28V6.6H1.3A11.97 11.97 0 000 12c0 1.93.47 3.76 1.3 5.4l3.97-3.12z" fill="#FBBC05"/>
-                            <path d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.37 0 3.32 2.57 1.3 6.6l3.97 3.12c.95-2.85 3.6-4.96 6.73-4.96z" fill="#EA4335"/>
-                        </svg>
-                    </div>
-
-                    <div className="flex items-center gap-2 mb-4">
-                        <div className="flex gap-0.5">
-                            {[...Array(review.rating)].map((_, i) => (
-                                <Star key={i} size={16} className="text-yellow-400 fill-yellow-400" />
-                            ))}
+            <motion.div 
+                className="flex gap-4 md:gap-6 w-max px-4"
+                animate={{ x: ["0%", "-50%"] }} 
+                transition={{ 
+                    duration: 50, 
+                    ease: "linear", 
+                    repeat: Infinity 
+                }}
+                whileHover={{ animationPlayState: "paused" }} 
+            >
+                {infiniteReviews.map((review, index) => (
+                    <div 
+                        key={`${review.id}-${index}`} 
+                        // BLINDAJE 3: Ancho seguro para móviles pequeños (260px min)
+                        className="w-[260px] xs:w-[280px] sm:w-[320px] md:w-[400px] flex-shrink-0 bg-white p-6 md:p-8 rounded-2xl border border-stone-100 relative group hover:shadow-xl hover:border-teal-100 transition-all duration-300 shadow-sm flex flex-col"
+                    >
+                        {/* El contenido de la tarjeta se mantiene igual */}
+                        <div className="absolute top-6 right-6 opacity-10 group-hover:opacity-100 transition-opacity">
+                            <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M23.5 12.28c0-.86-.07-1.7-.22-2.5H12v4.86h6.47c-.28 1.48-1.12 2.73-2.4 3.58v3h3.86c2.26-2.09 3.57-5.17 3.57-8.94z" fill="#4285F4"/>
+                                <path d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.3v3.12C3.32 21.43 7.37 24 12 24z" fill="#34A853"/>
+                                <path d="M5.27 14.28c-.24-.72-.38-1.49-.38-2.28s.14-1.56.38-2.28V6.6H1.3A11.97 11.97 0 000 12c0 1.93.47 3.76 1.3 5.4l3.97-3.12z" fill="#FBBC05"/>
+                                <path d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.37 0 3.32 2.57 1.3 6.6l3.97 3.12c.95-2.85 3.6-4.96 6.73-4.96z" fill="#EA4335"/>
+                            </svg>
                         </div>
-                        <CheckCircle2 size={14} className="text-blue-500 ml-1" />
-                    </div>
 
-                    <p className="text-stone-600 leading-relaxed mb-8 font-medium text-sm md:text-base min-h-[80px]">
-                        "{review.text}"
-                    </p>
-
-                    <div className="flex items-center gap-3 mt-auto border-t border-stone-50 pt-4">
-                        <div className={`w-10 h-10 rounded-full ${review.color} flex items-center justify-center text-white font-bold text-lg shrink-0 shadow-sm`}>
-                            {review.name.charAt(0)}
+                        <div className="flex items-center gap-2 mb-4">
+                            <div className="flex gap-0.5">
+                                {[...Array(review.rating)].map((_, i) => (
+                                    <Star key={i} size={16} className="text-yellow-400 fill-yellow-400" />
+                                ))}
+                            </div>
+                            <CheckCircle2 size={14} className="text-blue-500 ml-1" />
                         </div>
-                        <div>
-                            <p className="text-sm font-bold text-stone-800 leading-tight line-clamp-1">{review.name}</p>
-                            <p className="text-xs text-stone-400 mt-0.5">{review.date}</p>
+
+                        <p className="text-stone-600 leading-relaxed mb-8 font-medium text-sm md:text-base min-h-[80px]">
+                            "{review.text}"
+                        </p>
+
+                        <div className="flex items-center gap-3 mt-auto border-t border-stone-50 pt-4">
+                            <div className={`w-10 h-10 rounded-full ${review.color} flex items-center justify-center text-white font-bold text-lg shrink-0 shadow-sm`}>
+                                {review.name.charAt(0)}
+                            </div>
+                            <div>
+                                <p className="text-sm font-bold text-stone-800 leading-tight line-clamp-1">{review.name}</p>
+                                <p className="text-xs text-stone-400 mt-0.5">{review.date}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            ))}
-        </motion.div>
+                ))}
+            </motion.div>
+        </div>
       </div>
-
     </section>
   );
 }
