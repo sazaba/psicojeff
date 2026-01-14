@@ -9,6 +9,7 @@ import Footer from "@/app/components/sections/Footer";
 import TargetAudience from "@/app/components/sections/TargetAudience";
 import Transformation from "./components/sections/Transformation";
 import Location from "./components/sections/Location";
+import Testimonials from "./components/sections/Testimonials";
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
         <ValueProposition/>
         <Transformation/>
         <Location/>
+        <Testimonials/>
       </main>
       <Footer />
     </div>
@@ -32,7 +34,7 @@ export default function Home() {
 
 
   /* 
-        <ProfessionalProfile />
-        <ValueProposition />
-        <ProcessAndLocation />
+        
+       
+      
         <FinalActions /> */
