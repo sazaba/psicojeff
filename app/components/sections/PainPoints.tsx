@@ -3,22 +3,21 @@
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
 
-// --- CONFIGURACIÓN DE ACTIVACIÓN (CRÍTICO PARA MÓVIL) ---
-// amount: 0.2 -> Se activa cuando solo el 20% del elemento es visible.
-// once: true -> Se anima una vez y se queda visible (evita parpadeos al hacer scroll).
+// --- CONFIGURACIÓN DE ACTIVACIÓN ---
 const drawViewportConfig = { once: true, amount: 0.2 };
 
 // --- CONFIGURACIÓN DE ICONOS ANIMADOS ---
 const IconWrapper = ({ children }: { children: React.ReactNode }) => (
   <div className="w-16 h-16 mb-6 relative flex items-center justify-center">
-    {/* Fondo del icono: Animación de respiración optimizada */}
+    {/* Fondo del icono */}
     <motion.div 
         animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.8, 0.5] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         className="absolute inset-0 bg-teal-100 rounded-full" 
-        style={{ willChange: "transform, opacity" }} // Mejora rendimiento en móvil
+        style={{ willChange: "transform, opacity" }} 
     />
-    {/* SVG */}
+    {/* SVG: Mantenemos overflow visible AQUÍ para que los trazos se vean completos, 
+        pero el SECTION padre los contendrá. */}
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
@@ -36,7 +35,7 @@ const IconWrapper = ({ children }: { children: React.ReactNode }) => (
 );
 
 // --- DEFINICIÓN DE LOS TRAZOS SVG (Motion Paths) ---
-
+// (Sin cambios en los iconos, están correctos)
 const ShieldAlertIcon = () => (
   <IconWrapper>
     <motion.path
@@ -96,7 +95,6 @@ const CloudRainIcon = () => (
       viewport={drawViewportConfig}
       transition={{ duration: 1.5 }}
     />
-    {/* Gotas */}
     {[0.5, 0.7, 0.9].map((delay, i) => (
        <motion.path
          key={i}
@@ -195,13 +193,14 @@ const cardVariants: Variants = {
 
 export default function PainPoints() {
   return (
-    <section className="py-24 px-4 md:px-6 relative z-10">
+    // CORRECCIÓN CRÍTICA:
+    // 1. Agregado 'overflow-hidden': Corta cualquier sombra o animación que intente salir del ancho.
+    // 2. Agregado 'w-full': Asegura que la sección respete el ancho del padre.
+    <section className="py-24 px-4 md:px-6 relative z-10 overflow-hidden w-full">
       <div className="max-w-7xl mx-auto">
         
         {/* CABECERA */}
         <div className="text-center mb-16 md:mb-20 max-w-3xl mx-auto">
-       
-
           <motion.h2
             className="text-3xl md:text-5xl font-medium font-serif text-stone-800 mb-6 tracking-tight leading-tight"
             initial={{ opacity: 0, y: 20 }}
@@ -219,7 +218,6 @@ export default function PainPoints() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-           
             <span className="text-teal-700 font-medium italic font-serif relative inline-block mt-2">
                Validemos lo que sientes.
                <svg className="absolute w-full h-2 -bottom-1 left-0 text-teal-300 opacity-60" viewBox="0 0 100 10" preserveAspectRatio="none">
@@ -235,11 +233,13 @@ export default function PainPoints() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }} // Margen seguro para activación móvil
+          viewport={{ once: true, amount: 0.1 }}
         >
           {painPoints.map((item, index) => (
             <motion.div
               key={index}
+              // NOTA: hover:shadow-xl puede ser muy amplio en móviles. 
+              // Gracias a overflow-hidden en la section, ya no romperá el layout.
               className="group relative p-6 md:p-8 rounded-2xl bg-white/60 backdrop-blur-md border border-white/60 shadow-sm hover:shadow-xl hover:shadow-teal-900/5 transition-all duration-300"
               variants={cardVariants}
             >
