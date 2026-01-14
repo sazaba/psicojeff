@@ -28,25 +28,23 @@ export default function Navbar() {
     return () => { document.body.style.overflow = "unset"; };
   }, [isMobileMenuOpen]);
 
-  // --- ENLACES ACTUALIZADOS CON EL BLOG ---
+  // --- ENLACES ---
   const navLinks = [
     { name: "Inicio", href: "#inicio" },
     { name: "Acerca de Mí", href: "#sobre-mi" },
     { name: "Ubicación", href: "#ubicacion" },
-    { name: "Preguntas Frecuentes", href: "#faq" },
-    { name: "Blog", href: "#blog" }, // Nuevo enlace agregado
+    { name: "Blog", href: "#blog" }, 
   ];
 
-  // Función para scroll suave manual
   const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    setIsMobileMenuOpen(false); // Cerrar menú móvil si está abierto
+    setIsMobileMenuOpen(false); 
     
     const targetId = href.replace("#", "");
     const elem = document.getElementById(targetId);
     
     if (elem) {
-      const headerOffset = 80; // Ajuste para que el navbar no tape el título
+      const headerOffset = 80; 
       const elementPosition = elem.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.scrollY - headerOffset;
 
@@ -66,10 +64,11 @@ export default function Navbar() {
             : "bg-transparent border-transparent py-6"
         }`}
       >
-        <div className="container mx-auto px-6 flex items-center justify-between h-full">
+        {/* CORRECCIÓN: Agregamos 'max-w-[100vw]' y 'overflow-hidden' al contenedor del navbar por seguridad */}
+        <div className="container mx-auto px-6 flex items-center justify-between h-full max-w-[100vw] overflow-x-hidden">
           
           {/* LOGO */}
-          <Link href="#inicio" onClick={(e) => handleScrollToSection(e, "#inicio")} className="relative z-50 flex items-center gap-3 group">
+          <Link href="#inicio" onClick={(e) => handleScrollToSection(e, "#inicio")} className="relative z-50 flex items-center gap-3 group shrink-0">
             <div className="relative w-10 h-10 md:w-12 md:h-12 transition-transform duration-300 group-hover:scale-105">
               <Image 
                 src={logoImg} 
@@ -116,10 +115,11 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* MOBILE TOGGLE */}
+          {/* MOBILE TOGGLE (CORREGIDO) */}
           <button
             aria-label="Toggle Menu"
-            className="md:hidden relative z-50 p-2 -mr-2 text-stone-700 hover:text-teal-700 transition-colors active:scale-95"
+            // ELIMINÉ EL '-mr-2' Y AGREGUÉ 'p-1' PARA QUE NO EMPUJE HACIA AFUERA
+            className="md:hidden relative z-50 p-1 text-stone-700 hover:text-teal-700 transition-colors active:scale-95"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -129,7 +129,7 @@ export default function Navbar() {
 
       {/* MOBILE MENU */}
       <div
-        className={`fixed inset-0 z-40 bg-[#fffcf8]/95 backdrop-blur-xl flex flex-col items-center justify-center transition-all duration-500 md:hidden h-[100dvh] supports-[height:100dvh]:h-screen
+        className={`fixed inset-0 z-40 bg-[#fffcf8]/95 backdrop-blur-xl flex flex-col items-center justify-center transition-all duration-500 md:hidden h-[100dvh] supports-[height:100dvh]:h-screen w-full
         ${isMobileMenuOpen 
             ? "opacity-100 visible translate-y-0" 
             : "opacity-0 invisible -translate-y-4 pointer-events-none"

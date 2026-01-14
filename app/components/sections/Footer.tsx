@@ -25,7 +25,7 @@ export default function Footer() {
           <div className="md:col-span-5 flex flex-col justify-between">
             <div>
               <h2 className="text-4xl md:text-6xl font-serif font-bold tracking-tight text-white mb-2">
-                Jefferson <br /> Bastidas.
+                Jefferson <br /> Bastidas
               </h2>
               <p className="text-stone-500 text-lg md:text-xl font-light mt-4 max-w-sm leading-relaxed">
                 Psicoterapia de alta precisión para recuperar tu equilibrio vital.
