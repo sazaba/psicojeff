@@ -64,8 +64,9 @@ export default function Navbar() {
             : "bg-transparent border-transparent py-6"
         }`}
       >
-        {/* CORRECCIÓN: Agregamos 'max-w-[100vw]' y 'overflow-hidden' al contenedor del navbar por seguridad */}
-        <div className="container mx-auto px-6 flex items-center justify-between h-full max-w-[100vw] overflow-x-hidden">
+        {/* CORRECCIÓN: Se elimina 'max-w-[100vw]' que causa el scroll horizontal. 
+            Se usa 'w-full max-w-7xl' para contención segura sin desbordamiento. */}
+        <div className="w-full max-w-7xl mx-auto px-6 flex items-center justify-between h-full">
           
           {/* LOGO */}
           <Link href="#inicio" onClick={(e) => handleScrollToSection(e, "#inicio")} className="relative z-50 flex items-center gap-3 group shrink-0">
@@ -115,10 +116,9 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* MOBILE TOGGLE (CORREGIDO) */}
+          {/* MOBILE TOGGLE */}
           <button
             aria-label="Toggle Menu"
-            // ELIMINÉ EL '-mr-2' Y AGREGUÉ 'p-1' PARA QUE NO EMPUJE HACIA AFUERA
             className="md:hidden relative z-50 p-1 text-stone-700 hover:text-teal-700 transition-colors active:scale-95"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
