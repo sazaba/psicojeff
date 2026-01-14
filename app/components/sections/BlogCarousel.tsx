@@ -13,7 +13,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-// --- DATOS CON NUEVAS IMÁGENES DE PRUEBA (UNSPLASH STABLE) ---
+// ... (MANTÉN TU ARRAY DE blogPosts AQUÍ IGUAL QUE ANTES) ...
+// Para ahorrar espacio, asumo que el array blogPosts sigue aquí arriba igual.
 const blogPosts = [
   {
     id: 1,
@@ -22,7 +23,6 @@ const blogPosts = [
     category: "Trauma",
     date: "12 Ene, 2026",
     readTime: "5 min",
-    // Nueva imagen: Textura orgánica oscura
     image: "https://images.unsplash.com/photo-1618588507085-c79565432917?q=80&w=2070&auto=format&fit=crop", 
   },
   {
@@ -32,7 +32,6 @@ const blogPosts = [
     category: "Ansiedad",
     date: "08 Ene, 2026",
     readTime: "4 min",
-    // Nueva imagen: Estrés urbano/movimiento
     image: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=2069&auto=format&fit=crop",
   },
   {
@@ -42,7 +41,6 @@ const blogPosts = [
     category: "Relaciones",
     date: "28 Dic, 2025",
     readTime: "7 min",
-    // Nueva imagen: Conexión humana sutil
     image: "https://images.unsplash.com/photo-1581579438747-1dc8d17bbce4?q=80&w=2070&auto=format&fit=crop",
   },
   {
@@ -52,7 +50,6 @@ const blogPosts = [
     category: "Metodología",
     date: "15 Dic, 2025",
     readTime: "6 min",
-    // Nueva imagen: Equilibrio y estructura zen
     image: "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?q=80&w=1974&auto=format&fit=crop",
   },
   {
@@ -62,7 +59,6 @@ const blogPosts = [
     category: "Neurociencia",
     date: "10 Dic, 2025",
     readTime: "8 min",
-    // Nueva imagen: Redes abstractas / cerebro
     image: "https://images.unsplash.com/photo-1620121692029-d088224ddc74?q=80&w=2032&auto=format&fit=crop",
   },
   {
@@ -72,7 +68,6 @@ const blogPosts = [
     category: "Psicosomática",
     date: "01 Dic, 2025",
     readTime: "5 min",
-    // Nueva imagen: Naturaleza melancólica
     image: "https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?q=80&w=1974&auto=format&fit=crop",
   },
 ];
@@ -81,7 +76,8 @@ export default function BlogCarousel() {
   const swiperRef = useRef<SwiperType | null>(null);
 
   return (
-    <section className="py-24 bg-stone-50 relative overflow-hidden">
+    // CORRECCIÓN: Agregamos w-full y max-w-[100vw] para asegurar límites
+    <section className="py-24 bg-stone-50 relative overflow-hidden w-full max-w-[100vw]">
       {/* Fondo decorativo sutil */}
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-stone-300 to-transparent opacity-50"></div>
       
@@ -98,7 +94,7 @@ export default function BlogCarousel() {
             </h2>
           </div>
 
-          {/* Botones de navegación personalizados */}
+          {/* Botones de navegación */}
           <div className="flex gap-3">
             <button 
               onClick={() => swiperRef.current?.slidePrev()}
@@ -131,8 +127,6 @@ export default function BlogCarousel() {
             1024: { slidesPerView: 3 },
           }}
           loop={true}
-          // Autoplay opcional para que se mueva solo
-          // autoplay={{ delay: 5000, disableOnInteraction: false }} 
           className="!pb-12" 
         >
           {blogPosts.map((post) => (
@@ -141,10 +135,7 @@ export default function BlogCarousel() {
                 
                 {/* IMAGEN CARD */}
                 <div className="relative h-64 overflow-hidden bg-stone-200">
-                   {/* Overlay degradado al hacer hover */}
                    <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/20 transition-colors duration-500 z-10"></div>
-                   
-                   {/* Imagen Real */}
                    <Image 
                      src={post.image} 
                      alt={post.title} 
@@ -152,8 +143,6 @@ export default function BlogCarousel() {
                      className="object-cover transition-transform duration-1000 group-hover:scale-110"
                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                    />
-
-                   {/* Badge de Categoría Flotante */}
                    <span className="absolute top-4 left-4 z-20 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-teal-700 shadow-sm border border-white/50">
                      {post.category}
                    </span>
@@ -161,7 +150,6 @@ export default function BlogCarousel() {
 
                 {/* CONTENIDO CARD */}
                 <div className="flex flex-col flex-1 p-6 md:p-8">
-                  {/* Meta data */}
                   <div className="flex items-center gap-4 text-xs text-stone-400 mb-4 font-medium">
                     <div className="flex items-center gap-1">
                       <Calendar size={14} />
@@ -173,7 +161,6 @@ export default function BlogCarousel() {
                     </div>
                   </div>
 
-                  {/* Título */}
                   <h3 className="text-xl font-serif font-bold text-stone-800 mb-3 group-hover:text-teal-700 transition-colors line-clamp-2 leading-snug">
                     <Link href={`/blog/${post.id}`} className="focus:outline-none">
                         <span className="absolute inset-0 z-0"></span>
@@ -181,12 +168,10 @@ export default function BlogCarousel() {
                     </Link>
                   </h3>
 
-                  {/* Extracto */}
                   <p className="text-stone-500 text-sm leading-relaxed line-clamp-3 mb-6 flex-1">
                     {post.excerpt}
                   </p>
 
-                  {/* Link 'Leer más' */}
                   <div className="flex items-center text-teal-600 font-bold text-sm group/link z-10 relative pointer-events-none">
                     Leer artículo
                     <ArrowRight size={16} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
@@ -197,7 +182,6 @@ export default function BlogCarousel() {
           ))}
         </Swiper>
 
-        {/* --- LINK AL BLOG COMPLETO --- */}
         <div className="mt-8 text-center md:hidden">
             <Link href="/blog" className="inline-block px-6 py-3 border border-stone-300 rounded-full text-stone-600 font-semibold hover:bg-stone-800 hover:text-white transition-colors">
                 Ver todos los artículos

@@ -5,8 +5,8 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Star, CheckCircle2 } from "lucide-react";
 
-// --- 1. AQUÍ PONES EL IMPORT DE TU LOGO ---
-import google from "@/app/assets/logo.svg"; 
+// --- IMPORTA TU LOGO AQUÍ ---
+import google from "@/public/Logo.webp"; // Asegúrate que la ruta sea correcta
 
 // --- DATOS REALES ---
 const reviews = [
@@ -64,24 +64,21 @@ const infiniteReviews = [...reviews, ...reviews];
 
 export default function Testimonials() {
   return (
-    <section className="py-24 relative overflow-hidden border-t border-stone-100">
+    // IMPORTANTE: overflow-hidden aquí previene que el slider rompa el ancho
+    <section className="py-24 relative overflow-hidden border-t border-stone-100 w-full max-w-[100vw]">
       
-      {/* --- HEADER NUEVO: ESTILO SELLO DE AUTORIDAD --- */}
+      {/* --- HEADER --- */}
       <div className="max-w-7xl mx-auto px-6 mb-16 flex flex-col items-center">
-        
-        {/* Enlace que envuelve todo el sello */}
         <a 
             href="https://share.google/5gs2judHeh0di1b4W" 
             target="_blank"
             rel="noopener noreferrer"
             className="group flex flex-col items-center gap-1 hover:scale-105 transition-transform duration-300 cursor-pointer text-center"
         >
-            {/* 1. TEXTO "EXCELENTE" (NUEVO) */}
             <span className="text-4xl font-serif font-bold text-stone-800 tracking-tight mb-1">
                 Excelente
             </span>
 
-            {/* 2. ESTRELLAS */}
             <div className="flex gap-1.5 mb-2">
                 {[...Array(5)].map((_, i) => (
                     <Star 
@@ -92,12 +89,10 @@ export default function Testimonials() {
                 ))}
             </div>
 
-            {/* 3. TEXTO DE RESEÑAS */}
             <p className="text-stone-600 text-base md:text-lg">
                 A base de <strong className="text-stone-900">88 reseñas</strong>
             </p>
 
-            {/* 4. LOGO DE GOOGLE */}
             <div className="mt-3 relative w-24 h-8 md:w-28 md:h-10">
                 <Image 
                     src={google} 
@@ -107,7 +102,6 @@ export default function Testimonials() {
                 />
             </div>
         </a>
-
       </div>
 
       {/* --- MARQUEE INFINITO --- */}
@@ -119,7 +113,7 @@ export default function Testimonials() {
         }}
       >
         <motion.div 
-            className="flex gap-6 w-max px-6"
+            className="flex gap-4 md:gap-6 w-max px-4 md:px-6"
             animate={{ x: ["0%", "-50%"] }} 
             transition={{ 
                 duration: 50, 
@@ -131,7 +125,9 @@ export default function Testimonials() {
             {infiniteReviews.map((review, index) => (
                 <div 
                     key={`${review.id}-${index}`} 
-                    className="w-[320px] md:w-[400px] flex-shrink-0 bg-white p-8 rounded-2xl border border-stone-100 relative group hover:shadow-xl hover:border-teal-100 transition-all duration-300 shadow-sm flex flex-col"
+                    // CORRECCIÓN CRÍTICA: w-[280px] en móviles pequeños para evitar desborde
+                    // Antes: w-[320px] -> Ahora: w-[280px] sm:w-[320px]
+                    className="w-[280px] sm:w-[320px] md:w-[400px] flex-shrink-0 bg-white p-6 md:p-8 rounded-2xl border border-stone-100 relative group hover:shadow-xl hover:border-teal-100 transition-all duration-300 shadow-sm flex flex-col"
                 >
                     <div className="absolute top-6 right-6 opacity-10 group-hover:opacity-100 transition-opacity">
                           <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -160,7 +156,7 @@ export default function Testimonials() {
                             {review.name.charAt(0)}
                         </div>
                         <div>
-                            <p className="text-sm font-bold text-stone-800 leading-tight">{review.name}</p>
+                            <p className="text-sm font-bold text-stone-800 leading-tight line-clamp-1">{review.name}</p>
                             <p className="text-xs text-stone-400 mt-0.5">{review.date}</p>
                         </div>
                     </div>
