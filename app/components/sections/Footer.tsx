@@ -8,20 +8,22 @@ export default function Footer() {
 
   const links = [
     { name: "Inicio", href: "#inicio" },
-
     { name: "Acerca de Mí", href: "#sobre-mi" },
-  
     { name: "Blog", href: "#blog" },
   ];
 
   return (
-    <footer className="bg-[#0c0a09] text-[#e7e5e4] pt-24 pb-12 overflow-hidden border-t border-stone-800">
-      <div className="container mx-auto px-6 relative z-10">
+    // CAMBIO 1: Agregado 'w-full' para asegurar que ocupe el 100% del padre y no más.
+    // 'overflow-hidden' aquí es vital para cortar la letra gigante.
+    <footer className="w-full bg-[#0c0a09] text-[#e7e5e4] pt-24 pb-12 overflow-hidden border-t border-stone-800 relative">
+      
+      {/* CAMBIO 2: Reemplazo de 'container' por 'w-full max-w-7xl mx-auto' para evitar problemas de márgenes en móviles */}
+      <div className="w-full max-w-7xl mx-auto px-6 relative z-10">
         
         {/* --- GRID PRINCIPAL --- */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-20">
           
-          {/* COLUMNA 1: IDENTIDAD (BRUTALISM TYPOGRAPHY) */}
+          {/* COLUMNA 1: IDENTIDAD */}
           <div className="md:col-span-5 flex flex-col justify-between">
             <div>
               <h2 className="text-4xl md:text-6xl font-serif font-bold tracking-tight text-white mb-2">
@@ -73,7 +75,6 @@ export default function Footer() {
                 </div>
               </div>
 
-            
             </div>
           </div>
         </div>
@@ -95,8 +96,10 @@ export default function Footer() {
         </div>
       </div>
       
-      {/* Elemento Decorativo Gigante (Fondo) */}
-      <div className="absolute -bottom-20 -right-20 text-[12rem] font-serif font-black text-stone-800/20 pointer-events-none select-none leading-none opacity-10">
+      {/* CAMBIO CRÍTICO 3: Elemento Decorativo Gigante */}
+      {/* ELIMINADO '-right-20' que empujaba el ancho. */}
+      {/* USADO 'right-0 translate-x-1/3': Se ancla al borde y se desplaza visualmente sin alterar el ancho físico del documento. */}
+      <div className="absolute -bottom-20 right-0 translate-x-1/3 text-[12rem] font-serif font-black text-stone-800/20 pointer-events-none select-none leading-none opacity-10 whitespace-nowrap">
         JB
       </div>
     </footer>
