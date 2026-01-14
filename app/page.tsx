@@ -14,7 +14,7 @@ import BlogCarousel from "./components/sections/BlogCarousel";
 export default function Home() {
   return (
     <div className="relative flex flex-col gap-0 scroll-smooth"> 
-      <Navbar />
+      {/* <Navbar /> */}
       
       <main className="flex-1">
         {/* ID: inicio */}
@@ -59,9 +59,9 @@ export default function Home() {
           <FAQ/>
         </section>
 
-{/* <section id="blog">
+<section id="blog">
   <BlogCarousel />
-</section> */}
+</section>
 
       </main>
     
