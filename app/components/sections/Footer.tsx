@@ -28,7 +28,7 @@ export default function Footer() {
                 Jefferson <br /> Bastidas
               </h2>
               <p className="text-stone-500 text-lg md:text-xl font-light mt-4 max-w-sm leading-relaxed">
-                Psicoterapia de alta precisión para recuperar tu equilibrio vital.
+                Psicoterapia de alta precisión para recuperar tu equilibrio vital
               </p>
             </div>
           </div>

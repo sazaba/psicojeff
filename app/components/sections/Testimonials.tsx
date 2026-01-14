@@ -5,10 +5,8 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Star, CheckCircle2 } from "lucide-react";
 
-// --- IMPORTA TU LOGO AQUÍ ---
-import google from "@/public/Logo.webp"; // Asegúrate que la ruta sea correcta
+import google from "@/app/assets/logo.svg";
 
-// --- DATOS REALES ---
 const reviews = [
   {
     id: 1,
@@ -64,8 +62,8 @@ const infiniteReviews = [...reviews, ...reviews];
 
 export default function Testimonials() {
   return (
-    // IMPORTANTE: overflow-hidden aquí previene que el slider rompa el ancho
-    <section className="py-24 relative overflow-hidden border-t border-stone-100 w-full max-w-[100vw]">
+    // CORRECCIÓN: Usar 'w-full' en vez de 'max-w-[100vw]'
+    <section className="py-24 relative overflow-hidden border-t border-stone-100 w-full">
       
       {/* --- HEADER --- */}
       <div className="max-w-7xl mx-auto px-6 mb-16 flex flex-col items-center">
@@ -125,8 +123,7 @@ export default function Testimonials() {
             {infiniteReviews.map((review, index) => (
                 <div 
                     key={`${review.id}-${index}`} 
-                    // CORRECCIÓN CRÍTICA: w-[280px] en móviles pequeños para evitar desborde
-                    // Antes: w-[320px] -> Ahora: w-[280px] sm:w-[320px]
+                    // TAMAÑO SEGURO PARA MÓVIL (280px)
                     className="w-[280px] sm:w-[320px] md:w-[400px] flex-shrink-0 bg-white p-6 md:p-8 rounded-2xl border border-stone-100 relative group hover:shadow-xl hover:border-teal-100 transition-all duration-300 shadow-sm flex flex-col"
                 >
                     <div className="absolute top-6 right-6 opacity-10 group-hover:opacity-100 transition-opacity">

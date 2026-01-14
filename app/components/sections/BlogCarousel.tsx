@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight, Calendar, Clock } from "lucide-react";
 
-// Importaciones de Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
@@ -13,8 +12,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-// ... (MANTÉN TU ARRAY DE blogPosts AQUÍ IGUAL QUE ANTES) ...
-// Para ahorrar espacio, asumo que el array blogPosts sigue aquí arriba igual.
 const blogPosts = [
   {
     id: 1,
@@ -76,14 +73,12 @@ export default function BlogCarousel() {
   const swiperRef = useRef<SwiperType | null>(null);
 
   return (
-    // CORRECCIÓN: Agregamos w-full y max-w-[100vw] para asegurar límites
-    <section className="py-24 bg-stone-50 relative overflow-hidden w-full max-w-[100vw]">
-      {/* Fondo decorativo sutil */}
+    // CORRECCIÓN: Usar 'w-full' en vez de 'max-w-[100vw]' para respetar scrollbars
+    <section className="py-24 bg-stone-50 relative overflow-hidden w-full">
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-stone-300 to-transparent opacity-50"></div>
       
       <div className="container mx-auto px-6">
         
-        {/* --- HEADER DE LA SECCIÓN --- */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div className="max-w-xl">
             <span className="text-teal-600 font-bold tracking-wider text-sm uppercase mb-2 block">
@@ -94,7 +89,6 @@ export default function BlogCarousel() {
             </h2>
           </div>
 
-          {/* Botones de navegación */}
           <div className="flex gap-3">
             <button 
               onClick={() => swiperRef.current?.slidePrev()}
@@ -113,7 +107,6 @@ export default function BlogCarousel() {
           </div>
         </div>
 
-        {/* --- CARRUSEL SWIPER --- */}
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
           onBeforeInit={(swiper) => {
@@ -127,13 +120,13 @@ export default function BlogCarousel() {
             1024: { slidesPerView: 3 },
           }}
           loop={true}
-          className="!pb-12" 
+          // CORRECCIÓN: !overflow-hidden forzado en el swiper para evitar fugas laterales
+          className="!pb-12 !overflow-hidden" 
         >
           {blogPosts.map((post) => (
             <SwiperSlide key={post.id} className="h-auto">
               <article className="group h-full flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-stone-100 relative top-0 hover:-top-2">
                 
-                {/* IMAGEN CARD */}
                 <div className="relative h-64 overflow-hidden bg-stone-200">
                    <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/20 transition-colors duration-500 z-10"></div>
                    <Image 
@@ -148,7 +141,6 @@ export default function BlogCarousel() {
                    </span>
                 </div>
 
-                {/* CONTENIDO CARD */}
                 <div className="flex flex-col flex-1 p-6 md:p-8">
                   <div className="flex items-center gap-4 text-xs text-stone-400 mb-4 font-medium">
                     <div className="flex items-center gap-1">
