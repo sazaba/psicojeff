@@ -9,22 +9,20 @@ const locations = [
   {
     id: "centro",
     name: "Sede Centro",
-    address: "Cra. 22 # 24-24", // Dirección exacta actualizada
+    address: "Cra. 22 # 24-24",
     landmark: "Corazón de la ciudad",
     schedule: "Mañanas: hasta las 2:00 p.m.",
     description: "Ideal si te mueves por el centro histórico o administrativo. Un espacio diseñado para hacer una pausa productiva en tu día.",
-    // Mapa apuntando a Cra. 22 # 24-24, Manizales
     mapSrc: "https://maps.google.com/maps?q=Cra.+22+%23+24-24,+Manizales,+Caldas&t=&z=17&ie=UTF8&iwloc=&output=embed",
     color: "from-teal-600 to-teal-800"
   },
   {
     id: "santander",
     name: "Sede Av. Santander",
-    address: "Av. Santander #55a 35", // Dirección exacta actualizada
+    address: "Av. Santander #55a 35",
     landmark: "Edificio Cristóbal Colón",
     schedule: "Tarde Noche: hasta las 8:00 p.m.",
     description: "Perfecta para cerrar tu jornada laboral o de estudio. Ubicación estratégica con fácil acceso y ambiente tranquilo.",
-    // Mapa apuntando a Av. Santander #55a 35, Manizales
     mapSrc: "https://maps.google.com/maps?q=Av.+Santander+%2355a+35,+Manizales,+Caldas&t=&z=17&ie=UTF8&iwloc=&output=embed",
     color: "from-indigo-600 to-indigo-800"
   }
@@ -35,10 +33,10 @@ export default function Location() {
   const activeLocation = locations.find((l) => l.id === activeTab) || locations[0];
 
   return (
-    <section className="py-24 px-6 bg-stone-50 relative overflow-hidden">
+    // CAMBIO: Se eliminó bg-stone-50 para que sea transparente y use el global
+    <section className="py-24 px-6 relative overflow-hidden">
       
-      {/* Fondo Decorativo */}
-      <div className="absolute top-0 right-0 w-2/3 h-full bg-white skew-x-12 translate-x-1/3 pointer-events-none" />
+      {/* CAMBIO: Se eliminó el div del "Fondo Decorativo" para que no tape el fondo global */}
 
       <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-0 min-h-[600px] rounded-3xl overflow-hidden shadow-2xl shadow-stone-200">
         
@@ -145,16 +143,16 @@ export default function Location() {
                         src={activeLocation.mapSrc}
                         width="100%"
                         height="100%"
-                        style={{ border: 0 }} // Eliminado el filtro grayscale
+                        style={{ border: 0 }}
                         allowFullScreen
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
-                        className="opacity-100 transition-opacity duration-700" // Opacidad al 100% siempre
+                        className="opacity-100 transition-opacity duration-700"
                     />
                 </motion.div>
             </AnimatePresence>
 
-            {/* Overlay sutil solo en los bordes para integración, sin tapar el color */}
+            {/* Overlay sutil solo en los bordes para integración */}
             <div className="absolute inset-0 pointer-events-none border-[12px] border-white/50 lg:border-white/0" />
             
             {/* Badge Flotante sobre el mapa */}

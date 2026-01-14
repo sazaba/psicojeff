@@ -1,12 +1,11 @@
 "use client";
 
 import React from "react";
-import Image from "next/image"; // <--- Importante para la imagen
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Star, CheckCircle2 } from "lucide-react";
 
 // --- 1. AQUÍ PONES EL IMPORT DE TU LOGO ---
-// Asegúrate de guardar la imagen 'google.png' en esa carpeta
 import google from "@/app/assets/logo.svg"; 
 
 // --- DATOS REALES ---
@@ -65,28 +64,25 @@ const infiniteReviews = [...reviews, ...reviews];
 
 export default function Testimonials() {
   return (
-    <section className="py-24 bg-white relative overflow-hidden border-t border-stone-100">
+    // CAMBIO 1: Eliminado 'bg-white' para usar fondo global
+    <section className="py-24 relative overflow-hidden border-t border-stone-100">
       
       {/* --- HEADER NUEVO: ESTILO SELLO DE AUTORIDAD --- */}
       <div className="max-w-7xl mx-auto px-6 mb-16 flex flex-col items-center">
         
         {/* Enlace que envuelve todo el sello */}
         <a 
-            href="https://share.google/5gs2judHeh0di1b4W" // Tu link real
+            href="https://share.google/5gs2judHeh0di1b4W" 
             target="_blank"
             rel="noopener noreferrer"
             className="group flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-300 cursor-pointer text-center"
         >
-           
-
-            {/* 2. ESTRELLAS (CORREGIDO EL ERROR DE WEIGHT) */}
+            {/* 2. ESTRELLAS */}
             <div className="flex gap-1.5 my-1">
                 {[...Array(5)].map((_, i) => (
                     <Star 
                         key={i} 
                         size={32} 
-                        // Eliminamos 'weight="fill"' porque daba error. 
-                        // El relleno ya lo hace la clase 'fill-[#FFB400]'
                         className="text-[#FFB400] fill-[#FFB400]" 
                     />
                 ))}
@@ -97,7 +93,7 @@ export default function Testimonials() {
                 A base de <strong className="text-stone-900">88 reseñas</strong>
             </p>
 
-            {/* 4. LOGO DE GOOGLE (Imagen Importada) */}
+            {/* 4. LOGO DE GOOGLE */}
             <div className="mt-3 relative w-24 h-8 md:w-28 md:h-10">
                 <Image 
                     src={google} 
@@ -111,10 +107,17 @@ export default function Testimonials() {
       </div>
 
       {/* --- MARQUEE INFINITO --- */}
-      <div className="relative w-full overflow-hidden">
+      {/* CAMBIO 2: Usamos mask-image en lugar de divs blancos para el fade lateral. 
+          Esto permite que el fade funcione sobre CUALQUIER fondo. */}
+      <div 
+        className="relative w-full overflow-hidden"
+        style={{
+            maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+            WebkitMaskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)"
+        }}
+      >
         
-        <div className="absolute top-0 left-0 w-24 h-full bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-        <div className="absolute top-0 right-0 w-24 h-full bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+        {/* NOTA: Se eliminaron los divs 'absolute' con degradado blanco para evitar parches blancos */}
 
         <motion.div 
             className="flex gap-6 w-max px-6"
@@ -132,7 +135,7 @@ export default function Testimonials() {
                     className="w-[320px] md:w-[400px] flex-shrink-0 bg-white p-8 rounded-2xl border border-stone-100 relative group hover:shadow-xl hover:border-teal-100 transition-all duration-300 shadow-sm flex flex-col"
                 >
                     <div className="absolute top-6 right-6 opacity-10 group-hover:opacity-100 transition-opacity">
-                         <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M23.5 12.28c0-.86-.07-1.7-.22-2.5H12v4.86h6.47c-.28 1.48-1.12 2.73-2.4 3.58v3h3.86c2.26-2.09 3.57-5.17 3.57-8.94z" fill="#4285F4"/>
                             <path d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.3v3.12C3.32 21.43 7.37 24 12 24z" fill="#34A853"/>
                             <path d="M5.27 14.28c-.24-.72-.38-1.49-.38-2.28s.14-1.56.38-2.28V6.6H1.3A11.97 11.97 0 000 12c0 1.93.47 3.76 1.3 5.4l3.97-3.12z" fill="#FBBC05"/>
