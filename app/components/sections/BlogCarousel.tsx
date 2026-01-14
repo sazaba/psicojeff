@@ -94,7 +94,7 @@ export default function BlogCarousel() {
               Recursos y Reflexiones
             </span>
             <h2 className="text-3xl md:text-4xl font-serif text-stone-800 leading-tight">
-              Artículos sobre psicología clínica y bienestar integral
+              Artículos sobre psicología y bienestar integral
             </h2>
           </div>
 
