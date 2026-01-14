@@ -4,12 +4,13 @@ import Headerpsicojeff from '@/app/assets/Headerpsicojeff.webp';
 
 export default function Hero() {
   return (
-    // CAMBIO 1: Aumenté 'pt-12' a 'pt-32' para móviles. 
-    // Esto asegura que el contenido baje lo suficiente y no choque con el Navbar.
-    <section className="relative min-h-[90vh] flex items-center pt-32 md:pt-20 overflow-visible">
+    // CORRECCIÓN CRÍTICA 1: Cambié 'overflow-visible' por 'overflow-hidden'.
+    // Esto corta cualquier elemento (como las luces) que intente salirse del ancho de la pantalla.
+    <section className="relative min-h-[90vh] flex items-center pt-32 md:pt-20 overflow-hidden w-full">
       
-      {/* LUZ DE FONDO AMBIENTAL (Atrás, muy suave) */}
-      <div className="absolute top-1/2 right-0 md:right-20 -translate-y-1/2 w-[600px] h-[600px] bg-teal-50/40 rounded-full blur-[120px] -z-10" />
+      {/* CORRECCIÓN 2: LUZ DE FONDO AMBIENTAL */}
+      {/* Cambié w-[600px] por w-[80vw] en móviles. Así nunca excederá el ancho del dispositivo. */}
+      <div className="absolute top-1/2 right-0 md:right-20 -translate-y-1/2 w-[80vw] md:w-[600px] h-[600px] bg-teal-50/40 rounded-full blur-[120px] -z-10 pointer-events-none" />
 
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
@@ -37,7 +38,6 @@ export default function Hero() {
             <div className="text-center md:text-left z-10 relative">
                 
                 {/* BADGE / ETIQUETA */}
-                {/* CAMBIO 2: Agregué 'mt-4 md:mt-0' para darle un respiro extra en móvil respecto al tope */}
                 <div className="inline-block mb-8 mt-4 md:mt-0 px-5 py-2 rounded-full border border-teal-100 bg-white/50 backdrop-blur-sm">
                     <span className="text-xs md:text-sm font-bold text-teal-700 tracking-widest uppercase font-sans">
                         Psicólogo en Manizales y Online
