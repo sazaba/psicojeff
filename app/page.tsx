@@ -8,6 +8,7 @@ import FinalActions from "@/app/components/sections/FinalActions"; // Combina Ag
 import Footer from "@/app/components/sections/Footer";
 import TargetAudience from "@/app/components/sections/TargetAudience";
 import Transformation from "./components/sections/Transformation";
+import Location from "./components/sections/Location";
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
         <ProfessionalProfile/>
         <ValueProposition/>
         <Transformation/>
+        <Location/>
       </main>
       <Footer />
     </div>
