@@ -51,17 +51,17 @@ export default function Home() {
           <Location/>
         </section>
 
-        {/* <section id="testimonios">
+        <section id="testimonios">
           <Testimonials/>
-        </section> */}
+        </section>
         
         <section id="faq">
           <FAQ/>
         </section>
 
-<section id="blog">
+{/* <section id="blog">
   <BlogCarousel />
-</section>
+</section> */}
 
       </main>
     
