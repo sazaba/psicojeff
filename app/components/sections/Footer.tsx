@@ -1,64 +1,103 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Mail, MapPin, Instagram, Linkedin } from "lucide-react";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const links = [
     { name: "Inicio", href: "#inicio" },
+
     { name: "Acerca de Mí", href: "#sobre-mi" },
+  
     { name: "Blog", href: "#blog" },
   ];
 
   return (
-    <footer className="bg-[#0c0a09] text-[#e7e5e4] pt-16 pb-8 overflow-hidden border-t border-stone-800 relative">
-      <div className="container mx-auto px-6 relative z-10 flex flex-col justify-between h-full">
+    <footer className="bg-[#0c0a09] text-[#e7e5e4] pt-24 pb-12 overflow-hidden border-t border-stone-800">
+      <div className="container mx-auto px-6 relative z-10">
         
-        {/* --- TOP: NAVEGACIÓN MINIMALISTA --- */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16 md:mb-24">
+        {/* --- GRID PRINCIPAL --- */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-20">
           
-          {/* Ubicación Sutil */}
-          <div className="text-xs font-medium tracking-widest uppercase text-stone-500">
-            Manizales, Colombia
+          {/* COLUMNA 1: IDENTIDAD (BRUTALISM TYPOGRAPHY) */}
+          <div className="md:col-span-5 flex flex-col justify-between">
+            <div>
+              <h2 className="text-4xl md:text-6xl font-serif font-bold tracking-tight text-white mb-2">
+                Jefferson <br /> Bastidas.
+              </h2>
+              <p className="text-stone-500 text-lg md:text-xl font-light mt-4 max-w-sm leading-relaxed">
+                Psicoterapia de alta precisión para recuperar tu equilibrio vital.
+              </p>
+            </div>
           </div>
 
-          {/* Enlaces de Navegación */}
-          <nav className="flex flex-wrap gap-8 md:gap-12">
-            {links.map((link) => (
-              <Link 
-                key={link.name}
-                href={link.href}
-                className="group flex items-center gap-1 text-sm font-bold uppercase tracking-widest text-stone-400 hover:text-white transition-colors duration-300"
-              >
-                {link.name}
-                <ArrowUpRight 
-                  size={14} 
-                  className="opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-300 text-teal-500"
-                />
-              </Link>
-            ))}
-          </nav>
+          {/* COLUMNA 2: NAVEGACIÓN */}
+          <div className="md:col-span-3 md:pl-8">
+            <h3 className="text-xs font-bold text-teal-500 uppercase tracking-widest mb-8">
+              Explorar
+            </h3>
+            <ul className="space-y-4">
+              {links.map((link) => (
+                <li key={link.name}>
+                  <Link 
+                    href={link.href}
+                    className="group flex items-center gap-2 text-stone-400 hover:text-white transition-colors duration-300 text-lg"
+                  >
+                    <span className="w-0 group-hover:w-2 h-px bg-teal-500 transition-all duration-300"></span>
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* COLUMNA 3: CONTACTO & UBICACIÓN */}
+          <div className="md:col-span-4">
+            <h3 className="text-xs font-bold text-teal-500 uppercase tracking-widest mb-8">
+              Contacto
+            </h3>
+            <div className="space-y-6">
+              
+              {/* Dirección */}
+              <div className="flex items-start gap-4">
+                <div className="p-2 bg-stone-900 rounded-lg border border-stone-800 text-teal-500">
+                   <MapPin size={20} />
+                </div>
+                <div>
+                  <p className="text-white font-medium">Consultorio Privado</p>
+                  <p className="text-stone-500 text-sm mt-1">
+                    Manizales, Caldas<br />Colombia
+                  </p>
+                </div>
+              </div>
+
+            
+            </div>
+          </div>
         </div>
 
-        {/* --- MIDDLE: STATEMENT TYPOGRAPHY (WOW FACTOR) --- */}
-        <div className="relative border-b border-stone-800/50 pb-4 mb-6">
-          <h2 className="text-[11vw] leading-[0.85] font-serif font-black text-stone-200 tracking-tighter mix-blend-overlay opacity-90 select-none">
-            JEFFERSON <br />
-            <span className="text-stone-600">BASTIDAS.</span>
-          </h2>
-        </div>
-
-        {/* --- BOTTOM: LEGAL --- */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-stone-600 font-medium uppercase tracking-widest">
+        {/* --- BOTTOM BAR --- */}
+        <div className="border-t border-stone-800/50 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-stone-600 font-medium">
           <p>
-            &copy; {currentYear} Protocolo Integrativo de Alta Precisión.
+            &copy; {currentYear} Jefferson Bastidas Mejía. Todos los derechos reservados.
           </p>
-          <p>
-            Psicología Clínica &middot; Salud Mental
-          </p>
+          
+          <div className="flex gap-8">
+            <Link href="#" className="hover:text-stone-400 transition-colors">
+              Política de Privacidad
+            </Link>
+            <Link href="#" className="hover:text-stone-400 transition-colors">
+              Términos de Servicio
+            </Link>
+          </div>
         </div>
+      </div>
+      
+      {/* Elemento Decorativo Gigante (Fondo) */}
+      <div className="absolute -bottom-20 -right-20 text-[12rem] font-serif font-black text-stone-800/20 pointer-events-none select-none leading-none opacity-10">
+        JB
       </div>
     </footer>
   );
