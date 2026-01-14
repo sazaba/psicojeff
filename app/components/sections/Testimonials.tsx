@@ -64,7 +64,6 @@ const infiniteReviews = [...reviews, ...reviews];
 
 export default function Testimonials() {
   return (
-    // CAMBIO 1: Eliminado 'bg-white' para usar fondo global
     <section className="py-24 relative overflow-hidden border-t border-stone-100">
       
       {/* --- HEADER NUEVO: ESTILO SELLO DE AUTORIDAD --- */}
@@ -75,10 +74,15 @@ export default function Testimonials() {
             href="https://share.google/5gs2judHeh0di1b4W" 
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-300 cursor-pointer text-center"
+            className="group flex flex-col items-center gap-1 hover:scale-105 transition-transform duration-300 cursor-pointer text-center"
         >
+            {/* 1. TEXTO "EXCELENTE" (NUEVO) */}
+            <span className="text-4xl font-serif font-bold text-stone-800 tracking-tight mb-1">
+                Excelente
+            </span>
+
             {/* 2. ESTRELLAS */}
-            <div className="flex gap-1.5 my-1">
+            <div className="flex gap-1.5 mb-2">
                 {[...Array(5)].map((_, i) => (
                     <Star 
                         key={i} 
@@ -89,7 +93,7 @@ export default function Testimonials() {
             </div>
 
             {/* 3. TEXTO DE RESEÑAS */}
-            <p className="text-stone-600 text-base md:text-lg mt-1">
+            <p className="text-stone-600 text-base md:text-lg">
                 A base de <strong className="text-stone-900">88 reseñas</strong>
             </p>
 
@@ -107,8 +111,6 @@ export default function Testimonials() {
       </div>
 
       {/* --- MARQUEE INFINITO --- */}
-      {/* CAMBIO 2: Usamos mask-image en lugar de divs blancos para el fade lateral. 
-          Esto permite que el fade funcione sobre CUALQUIER fondo. */}
       <div 
         className="relative w-full overflow-hidden"
         style={{
@@ -116,9 +118,6 @@ export default function Testimonials() {
             WebkitMaskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)"
         }}
       >
-        
-        {/* NOTA: Se eliminaron los divs 'absolute' con degradado blanco para evitar parches blancos */}
-
         <motion.div 
             className="flex gap-6 w-max px-6"
             animate={{ x: ["0%", "-50%"] }} 

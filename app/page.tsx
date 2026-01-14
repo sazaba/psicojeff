@@ -10,6 +10,7 @@ import TargetAudience from "@/app/components/sections/TargetAudience";
 import Transformation from "./components/sections/Transformation";
 import Location from "./components/sections/Location";
 import Testimonials from "./components/sections/Testimonials";
+import FAQ from "./components/sections/Faq";
 
 export default function Home() {
   return (
@@ -26,6 +27,7 @@ export default function Home() {
         <Transformation/>
         <Location/>
         <Testimonials/>
+        <FAQ/>
       </main>
       <Footer />
     </div>
