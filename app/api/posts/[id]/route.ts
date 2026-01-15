@@ -3,26 +3,32 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 
-// 1. OBTENER UN SOLO ARTÍCULO (Para llenar el formulario de edición)
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const id = parseInt(params.id);
-  const post = await prisma.post.findUnique({ where: { id } });
+// Definimos el tipo correcto para Next.js 16 (Params es una Promesa)
+type Params = Promise<{ id: string }>;
+
+// 1. GET (Obtener uno)
+export async function GET(req: Request, { params }: { params: Params }) {
+  const { id } = await params; // <--- AWAIT OBLIGATORIO AQUÍ
+  const postId = parseInt(id);
+
+  const post = await prisma.post.findUnique({ where: { id: postId } });
   
   if (!post) return NextResponse.json({ error: "Post no encontrado" }, { status: 404 });
   return NextResponse.json(post);
 }
 
-// 2. ACTUALIZAR ARTÍCULO (PUT)
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+// 2. PUT (Actualizar)
+export async function PUT(req: Request, { params }: { params: Params }) {
   const session = await getServerSession();
   if (!session) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
 
-  const id = parseInt(params.id);
+  const { id } = await params; // <--- AWAIT OBLIGATORIO AQUÍ
+  const postId = parseInt(id);
   const body = await req.json();
 
   try {
     const updatedPost = await prisma.post.update({
-      where: { id },
+      where: { id: postId },
       data: {
         title: body.title,
         excerpt: body.excerpt,
@@ -38,15 +44,16 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   }
 }
 
-// 3. ELIMINAR ARTÍCULO (DELETE)
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+// 3. DELETE (Borrar)
+export async function DELETE(req: Request, { params }: { params: Params }) {
   const session = await getServerSession();
   if (!session) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
 
-  const id = parseInt(params.id);
+  const { id } = await params; // <--- AWAIT OBLIGATORIO AQUÍ
+  const postId = parseInt(id);
 
   try {
-    await prisma.post.delete({ where: { id } });
+    await prisma.post.delete({ where: { id: postId } });
     return NextResponse.json({ message: "Eliminado correctamente" });
   } catch (error) {
     return NextResponse.json({ error: "Error al eliminar" }, { status: 500 });
