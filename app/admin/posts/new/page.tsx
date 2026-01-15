@@ -1,59 +1,82 @@
+// app/admin/posts/new/page.tsx
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Save, Image as ImageIcon, ArrowLeft, Loader2, UploadCloud, X } from "lucide-react";
+import { Save, ArrowLeft, Loader2, UploadCloud, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+
+// Importaciones Premium
+import dynamic from "next/dynamic";
+import Swal from "sweetalert2";
+import "react-quill-new/dist/quill.snow.css"; 
+
+// Editor dinámico
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false }) as any;
 
 export default function NewPostPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [uploadingImage, setUploadingImage] = useState(false); // Nuevo estado para la subida
+  const [uploadingImage, setUploadingImage] = useState(false);
   
   const [formData, setFormData] = useState({
     title: "",
     excerpt: "",
-    content: "",
+    content: "", // ReactQuill escribirá aquí
     category: "",
     readTime: "",
-    image: "", // Aquí guardaremos la URL que nos devuelva Cloudinary
+    image: "", 
   });
+
+  // Configuración de la barra de herramientas (IGUAL QUE EN EDITAR)
+  const modules = {
+    toolbar: [
+      [{ 'header': [2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{ 'align': [] }], // Alineación
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['link', 'clean']
+    ],
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Lógica para subir a Cloudinary
+  // Manejador del Editor
+  const handleEditorChange = (value: string) => {
+    setFormData(prev => ({ ...prev, content: value }));
+  };
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setUploadingImage(true);
-
     const data = new FormData();
     data.append("file", file);
-    data.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_PRESET || ""); // Tu preset
+    data.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_PRESET || ""); 
     data.append("cloud_name", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "");
 
     try {
       const res = await fetch(
         `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-        {
-          method: "POST",
-          body: data,
-        }
+        { method: "POST", body: data }
       );
       
       const file = await res.json();
       
       if (file.secure_url) {
-        // ¡Éxito! Guardamos la URL segura en el formulario
         setFormData((prev) => ({ ...prev, image: file.secure_url }));
       }
     } catch (error) {
-      console.error("Error subiendo imagen:", error);
-      alert("Error al subir la imagen a Cloudinary");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de Imagen',
+        text: 'No se pudo subir la imagen a la nube',
+        confirmButtonColor: '#0d9488'
+      });
     } finally {
       setUploadingImage(false);
     }
@@ -61,6 +84,18 @@ export default function NewPostPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validación simple: Asegurar que haya contenido en el editor
+    if (!formData.content || formData.content === "<p><br></p>") {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Falta contenido',
+            text: 'Por favor escribe el contenido del artículo.',
+            confirmButtonColor: '#0d9488'
+        });
+        return;
+    }
+
     setLoading(true);
 
     try {
@@ -71,24 +106,36 @@ export default function NewPostPage() {
       });
 
       if (res.ok) {
-        router.push("/admin"); 
+        // ALERTA DE ÉXITO (SWEET ALERT)
+        await Swal.fire({
+            icon: 'success',
+            title: '¡Publicado!',
+            text: 'Tu nuevo artículo ya está en línea.',
+            confirmButtonColor: '#0d9488',
+            confirmButtonText: 'Ir al listado'
+        });
+        router.push("/admin/posts"); 
         router.refresh();
       } else {
-        alert("Error al guardar el post");
+        throw new Error("Error al guardar");
       }
     } catch (error) {
-      console.error(error);
-      alert("Error de conexión");
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Hubo un problema al crear el artículo.',
+        confirmButtonColor: '#0d9488'
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto pb-20">
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
-        <Link href="/admin" className="p-2 hover:bg-stone-200 rounded-full transition-colors text-stone-500">
+        <Link href="/admin/posts" className="p-2 hover:bg-stone-200 rounded-full transition-colors text-stone-500">
             <ArrowLeft size={20} />
         </Link>
         <div>
@@ -115,11 +162,11 @@ export default function NewPostPage() {
             </div>
 
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
-                <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Resumen</label>
+                <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Resumen (Texto plano)</label>
                 <textarea
                     name="excerpt"
                     rows={3}
-                    placeholder="Breve introducción..."
+                    placeholder="Breve introducción para la tarjeta..."
                     className="w-full text-stone-600 placeholder:text-stone-300 border-none focus:ring-0 p-0 resize-none"
                     value={formData.excerpt}
                     onChange={handleChange}
@@ -127,17 +174,19 @@ export default function NewPostPage() {
                 />
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm min-h-[400px]">
-                <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-4 border-b border-stone-100 pb-2">Contenido</label>
-                <textarea
-                    name="content"
-                    rows={15}
-                    placeholder="Escribe tu artículo aquí..."
-                    className="w-full text-stone-700 placeholder:text-stone-300 border-none focus:ring-0 p-0 resize-y font-sans"
-                    value={formData.content}
-                    onChange={handleChange}
-                    required
-                />
+            {/* EDITOR WYSIWYG (Nuevo) */}
+            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm min-h-[600px] flex flex-col resize-y overflow-hidden">
+                <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-4 border-b border-stone-100 pb-2">Contenido Principal</label>
+                <div className="flex-1 h-full flex flex-col">
+                    <ReactQuill 
+                        theme="snow" 
+                        value={formData.content} 
+                        onChange={handleEditorChange}
+                        modules={modules}
+                        placeholder="Escribe aquí tu artículo completo..."
+                        className="h-full flex-1 mb-12" 
+                    />
+                </div>
             </div>
         </div>
 
@@ -152,7 +201,7 @@ export default function NewPostPage() {
                 Publicar
             </button>
 
-            {/* Selector de Categoría y Tiempo */}
+            {/* Categoría y Tiempo */}
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-4">
                 <div>
                     <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Categoría</label>
@@ -186,17 +235,16 @@ export default function NewPostPage() {
                 </div>
             </div>
 
-            {/* SUBIDA DE IMAGEN (NUEVO) */}
+            {/* SUBIDA DE IMAGEN */}
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-4">Imagen Destacada</label>
                 
-                {/* Área de Visualización */}
                 <div className="relative w-full aspect-video bg-stone-50 rounded-lg overflow-hidden border border-stone-200 border-dashed flex flex-col items-center justify-center group mb-4">
                     
                     {uploadingImage ? (
                         <div className="flex flex-col items-center text-teal-600 animate-pulse">
                             <Loader2 className="animate-spin mb-2" />
-                            <span className="text-xs font-bold">Subiendo a la nube...</span>
+                            <span className="text-xs font-bold">Subiendo...</span>
                         </div>
                     ) : formData.image ? (
                         <>
@@ -206,7 +254,6 @@ export default function NewPostPage() {
                                 fill
                                 className="object-cover"
                             />
-                            {/* Botón para quitar imagen */}
                             <button 
                                 type="button"
                                 onClick={() => setFormData({ ...formData, image: "" })}
@@ -219,7 +266,6 @@ export default function NewPostPage() {
                         <>
                             <UploadCloud className="text-stone-300 mb-2 group-hover:text-teal-500 transition-colors" size={32} />
                             <span className="text-xs text-stone-400 group-hover:text-stone-600">Clic para subir imagen</span>
-                            {/* Input invisible que cubre el área */}
                             <input 
                                 type="file" 
                                 accept="image/*"
@@ -231,7 +277,7 @@ export default function NewPostPage() {
                 </div>
                 
                 <p className="text-[10px] text-stone-400 text-center">
-                    Formatos: JPG, PNG, WEBP. Máx 5MB.
+                    Formatos: JPG, PNG, WEBP.
                 </p>
             </div>
         </div>
