@@ -3,7 +3,8 @@
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, FileText, LogOut, User, Menu, X, PlusCircle } from "lucide-react";
+// Agregamos el icono Home
+import { LayoutDashboard, FileText, LogOut, User, Menu, X, PlusCircle, Home } from "lucide-react";
 import { useState } from "react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -17,7 +18,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   ];
 
   return (
-    <div className="min-h-screen bg-[#f5f5f4] flex"> {/* Fondo un poco más oscuro que white */}
+    <div className="min-h-screen bg-[#f5f5f4] flex">
       
       {/* Sidebar Móvil Overlay */}
       {isSidebarOpen && (
@@ -43,7 +44,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </button>
         </div>
 
-        {/* Botón de Acción Rápida en Sidebar */}
+        {/* Botón de Acción Rápida (Crear Post) */}
         <div className="px-6 mb-6">
             <Link 
                 href="/admin/posts/new"
@@ -55,7 +56,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </Link>
         </div>
 
-        {/* Navegación */}
+        {/* Navegación Principal */}
         <nav className="px-4 space-y-1 flex-1">
           {menuItems.map((item) => {
             const isActive = pathname === item.href;
@@ -76,6 +77,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             );
           })}
         </nav>
+
+        {/* NUEVO: Botón para volver al sitio web sin cerrar sesión */}
+        <div className="px-4 pb-4">
+            <Link 
+                href="/"
+                className="flex items-center gap-3 px-4 py-3.5 rounded-xl text-stone-500 hover:bg-stone-800 hover:text-white transition-all font-medium border border-transparent hover:border-stone-700"
+            >
+                <Home size={20} />
+                <span>Ver Sitio Web</span>
+            </Link>
+        </div>
 
         {/* Footer Sidebar (Usuario) */}
         <div className="p-6 bg-stone-950 border-t border-stone-800">
@@ -101,7 +113,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Contenido Principal */}
       <main className="flex-1 flex flex-col h-screen overflow-hidden relative">
-        {/* Header Móvil */}
         <header className="bg-white border-b border-stone-200 p-4 flex items-center justify-between md:hidden z-10">
             <span className="font-serif font-bold text-stone-800">Panel PsicoJeff</span>
             <button onClick={() => setIsSidebarOpen(true)} className="p-2 bg-stone-100 rounded-lg text-stone-600">
@@ -109,7 +120,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </button>
         </header>
 
-        {/* Área de Scroll */}
         <div className="flex-1 overflow-y-auto p-6 md:p-10 scroll-smooth">
             <div className="max-w-6xl mx-auto">
                 {children}

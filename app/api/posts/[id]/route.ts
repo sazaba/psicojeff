@@ -6,9 +6,9 @@ import { prisma } from "@/lib/prisma";
 // Definimos el tipo correcto para Next.js 16 (Params es una Promesa)
 type Params = Promise<{ id: string }>;
 
-// 1. GET (Obtener uno)
+// 1. GET (Obtener un post por ID para rellenar el formulario)
 export async function GET(req: Request, { params }: { params: Params }) {
-  const { id } = await params; // <--- AWAIT OBLIGATORIO AQUÍ
+  const { id } = await params; // <--- AWAIT es obligatorio en Next.js 16
   const postId = parseInt(id);
 
   const post = await prisma.post.findUnique({ where: { id: postId } });
@@ -17,12 +17,12 @@ export async function GET(req: Request, { params }: { params: Params }) {
   return NextResponse.json(post);
 }
 
-// 2. PUT (Actualizar)
+// 2. PUT (Actualizar el post)
 export async function PUT(req: Request, { params }: { params: Params }) {
   const session = await getServerSession();
   if (!session) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
 
-  const { id } = await params; // <--- AWAIT OBLIGATORIO AQUÍ
+  const { id } = await params;
   const postId = parseInt(id);
   const body = await req.json();
 
@@ -31,7 +31,7 @@ export async function PUT(req: Request, { params }: { params: Params }) {
       where: { id: postId },
       data: {
         title: body.title,
-        excerpt: body.excerpt,
+        excerpt: body.excerpt, // ✅ ESTA ES LA LÍNEA CLAVE PARA EL RESUMEN
         content: body.content,
         category: body.category,
         image: body.image,
@@ -40,16 +40,17 @@ export async function PUT(req: Request, { params }: { params: Params }) {
     });
     return NextResponse.json(updatedPost);
   } catch (error) {
+    console.error("Error actualizando:", error); // Ayuda a ver errores en la terminal
     return NextResponse.json({ error: "Error al actualizar" }, { status: 500 });
   }
 }
 
-// 3. DELETE (Borrar)
+// 3. DELETE (Borrar el post)
 export async function DELETE(req: Request, { params }: { params: Params }) {
   const session = await getServerSession();
   if (!session) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
 
-  const { id } = await params; // <--- AWAIT OBLIGATORIO AQUÍ
+  const { id } = await params;
   const postId = parseInt(id);
 
   try {

@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight, Mail, MapPin, Instagram, Linkedin, Lock } from "lucide-react";
+import { useSession, signOut } from "next-auth/react"; // <--- 1. Importamos hooks de sesión
+import { MapPin, Lock, LayoutDashboard, LogOut } from "lucide-react"; // <--- 2. Importamos iconos nuevos
 
 export default function Footer() {
+  const { data: session } = useSession(); // <--- 3. Obtenemos la sesión actual
   const currentYear = new Date().getFullYear();
 
   const links = [
@@ -13,11 +15,8 @@ export default function Footer() {
   ];
 
   return (
-    // CAMBIO 1: Agregado 'w-full' para asegurar que ocupe el 100% del padre y no más.
-    // 'overflow-hidden' aquí es vital para cortar la letra gigante.
     <footer className="w-full bg-[#0c0a09] text-[#e7e5e4] pt-24 pb-12 overflow-hidden border-t border-stone-800 relative">
       
-      {/* CAMBIO 2: Reemplazo de 'container' por 'w-full max-w-7xl mx-auto' para evitar problemas de márgenes en móviles */}
       <div className="w-full max-w-7xl mx-auto px-6 relative z-10">
         
         {/* --- GRID PRINCIPAL --- */}
@@ -93,22 +92,45 @@ export default function Footer() {
               Términos de Servicio
             </Link>
             
-            {/* --- BOTÓN DE LOGIN "ESCONDIDO" --- */}
-            {/* Es solo un icono de candado pequeño que se ilumina al pasar el mouse */}
-            <Link 
-                href="/login" 
-                className="text-stone-800 hover:text-teal-600 transition-colors duration-300 p-2"
-                aria-label="Admin Login"
-            >
-                <Lock size={14} />
-            </Link>
+            {/* --- ZONA DE ACCESO ADMINISTRATIVO --- */}
+            {session ? (
+                // OPCIÓN A: SI HAY SESIÓN (Logueado)
+                <div className="flex items-center gap-2 border-l border-stone-800 pl-4 ml-2">
+                    {/* Botón ir al Dashboard */}
+                    <Link 
+                        href="/admin" 
+                        className="text-stone-500 hover:text-teal-500 transition-colors p-2"
+                        title="Ir al Panel Administrativo"
+                    >
+                        <LayoutDashboard size={14} />
+                    </Link>
+                    
+                    {/* Botón Cerrar Sesión */}
+                    <button 
+                        onClick={() => signOut({ callbackUrl: "/" })}
+                        className="text-stone-500 hover:text-red-500 transition-colors p-2"
+                        title="Cerrar Sesión"
+                    >
+                        <LogOut size={14} />
+                    </button>
+                </div>
+            ) : (
+                // OPCIÓN B: NO HAY SESIÓN (Candado original)
+                <Link 
+                    href="/login" 
+                    className="text-stone-800 hover:text-teal-600 transition-colors duration-300 p-2"
+                    aria-label="Admin Login"
+                    title="Acceso Privado"
+                >
+                    <Lock size={14} />
+                </Link>
+            )}
+
           </div>
         </div>
       </div>
       
-      {/* CAMBIO CRÍTICO 3: Elemento Decorativo Gigante */}
-      {/* ELIMINADO '-right-20' que empujaba el ancho. */}
-      {/* USADO 'right-0 translate-x-1/3': Se ancla al borde y se desplaza visualmente sin alterar el ancho físico del documento. */}
+      {/* Elemento Decorativo Gigante */}
       <div className="absolute -bottom-20 right-0 translate-x-1/3 text-[12rem] font-serif font-black text-stone-800/20 pointer-events-none select-none leading-none opacity-10 whitespace-nowrap">
         JB
       </div>
