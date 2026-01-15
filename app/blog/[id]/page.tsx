@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
+// Estilos de Quill obligatorios
 import "react-quill-new/dist/quill.snow.css"; 
 
 export async function generateStaticParams() {
@@ -37,7 +38,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
   return (
     <article className="min-h-screen bg-white pb-24 pt-0 md:pt-0">
       
-      {/* --- HERO SECTION --- */}
+      {/* --- HERO SECTION (Cabecera) --- */}
       <div className="relative w-full h-[50vh] min-h-[400px] bg-stone-900">
         {post.image && (
             <Image 
@@ -49,6 +50,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             />
         )}
         
+        {/* Degradado para legibilidad */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end pb-12 md:pb-20">
             <div className="container mx-auto px-4 md:px-6">
                 
@@ -57,10 +59,12 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                     VOLVER A LA BITÁCORA
                 </Link>
                 
+                {/* Metadatos (Categoría y Tiempo) */}
                 <div className="flex flex-wrap items-center gap-3 mb-6">
                     <span className="bg-teal-600 text-white px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider shadow-sm">
                         {post.category}
                     </span>
+                    {/* TIEMPO DE LECTURA */}
                     <span className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/20 text-white px-3 py-1 rounded-md text-xs font-bold shadow-sm">
                         <Clock size={14} className="text-teal-400" /> 
                         {post.readTime || "Lectura rápida"}
@@ -78,22 +82,23 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       <div className="container mx-auto px-4 md:px-6 -mt-10 relative z-10">
         <div className="bg-white rounded-t-3xl md:rounded-3xl shadow-xl p-6 md:p-12 lg:p-16 max-w-4xl mx-auto border border-stone-100">
             
-            <div className="prose prose-lg prose-stone max-w-none w-full min-w-0 overflow-hidden
-                
-                /* MEJORA VISUAL PREMIUM */
-                text-pretty /* Evita viudas y huérfanas (palabras sueltas) */
+            {/* CLASES PROSE PREMIUM + SOLUCIÓN DE CORTES DE PALABRAS:
+               - text-pretty: Balancea las líneas para evitar viudas (palabras sueltas) y cortes feos.
+               - break-normal: OBLIGATORIO para que no parta palabras como 'supervivenc-ia'.
+               - prose-headings: Fuentes elegantes para títulos.
+            */}
+            <div className="prose prose-lg prose-stone max-w-none w-full overflow-hidden text-pretty break-normal
                 
                 /* Títulos */
                 prose-headings:font-serif prose-headings:font-bold prose-headings:text-stone-800 prose-headings:mt-10 prose-headings:mb-6
                 
-                /* Párrafos */
+                /* Párrafos y Texto */
                 prose-p:text-stone-700 prose-p:leading-8 prose-p:text-base md:prose-p:text-lg
-                [&_p]:mb-6
+                [&_p]:mb-6 /* Espacio estándar entre párrafos */
                 
-                /* SOLUCIÓN ESPACIOS Y SALTOS (La Clave) */
-                /* Si un párrafo está vacío (solo un Enter), dale altura para que se vea el espacio */
-                [&_p:empty]:min-h-[1.5em] 
-                [&_p]:min-h-[1em]
+                /* SOLUCIÓN SALTO DE LÍNEA (Enter):
+                   Si el párrafo contiene un <br> (que pone el editor al dar Enter), dale altura. */
+                [&_p:has(br)]:min-h-[1.5em]
                 
                 /* Negritas */
                 prose-strong:font-black prose-strong:text-stone-900 
@@ -129,7 +134,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
 
             </div>
 
-            {/* Footer */}
+            {/* Footer del Artículo */}
             <div className="mt-16 pt-8 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-center gap-6">
                 <div className="flex items-center gap-2 text-stone-500 font-medium text-sm">
                     <Calendar size={18} className="text-teal-600"/>
