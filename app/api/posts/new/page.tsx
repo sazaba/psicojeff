@@ -1,80 +1,242 @@
-import { prisma } from "@/lib/prisma";
-import { FileText, PenTool } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Save, Image as ImageIcon, ArrowLeft, Loader2, UploadCloud, X } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
-// Forzamos a que esta página sea dinámica para que el contador se actualice siempre
-export const dynamic = 'force-dynamic';
+export default function NewPostPage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false); // Nuevo estado para la subida
+  
+  const [formData, setFormData] = useState({
+    title: "",
+    excerpt: "",
+    content: "",
+    category: "",
+    readTime: "",
+    image: "", // Aquí guardaremos la URL que nos devuelva Cloudinary
+  });
 
-async function getStats() {
-  const postsCount = await prisma.post.count();
-  return { postsCount };
-}
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-export default async function AdminDashboard() {
-  const stats = await getStats();
+  // Lógica para subir a Cloudinary
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_PRESET || ""); // Tu preset
+    data.append("cloud_name", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "");
+
+    try {
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+      
+      const file = await res.json();
+      
+      if (file.secure_url) {
+        // ¡Éxito! Guardamos la URL segura en el formulario
+        setFormData((prev) => ({ ...prev, image: file.secure_url }));
+      }
+    } catch (error) {
+      console.error("Error subiendo imagen:", error);
+      alert("Error al subir la imagen a Cloudinary");
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        router.push("/admin"); 
+        router.refresh();
+      } else {
+        alert("Error al guardar el post");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error de conexión");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div>
-      <header className="mb-10">
-        <h1 className="text-3xl font-serif font-bold text-stone-800 mb-2">Panel de Escritura</h1>
-        <p className="text-stone-500">Gestiona tu conocimiento y conecta con tus pacientes.</p>
-      </header>
+    <div className="max-w-4xl mx-auto">
+      {/* Header */}
+      <div className="flex items-center gap-4 mb-8">
+        <Link href="/admin" className="p-2 hover:bg-stone-200 rounded-full transition-colors text-stone-500">
+            <ArrowLeft size={20} />
+        </Link>
+        <div>
+            <h1 className="text-2xl font-serif font-bold text-stone-800">Crear Nuevo Artículo</h1>
+            <p className="text-stone-500 text-sm">Comparte tu conocimiento con el mundo</p>
+        </div>
+      </div>
 
-      {/* Tarjetas de Estadísticas - SOLO BLOG */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        {/* Card 1: Contador */}
-        <div className="bg-white p-6 rounded-2xl border border-stone-100 shadow-sm flex items-center gap-5">
-          <div className="w-14 h-14 rounded-full bg-teal-50 flex items-center justify-center text-teal-600 shadow-inner">
-            <FileText size={28} />
-          </div>
-          <div>
-            <p className="text-stone-400 text-xs font-bold uppercase tracking-widest mb-1">Artículos Publicados</p>
-            <p className="text-3xl font-serif font-bold text-stone-800">{stats.postsCount}</p>
-          </div>
+        {/* COLUMNA IZQUIERDA */}
+        <div className="lg:col-span-2 space-y-6">
+            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
+                <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Título</label>
+                <input
+                    type="text"
+                    name="title"
+                    placeholder="Título del artículo..."
+                    className="w-full text-xl font-serif font-bold text-stone-800 placeholder:text-stone-300 border-none focus:ring-0 p-0"
+                    value={formData.title}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
+                <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Resumen</label>
+                <textarea
+                    name="excerpt"
+                    rows={3}
+                    placeholder="Breve introducción..."
+                    className="w-full text-stone-600 placeholder:text-stone-300 border-none focus:ring-0 p-0 resize-none"
+                    value={formData.excerpt}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm min-h-[400px]">
+                <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-4 border-b border-stone-100 pb-2">Contenido</label>
+                <textarea
+                    name="content"
+                    rows={15}
+                    placeholder="Escribe tu artículo aquí..."
+                    className="w-full text-stone-700 placeholder:text-stone-300 border-none focus:ring-0 p-0 resize-y font-sans"
+                    value={formData.content}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
         </div>
 
-        {/* Card 2: Estado del Sistema (Decorativo por ahora) */}
-        <div className="bg-white p-6 rounded-2xl border border-stone-100 shadow-sm flex items-center gap-5">
-            <div className="w-14 h-14 rounded-full bg-stone-50 flex items-center justify-center text-stone-400">
-                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-            </div>
-            <div>
-                <p className="text-stone-400 text-xs font-bold uppercase tracking-widest mb-1">Estado del Blog</p>
-                <p className="text-lg font-bold text-stone-600">En línea y Operativo</p>
-            </div>
-        </div>
-
-      </div>
-
-      {/* Sección Principal de Acción: CREAR */}
-      <div className="bg-stone-900 text-white rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-2xl">
-        <div className="relative z-10 max-w-2xl">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-sm font-medium text-teal-300 mb-6 border border-white/10">
-                <PenTool size={14} />
-                <span>Editor de Contenido</span>
-            </div>
-            
-            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4 leading-tight">
-                ¿Qué quieres compartir hoy?
-            </h2>
-            <p className="text-stone-300 mb-8 leading-relaxed text-lg max-w-lg">
-                El formulario está listo para recibir tu nuevo artículo con la estructura de título, resumen e imagen que definimos.
-            </p>
-            
-            <Link 
-                href="/admin/posts/new" 
-                className="inline-flex items-center gap-3 px-8 py-4 bg-white text-stone-900 font-bold rounded-xl hover:bg-teal-500 hover:text-white hover:scale-105 transition-all duration-300 shadow-xl"
+        {/* COLUMNA DERECHA */}
+        <div className="space-y-6">
+            <button
+                type="submit"
+                disabled={loading || uploadingImage || !formData.image}
+                className="w-full bg-stone-900 hover:bg-teal-600 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-                <span className="text-lg">Redactar Nuevo Artículo</span>
-                <FileText size={20} />
-            </Link>
+                {loading ? <Loader2 className="animate-spin" /> : <Save size={20} />}
+                Publicar
+            </button>
+
+            {/* Selector de Categoría y Tiempo */}
+            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-4">
+                <div>
+                    <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Categoría</label>
+                    <select
+                        name="category"
+                        className="w-full bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 text-stone-700 focus:outline-none focus:border-teal-500"
+                        value={formData.category}
+                        onChange={handleChange}
+                        required
+                    >
+                        <option value="">Seleccionar...</option>
+                        <option value="Trauma">Trauma</option>
+                        <option value="Ansiedad">Ansiedad</option>
+                        <option value="Relaciones">Relaciones</option>
+                        <option value="Metodología">Metodología</option>
+                        <option value="Neurociencia">Neurociencia</option>
+                        <option value="Psicosomática">Psicosomática</option>
+                    </select>
+                </div>
+                <div>
+                    <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Tiempo de Lectura</label>
+                    <input
+                        type="text"
+                        name="readTime"
+                        placeholder="Ej: 5 min"
+                        className="w-full bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 text-stone-700 focus:outline-none focus:border-teal-500"
+                        value={formData.readTime}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+            </div>
+
+            {/* SUBIDA DE IMAGEN (NUEVO) */}
+            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
+                <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-4">Imagen Destacada</label>
+                
+                {/* Área de Visualización */}
+                <div className="relative w-full aspect-video bg-stone-50 rounded-lg overflow-hidden border border-stone-200 border-dashed flex flex-col items-center justify-center group mb-4">
+                    
+                    {uploadingImage ? (
+                        <div className="flex flex-col items-center text-teal-600 animate-pulse">
+                            <Loader2 className="animate-spin mb-2" />
+                            <span className="text-xs font-bold">Subiendo a la nube...</span>
+                        </div>
+                    ) : formData.image ? (
+                        <>
+                            <Image 
+                                src={formData.image} 
+                                alt="Preview" 
+                                fill
+                                className="object-cover"
+                            />
+                            {/* Botón para quitar imagen */}
+                            <button 
+                                type="button"
+                                onClick={() => setFormData({ ...formData, image: "" })}
+                                className="absolute top-2 right-2 bg-white/90 p-1.5 rounded-full text-red-500 shadow-sm hover:bg-white transition-all"
+                            >
+                                <X size={16} />
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <UploadCloud className="text-stone-300 mb-2 group-hover:text-teal-500 transition-colors" size={32} />
+                            <span className="text-xs text-stone-400 group-hover:text-stone-600">Clic para subir imagen</span>
+                            {/* Input invisible que cubre el área */}
+                            <input 
+                                type="file" 
+                                accept="image/*"
+                                onChange={handleImageUpload}
+                                className="absolute inset-0 opacity-0 cursor-pointer"
+                            />
+                        </>
+                    )}
+                </div>
+                
+                <p className="text-[10px] text-stone-400 text-center">
+                    Formatos: JPG, PNG, WEBP. Máx 5MB.
+                </p>
+            </div>
         </div>
 
-        {/* Decoración de fondo */}
-        <div className="absolute right-0 top-0 h-full w-1/2 bg-gradient-to-l from-teal-900/40 to-transparent pointer-events-none"></div>
-        <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-teal-500/20 rounded-full blur-[80px]"></div>
-      </div>
+      </form>
     </div>
   );
 }
