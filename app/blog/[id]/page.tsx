@@ -1,4 +1,3 @@
-// app/blog/[id]/page.tsx
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -65,7 +64,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                     <span className="bg-teal-600 text-white px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider shadow-sm">
                         {post.category}
                     </span>
-                    {/* TIEMPO DE LECTURA (Corregido para alto contraste) */}
+                    {/* TIEMPO DE LECTURA */}
                     <span className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/20 text-white px-3 py-1 rounded-md text-xs font-bold shadow-sm">
                         <Clock size={14} className="text-teal-400" /> 
                         {post.readTime || "Lectura rápida"}
@@ -83,17 +82,35 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       <div className="container mx-auto px-4 md:px-6 -mt-10 relative z-10">
         <div className="bg-white rounded-t-3xl md:rounded-3xl shadow-xl p-6 md:p-12 lg:p-16 max-w-4xl mx-auto border border-stone-100">
             
-            {/* CLASES PROSE PREMIUM + RESPONSIVE FIXES
-                - min-w-0: Evita que el contenedor se rompa con palabras largas.
-                - break-words: Fuerza el salto de línea en palabras o guiones largos.
-                - overflow-hidden: Corta cualquier cosa que intente salirse.
+            {/* AQUÍ ESTÁ LA MAGIA DE LOS ESTILOS:
+               Agregué clases específicas ([&_tag]) para forzar el diseño que trae el editor.
             */}
             <div className="prose prose-lg prose-stone max-w-none w-full min-w-0 break-words overflow-hidden
-                prose-headings:font-serif prose-headings:font-bold prose-headings:text-stone-800
+                
+                /* Títulos */
+                prose-headings:font-serif prose-headings:font-bold prose-headings:text-stone-800 prose-headings:mt-8 prose-headings:mb-4
+                
+                /* Párrafos y Texto */
                 prose-p:text-stone-700 prose-p:leading-relaxed prose-p:text-base md:prose-p:text-lg
+                [&_p]:mb-6 /* FUERZA EL ESPACIO ENTRE PÁRRAFOS */
+                
+                /* Negritas (Strong y B) */
+                prose-strong:font-black prose-strong:text-stone-900 /* FUERZA NEGRITA MUY OSCURA */
+                [&_b]:font-black [&_b]:text-stone-900
+                
+                /* Enlaces */
                 prose-a:text-teal-600 prose-a:font-semibold prose-a:no-underline hover:prose-a:underline
+                
+                /* Imágenes dentro del contenido */
                 prose-img:rounded-xl prose-img:shadow-lg prose-img:w-full prose-img:my-8
+                
+                /* Citas (Blockquote) */
                 prose-blockquote:border-l-4 prose-blockquote:border-teal-500 prose-blockquote:bg-stone-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:italic prose-blockquote:rounded-r-lg
+                
+                /* Listas (Puntos y Números) - IMPORTANTE */
+                [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-6
+                [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-6
+                [&_li]:mb-2 /* Espacio entre items de lista */
                 
                 /* Alineaciones del Editor */
                 [&_.ql-align-center]:text-center 
