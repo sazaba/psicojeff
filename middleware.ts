@@ -1,8 +1,13 @@
-// middleware.ts
-export { default } from "next-auth/middleware";
+import { withAuth } from "next-auth/middleware";
+
+export default withAuth({
+  // Opcional: Aquí puedes configurar páginas personalizadas si lo necesitas
+  pages: {
+    signIn: "/login",
+  },
+});
 
 export const config = {
-  // Aquí definimos qué rutas están protegidas.
-  // El * significa "todo lo que esté dentro de admin"
+  // Protegemos todas las rutas que empiecen por /admin
   matcher: ["/admin/:path*"],
 };
