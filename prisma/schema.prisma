@@ -1,0 +1,30 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  excerpt   String   @db.Text // Texto largo para resumen
+  content   String   @db.LongText // Contenido muy largo (HTML del blog)
+  category  String
+  image     String
+  readTime  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  email     String   @unique
+  password  String   // Aquí se guardará el hash encriptado
+  createdAt DateTime @default(now())
+}
