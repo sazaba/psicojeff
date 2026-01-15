@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
-// Estilos de Quill obligatorios
+// IMPORTANTE: Estilos base del editor para que ciertas clases funcionen
 import "react-quill-new/dist/quill.snow.css"; 
 
 export async function generateStaticParams() {
@@ -82,37 +82,39 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       <div className="container mx-auto px-4 md:px-6 -mt-10 relative z-10">
         <div className="bg-white rounded-t-3xl md:rounded-3xl shadow-xl p-6 md:p-12 lg:p-16 max-w-4xl mx-auto border border-stone-100">
             
-            {/* AQUÍ ESTÁ LA MAGIA DE LOS ESTILOS:
-               Agregué clases específicas ([&_tag]) para forzar el diseño que trae el editor.
+            {/* CLASES MÁGICAS PARA FORZAR ESTILOS:
+                Tailwind borra estilos por defecto. Aquí los volvemos a poner manualmente.
             */}
             <div className="prose prose-lg prose-stone max-w-none w-full min-w-0 break-words overflow-hidden
                 
-                /* Títulos */
-                prose-headings:font-serif prose-headings:font-bold prose-headings:text-stone-800 prose-headings:mt-8 prose-headings:mb-4
+                /* Títulos (H2, H3) */
+                prose-headings:font-serif prose-headings:font-bold prose-headings:text-stone-800 prose-headings:mt-10 prose-headings:mb-6
                 
-                /* Párrafos y Texto */
+                /* Párrafos: Forzamos espacio y color */
                 prose-p:text-stone-700 prose-p:leading-relaxed prose-p:text-base md:prose-p:text-lg
-                [&_p]:mb-6 /* FUERZA EL ESPACIO ENTRE PÁRRAFOS */
+                [&_p]:mb-6  /* <--- ESTO FUERZA EL ESPACIO ENTRE PÁRRAFOS */
+                [&_p]:mt-2
                 
-                /* Negritas (Strong y B) */
-                prose-strong:font-black prose-strong:text-stone-900 /* FUERZA NEGRITA MUY OSCURA */
-                [&_b]:font-black [&_b]:text-stone-900
+                /* NEGRITAS: Las forzamos a ser negras y muy gruesas */
+                prose-strong:font-black prose-strong:text-black 
+                [&_strong]:font-black [&_strong]:text-black
+                [&_b]:font-black [&_b]:text-black
+                
+                /* LISTAS: Recuperamos los puntos y números que Tailwind borra */
+                [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-6 [&_ul]:marker:text-teal-500
+                [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-6 [&_ol]:marker:text-teal-600
+                [&_li]:pl-2 [&_li]:mb-2
                 
                 /* Enlaces */
                 prose-a:text-teal-600 prose-a:font-semibold prose-a:no-underline hover:prose-a:underline
                 
-                /* Imágenes dentro del contenido */
+                /* Imágenes */
                 prose-img:rounded-xl prose-img:shadow-lg prose-img:w-full prose-img:my-8
                 
-                /* Citas (Blockquote) */
+                /* Citas */
                 prose-blockquote:border-l-4 prose-blockquote:border-teal-500 prose-blockquote:bg-stone-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:italic prose-blockquote:rounded-r-lg
                 
-                /* Listas (Puntos y Números) - IMPORTANTE */
-                [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-6
-                [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-6
-                [&_li]:mb-2 /* Espacio entre items de lista */
-                
-                /* Alineaciones del Editor */
+                /* ALINEACIONES DEL EDITOR (Izquierda, Centro, Derecha, Justificado) */
                 [&_.ql-align-center]:text-center 
                 [&_.ql-align-right]:text-right 
                 [&_.ql-align-justify]:text-justify"

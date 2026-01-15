@@ -194,7 +194,7 @@ export default function NewPostPage() {
         <div className="space-y-6">
             <button
                 type="submit"
-                disabled={loading || uploadingImage || !formData.image}
+                disabled={loading || uploadingImage }
                 className="w-full bg-stone-900 hover:bg-teal-600 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 {loading ? <Loader2 className="animate-spin" /> : <Save size={20} />}
