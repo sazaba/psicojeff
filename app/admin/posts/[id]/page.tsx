@@ -10,10 +10,10 @@ import Image from "next/image";
 // Importaciones dinámicas y estilos
 import dynamic from "next/dynamic";
 import Swal from "sweetalert2";
-import "react-quill/dist/quill.snow.css";
+import "react-quill-new/dist/quill.snow.css"; // <--- Nota el "-new"
 
-// CORRECCIÓN AQUÍ: 'as any' elimina el error rojo de TypeScript
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false }) as any;
+
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false }) as any; // <--- Nota el "-new"
 
 export default function EditPostPage() {
   const router = useRouter();
