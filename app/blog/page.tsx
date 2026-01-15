@@ -1,16 +1,44 @@
-// app/blog/page.tsx
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Calendar, Clock, ArrowRight } from "lucide-react";
-import { blogPosts } from "@/app/data/posts"; // Importamos los datos centralizados
+import { prisma } from "@/lib/prisma";
 
-export default function BlogIndex() {
+// 1. DEFINIMOS LA INTERFAZ PARA QUE TYPESCRIPT NO SE QUEJE
+interface BlogPost {
+  id: number;
+  title: string;
+  excerpt: string;
+  content: string;
+  image: string;
+  category: string;
+  readTime: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Forzar renderizado dinámico para ver siempre los últimos posts
+export const dynamic = 'force-dynamic';
+
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('es-CO', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+  }).format(date);
+};
+
+export default async function BlogIndex() {
+  // Obtenemos los posts desde la base de datos
+  const posts = await prisma.post.findMany({
+    orderBy: { createdAt: 'desc' }
+  });
+
   return (
     <main className="min-h-screen bg-stone-50 pb-20 pt-32">
       <div className="container mx-auto px-6">
         
-        {/* Header con botón de volver */}
+        {/* Header */}
         <div className="mb-12">
           <Link href="/" className="inline-flex items-center text-stone-500 hover:text-teal-600 transition-colors mb-6 group">
             <ArrowLeft size={20} className="mr-2 group-hover:-translate-x-1 transition-transform" />
@@ -26,28 +54,35 @@ export default function BlogIndex() {
 
         {/* Grid de Artículos */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {blogPosts.map((post) => (
+          
+          {/* AQUI ESTABA EL ERROR: Ahora le decimos explícitamente que 'post' es de tipo 'BlogPost' */}
+          {posts.map((post: BlogPost) => (
             <article key={post.id} className="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-stone-100">
-              <div className="relative h-56 overflow-hidden">
-                <Image 
-                  src={post.image} 
-                  alt={post.title} 
-                  fill 
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <span className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-teal-700">
+              <div className="relative h-56 overflow-hidden bg-stone-200">
+                {post.image ? (
+                    <Image 
+                    src={post.image} 
+                    alt={post.title} 
+                    fill 
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                ) : (
+                    <div className="w-full h-full flex items-center justify-center text-stone-400 bg-stone-100 font-serif italic">Sin Imagen</div>
+                )}
+                <span className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-teal-700 shadow-sm">
                     {post.category}
                 </span>
               </div>
+              
               <div className="p-6 flex flex-col flex-1">
-                <div className="flex gap-4 text-xs text-stone-400 mb-3">
-                    <span className="flex items-center gap-1"><Calendar size={12} /> {post.date}</span>
+                <div className="flex gap-4 text-xs text-stone-400 mb-3 font-medium">
+                    <span className="flex items-center gap-1"><Calendar size={12} /> {formatDate(post.createdAt)}</span>
                     <span className="flex items-center gap-1"><Clock size={12} /> {post.readTime}</span>
                 </div>
                 <h2 className="text-xl font-serif font-bold text-stone-800 mb-3 line-clamp-2 group-hover:text-teal-700 transition-colors">
                   {post.title}
                 </h2>
-                <p className="text-stone-500 text-sm line-clamp-3 mb-4 flex-1">
+                <p className="text-stone-500 text-sm line-clamp-3 mb-4 flex-1 leading-relaxed">
                   {post.excerpt}
                 </p>
                 <Link href={`/blog/${post.id}`} className="flex items-center text-teal-600 font-bold text-sm group/btn mt-auto">
@@ -57,6 +92,12 @@ export default function BlogIndex() {
               </div>
             </article>
           ))}
+
+          {posts.length === 0 && (
+            <div className="col-span-full text-center py-20 bg-white rounded-2xl border border-dashed border-stone-300">
+                <p className="text-stone-500 font-serif italic text-lg">Aún no hay artículos publicados en la bitácora.</p>
+            </div>
+          )}
         </div>
       </div>
     </main>
