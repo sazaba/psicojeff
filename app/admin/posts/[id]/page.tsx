@@ -7,13 +7,11 @@ import { Save, ArrowLeft, Loader2, UploadCloud, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
-// Importaciones dinámicas y estilos
 import dynamic from "next/dynamic";
 import Swal from "sweetalert2";
-import "react-quill-new/dist/quill.snow.css"; // <--- Nota el "-new"
+import "react-quill-new/dist/quill.snow.css"; 
 
-
-const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false }) as any; // <--- Nota el "-new"
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false }) as any;
 
 export default function EditPostPage() {
   const router = useRouter();
@@ -32,11 +30,12 @@ export default function EditPostPage() {
     image: "",
   });
 
-  // Configuración del Editor
+  // --- CAMBIO 1: AGREGAR ALINEACIÓN A LA BARRA DE HERRAMIENTAS ---
   const modules = {
     toolbar: [
       [{ 'header': [2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{ 'align': [] }], // <--- ESTO AGREGA: Izquierda, Centro, Derecha, Justificar
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
       ['link', 'clean']
     ],
@@ -189,16 +188,18 @@ export default function EditPostPage() {
                 />
             </div>
 
-            {/* EDITOR */}
-            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm min-h-[500px] flex flex-col">
+            {/* --- CAMBIO 2: EDITOR AMPLIABLE Y MÁS GRANDE --- */}
+            {/* Agregamos 'resize-y' y 'overflow-hidden' al contenedor padre para permitir arrastrar */}
+            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm min-h-[600px] flex flex-col resize-y overflow-hidden">
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-4 border-b border-stone-100 pb-2">Contenido Principal</label>
-                <div className="flex-1 h-full">
+                <div className="flex-1 h-full flex flex-col">
                     <ReactQuill 
                         theme="snow" 
                         value={formData.content} 
                         onChange={handleEditorChange}
                         modules={modules}
-                        className="h-[350px] mb-12" 
+                        // Quitamos la altura fija (h-[350px]) y ponemos h-full para que llene el contenedor resizable
+                        className="h-full flex-1 mb-12" 
                     />
                 </div>
             </div>
