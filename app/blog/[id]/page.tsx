@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
-// IMPORTANTE: Estilos base del editor para que ciertas clases funcionen
 import "react-quill-new/dist/quill.snow.css"; 
 
 export async function generateStaticParams() {
@@ -38,7 +37,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
   return (
     <article className="min-h-screen bg-white pb-24 pt-0 md:pt-0">
       
-      {/* --- HERO SECTION (Cabecera) --- */}
+      {/* --- HERO SECTION --- */}
       <div className="relative w-full h-[50vh] min-h-[400px] bg-stone-900">
         {post.image && (
             <Image 
@@ -50,7 +49,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             />
         )}
         
-        {/* Degradado para legibilidad */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end pb-12 md:pb-20">
             <div className="container mx-auto px-4 md:px-6">
                 
@@ -59,19 +57,17 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                     VOLVER A LA BITÁCORA
                 </Link>
                 
-                {/* Metadatos (Categoría y Tiempo) */}
                 <div className="flex flex-wrap items-center gap-3 mb-6">
                     <span className="bg-teal-600 text-white px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider shadow-sm">
                         {post.category}
                     </span>
-                    {/* TIEMPO DE LECTURA */}
                     <span className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/20 text-white px-3 py-1 rounded-md text-xs font-bold shadow-sm">
                         <Clock size={14} className="text-teal-400" /> 
                         {post.readTime || "Lectura rápida"}
                     </span>
                 </div>
 
-                <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-white max-w-5xl leading-tight drop-shadow-xl break-words">
+                <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-white max-w-5xl leading-tight drop-shadow-xl text-pretty">
                     {post.title}
                 </h1>
             </div>
@@ -82,59 +78,58 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       <div className="container mx-auto px-4 md:px-6 -mt-10 relative z-10">
         <div className="bg-white rounded-t-3xl md:rounded-3xl shadow-xl p-6 md:p-12 lg:p-16 max-w-4xl mx-auto border border-stone-100">
             
-            {/* CLASES MÁGICAS PARA FORZAR ESTILOS:
-                Tailwind borra estilos por defecto. Aquí los volvemos a poner manualmente.
-            */}
-            <div className="prose prose-lg prose-stone max-w-none w-full min-w-0 break-words overflow-hidden
+            <div className="prose prose-lg prose-stone max-w-none w-full min-w-0 overflow-hidden
                 
-                /* Títulos (H2, H3) */
+                /* MEJORA VISUAL PREMIUM */
+                text-pretty /* Evita viudas y huérfanas (palabras sueltas) */
+                
+                /* Títulos */
                 prose-headings:font-serif prose-headings:font-bold prose-headings:text-stone-800 prose-headings:mt-10 prose-headings:mb-6
                 
-                /* Párrafos: Forzamos espacio y color */
-                prose-p:text-stone-700 prose-p:leading-relaxed prose-p:text-base md:prose-p:text-lg
-                [&_p]:mb-6  /* <--- ESTO FUERZA EL ESPACIO ENTRE PÁRRAFOS */
-                [&_p]:mt-2
+                /* Párrafos */
+                prose-p:text-stone-700 prose-p:leading-8 prose-p:text-base md:prose-p:text-lg
+                [&_p]:mb-6
                 
-                /* NEGRITAS: Las forzamos a ser negras y muy gruesas */
-                prose-strong:font-black prose-strong:text-black 
-                [&_strong]:font-black [&_strong]:text-black
-                [&_b]:font-black [&_b]:text-black
+                /* SOLUCIÓN ESPACIOS Y SALTOS (La Clave) */
+                /* Si un párrafo está vacío (solo un Enter), dale altura para que se vea el espacio */
+                [&_p:empty]:min-h-[1.5em] 
+                [&_p]:min-h-[1em]
                 
-                /* LISTAS: Recuperamos los puntos y números que Tailwind borra */
-                [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-6 [&_ul]:marker:text-teal-500
+                /* Negritas */
+                prose-strong:font-black prose-strong:text-stone-900 
+                [&_b]:font-black [&_b]:text-stone-900
+                
+                /* Listas */
+                [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-6 [&_ul]:marker:text-teal-600
                 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-6 [&_ol]:marker:text-teal-600
                 [&_li]:pl-2 [&_li]:mb-2
                 
-                /* Enlaces */
+                /* Enlaces e Imágenes */
                 prose-a:text-teal-600 prose-a:font-semibold prose-a:no-underline hover:prose-a:underline
-                
-                /* Imágenes */
                 prose-img:rounded-xl prose-img:shadow-lg prose-img:w-full prose-img:my-8
                 
                 /* Citas */
                 prose-blockquote:border-l-4 prose-blockquote:border-teal-500 prose-blockquote:bg-stone-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:italic prose-blockquote:rounded-r-lg
                 
-                /* ALINEACIONES DEL EDITOR (Izquierda, Centro, Derecha, Justificado) */
+                /* Alineaciones del Editor */
                 [&_.ql-align-center]:text-center 
                 [&_.ql-align-right]:text-right 
                 [&_.ql-align-justify]:text-justify"
             >
                 
-                {/* Resumen destacado */}
                 {post.excerpt && (
                     <div className="text-lg md:text-xl text-stone-600 font-serif italic mb-10 pb-10 border-b border-stone-200 leading-relaxed">
                         {post.excerpt}
                     </div>
                 )}
                 
-                {/* Renderizado de HTML del Editor */}
                 <div 
                     dangerouslySetInnerHTML={{ __html: post.content }} 
                 />
 
             </div>
 
-            {/* Footer del Artículo */}
+            {/* Footer */}
             <div className="mt-16 pt-8 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-center gap-6">
                 <div className="flex items-center gap-2 text-stone-500 font-medium text-sm">
                     <Calendar size={18} className="text-teal-600"/>
