@@ -11,63 +11,9 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-// ... (TUS DATOS DEL BLOG AQUÍ, NO CAMBIAN) ...
-const blogPosts = [
-  {
-    id: 1,
-    title: "El cuerpo lleva la cuenta: Trauma y somatización",
-    excerpt: "Cuando la terapia verbal no es suficiente. Exploramos cómo el sistema nervioso almacena experiencias traumáticas y las rutas para liberarlas.",
-    category: "Trauma",
-    date: "12 Ene, 2026",
-    readTime: "5 min",
-    image: "https://images.unsplash.com/photo-1618588507085-c79565432917?q=80&w=2070&auto=format&fit=crop", 
-  },
-  {
-    id: 2,
-    title: "Más allá de la ansiedad funcional",
-    excerpt: "El alto rendimiento a menudo enmascara un sistema nervioso desregulado. Identifica los síntomas silenciosos del burnout ejecutivo.",
-    category: "Ansiedad",
-    date: "08 Ene, 2026",
-    readTime: "4 min",
-    image: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=2069&auto=format&fit=crop",
-  },
-  {
-    id: 3,
-    title: "La arquitectura del apego en la adultez",
-    excerpt: "Cómo nuestros primeros vínculos definen nuestras relaciones de pareja actuales y la estrategia clínica para reestructurar la seguridad emocional.",
-    category: "Relaciones",
-    date: "28 Dic, 2025",
-    readTime: "7 min",
-    image: "https://images.unsplash.com/photo-1581579438747-1dc8d17bbce4?q=80&w=2070&auto=format&fit=crop",
-  },
-  {
-    id: 4,
-    title: "Integración emocional: Cuando pensar no basta",
-    excerpt: "El límite de la racionalización en psicoterapia. Por qué entender el 'por qué' no siempre elimina el síntoma.",
-    category: "Metodología",
-    date: "15 Dic, 2025",
-    readTime: "6 min",
-    image: "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?q=80&w=1974&auto=format&fit=crop",
-  },
-  {
-    id: 5,
-    title: "Neurobiología de la regulación emocional",
-    excerpt: "Una mirada científica a cómo funciona tu ventana de tolerancia y herramientas prácticas para ampliarla.",
-    category: "Neurociencia",
-    date: "10 Dic, 2025",
-    readTime: "8 min",
-    image: "https://images.unsplash.com/photo-1620121692029-d088224ddc74?q=80&w=2032&auto=format&fit=crop",
-  },
-  {
-    id: 6,
-    title: "Duelo no resuelto y enfermedades psicosomáticas",
-    excerpt: "El impacto inmunológico de la tristeza contenida. Abordaje integrativo para procesos de pérdida estancados.",
-    category: "Psicosomática",
-    date: "01 Dic, 2025",
-    readTime: "5 min",
-    image: "https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?q=80&w=1974&auto=format&fit=crop",
-  },
-];
+// --- IMPORTACIÓN DE DATOS CENTRALIZADOS ---
+// Esto conecta con tu "base de datos" simulada
+import { blogPosts } from "@/app/data/posts";
 
 export default function BlogCarousel() {
   const swiperRef = useRef<SwiperType | null>(null);
@@ -158,6 +104,7 @@ export default function BlogCarousel() {
                     </div>
 
                     <h3 className="text-xl font-serif font-bold text-stone-800 mb-3 group-hover:text-teal-700 transition-colors line-clamp-2 leading-snug">
+                        {/* Enlace dinámico al post individual */}
                         <Link href={`/blog/${post.id}`} className="focus:outline-none">
                             <span className="absolute inset-0 z-0"></span>
                             {post.title}
@@ -179,8 +126,9 @@ export default function BlogCarousel() {
             </Swiper>
         </div>
 
-        <div className="mt-8 text-center md:hidden">
-            <Link href="/blog" className="inline-block px-6 py-3 border border-stone-300 rounded-full text-stone-600 font-semibold hover:bg-stone-800 hover:text-white transition-colors">
+        {/* Botón "Ver todos" para móviles y desktop también (opcional) */}
+        <div className="mt-8 text-center">
+            <Link href="/blog" className="inline-block px-8 py-3 border border-stone-300 rounded-full text-stone-600 font-semibold hover:bg-stone-800 hover:text-white transition-colors">
                 Ver todos los artículos
             </Link>
         </div>
