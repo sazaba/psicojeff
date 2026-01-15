@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Lato } from "next/font/google"; 
 import "./globals.css";
+import { Providers } from "./providers"; // <--- IMPORTACIÓN CLAVE
 
 const playfair = Playfair_Display({ 
   subsets: ["latin"],
@@ -29,14 +30,19 @@ export default function RootLayout({
         // Nota: overflow-x-hidden ya está en globals.css, pero dejarlo aquí refuerza la seguridad.
         className={`${playfair.variable} ${lato.variable} min-h-screen antialiased bg-[#fffcf8] text-stone-700 overflow-x-hidden`}
       >
-        {/* FONDO DE LUCES PASTEL */}
-        {/* Tu configuración fixed inset-0 es correcta y segura. */}
-        <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden opacity-60">
-             <div className="absolute top-[-10%] left-[-5%] w-[60vw] h-[60vw] rounded-full bg-[#ccfbf1] blur-[100px]"></div>
-             <div className="absolute bottom-[-10%] right-[-5%] w-[60vw] h-[60vw] rounded-full bg-[#fce7f3] blur-[100px]"></div>
-        </div>
-        
-        {children}
+        {/* ENVOLVEMOS TODO EL CONTENIDO CON PROVIDERS PARA QUE NEXTAUTH FUNCIONE */}
+        <Providers>
+            
+            {/* FONDO DE LUCES PASTEL */}
+            {/* Tu configuración fixed inset-0 es correcta y segura. */}
+            <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden opacity-60">
+                  <div className="absolute top-[-10%] left-[-5%] w-[60vw] h-[60vw] rounded-full bg-[#ccfbf1] blur-[100px]"></div>
+                  <div className="absolute bottom-[-10%] right-[-5%] w-[60vw] h-[60vw] rounded-full bg-[#fce7f3] blur-[100px]"></div>
+            </div>
+            
+            {children}
+            
+        </Providers>
       </body>
     </html>
   );
