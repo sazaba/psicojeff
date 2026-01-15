@@ -9,18 +9,15 @@ import { prisma } from "@/lib/prisma";
 // Generar rutas estáticas para SEO
 export async function generateStaticParams() {
   const posts = await prisma.post.findMany({ select: { id: true } });
-  
-  // CORRECCIÓN AQUÍ: Tipamos explícitamente 'post' para evitar el error TS7006
   return posts.map((post: { id: number }) => ({
     id: post.id.toString(),
   }));
 }
 
-// Definimos el tipo para los params
 type Params = Promise<{ id: string }>;
 
 export default async function BlogPostPage({ params }: { params: Params }) {
-  const { id } = await params; 
+  const { id } = await params;
   const postId = parseInt(id);
 
   if (isNaN(postId)) return notFound();
@@ -33,7 +30,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
     return notFound();
   }
 
-  // Helper fecha local
   const formattedDate = new Intl.DateTimeFormat('es-CO', {
     dateStyle: 'long'
   }).format(post.createdAt);
@@ -52,7 +48,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             priority
             />
         )}
-        {/* Gradiente para legibilidad */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end">
             <div className="container mx-auto px-6 pb-12">
                 <Link href="/blog" className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors">
@@ -77,16 +72,22 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         
         {/* Columna Principal */}
         <div className="lg:col-span-8 lg:col-start-3">
+            {/* Clases 'prose' de Tailwind Typography hacen que el HTML se vea bien automáticamente */}
             <div className="prose prose-lg prose-stone max-w-none">
-                {/* Excerpt destacado */}
+                
                 <p className="lead text-xl text-stone-600 font-serif italic mb-8 border-l-4 border-teal-500 pl-4">
                     {post.excerpt}
                 </p>
                 
-                {/* Contenido principal con saltos de línea preservados */}
-                <div className="text-stone-800 leading-relaxed whitespace-pre-wrap">
-                    {post.content}
-                </div>
+                {/* AQUÍ ESTÁ EL CAMBIO CLAVE:
+                   Usamos dangerouslySetInnerHTML para renderizar el HTML que viene del editor.
+                   Tailwind Typography ('prose') se encargará de darle estilo a las listas, negritas, etc.
+                */}
+                <div 
+                    className="text-stone-800 leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: post.content }} 
+                />
+
             </div>
 
             {/* Footer del Artículo */}
