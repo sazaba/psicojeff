@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight, Mail, MapPin, Instagram, Linkedin } from "lucide-react";
+import { ArrowUpRight, Mail, MapPin, Instagram, Linkedin, Lock } from "lucide-react";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -85,12 +85,22 @@ export default function Footer() {
             &copy; {currentYear} Jefferson Bastidas Mejía. Todos los derechos reservados.
           </p>
           
-          <div className="flex gap-8">
+          <div className="flex items-center gap-6">
             <Link href="#" className="hover:text-stone-400 transition-colors">
               Política de Privacidad
             </Link>
             <Link href="#" className="hover:text-stone-400 transition-colors">
               Términos de Servicio
+            </Link>
+            
+            {/* --- BOTÓN DE LOGIN "ESCONDIDO" --- */}
+            {/* Es solo un icono de candado pequeño que se ilumina al pasar el mouse */}
+            <Link 
+                href="/login" 
+                className="text-stone-800 hover:text-teal-600 transition-colors duration-300 p-2"
+                aria-label="Admin Login"
+            >
+                <Lock size={14} />
             </Link>
           </div>
         </div>
