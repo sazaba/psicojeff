@@ -275,10 +275,16 @@ export default function TargetAudience() {
                   Si identificas estos patrones en tu vida actual, mi consultorio está diseñado específicamente para abordarlos con precisión clínica.
                 </p>
                 
-                <button className="px-8 py-3.5 rounded-full bg-teal-700 hover:bg-teal-800 text-white font-bold text-base transition-all shadow-lg shadow-teal-900/10 flex items-center justify-center gap-3 group mx-auto hover:-translate-y-0.5">
+                {/* CAMBIO: Se reemplazó <button> por <a> con el enlace de Walink */}
+                <a 
+                    href="https://wa.link/2x3i8s"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-8 py-3.5 rounded-full bg-teal-700 hover:bg-teal-800 text-white font-bold text-base transition-all shadow-lg shadow-teal-900/10 flex items-center justify-center gap-3 group mx-auto hover:-translate-y-0.5 w-fit"
+                >
                     Solicitar Evaluación Inicial
                     <ArrowRightCircle className="text-teal-200 group-hover:text-white transition-colors" size={20} />
-                </button>
+                </a>
              </div>
         </motion.div>
 

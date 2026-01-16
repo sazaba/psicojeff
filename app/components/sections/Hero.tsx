@@ -74,12 +74,16 @@ export default function Hero() {
 
                 {/* BOTONES */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center">
-                    <Link 
-                        href="#contacto" 
-                        className="px-8 py-4 rounded-full bg-teal-600 hover:bg-teal-700 text-white font-bold text-lg transition-all hover:-translate-y-1 shadow-lg shadow-teal-600/20 w-full sm:w-auto text-center"
+                    
+                    {/* BOTÓN CON ENLACE WALINK */}
+                    <a 
+                        href="https://wa.link/2x3i8s" 
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-8 py-4 rounded-full bg-teal-600 hover:bg-teal-700 text-white font-bold text-lg transition-all hover:-translate-y-1 shadow-lg shadow-teal-600/20 w-full sm:w-auto text-center cursor-pointer"
                     >
                         Solicitar Información
-                    </Link>
+                    </a>
                     
                     <Link 
                         href="#proceso" 
