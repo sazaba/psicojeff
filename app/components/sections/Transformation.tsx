@@ -3,12 +3,12 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Focus, Anchor, Waves, ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 // --- IMPORT DE IMAGEN ---
 import handshake from "@/app/assets/handshake.webp"; 
 
-// --- CORRECCIÓN DE TIPADO 1: SVG TRANSITION ---
+// --- ANIMACIÓN SVG (Sin cambios) ---
 const svgTransition = {
   duration: 4,
   ease: "easeInOut" as const, 
@@ -16,7 +16,7 @@ const svgTransition = {
   repeatType: "reverse" as const
 };
 
-// --- ICONOS SVG PERSONALIZADOS (Animados) ---
+// --- ICONOS (Sin cambios) ---
 const FocusIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-8 h-8">
      <motion.circle cx="12" cy="12" r="10" animate={{ scale: [1, 0.9, 1], opacity: [0.5, 1, 0.5] }} transition={svgTransition} />
@@ -39,8 +39,7 @@ const CalmIcon = () => (
   </svg>
 );
 
-
-// --- DATOS DE LOS PILARES ---
+// --- DATOS ---
 const pillars = [
   {
     id: "focus",
@@ -96,12 +95,7 @@ export default function Transformation() {
           />
           <motion.div 
              animate={nebulaAnimation}
-             transition={{ 
-                duration: 10, 
-                repeat: Infinity, 
-                ease: "easeInOut", 
-                delay: 5 
-             }}
+             transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 5 }}
              className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-purple-900/20 rounded-full blur-[120px]"
           />
           <div className="absolute inset-0 opacity-[0.05] bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
@@ -111,8 +105,6 @@ export default function Transformation() {
         
         {/* --- COLUMNA 1: INTRO + IMAGEN --- */}
         <div className="flex flex-col gap-10">
-            
-            {/* Cabecera Texto */}
             <div>
                 <motion.div 
                     initial={{ opacity: 0, x: -20 }}
@@ -146,10 +138,8 @@ export default function Transformation() {
                 </motion.p>
             </div>
 
-            {/* --- IMAGEN HANDSHAKE CON FONDO PASTEL TIERRA --- */}
-           {/* --- IMAGEN HANDSHAKE CON FONDO TIERRA (CORREGIDO PARA MAYOR CONTRASTE) --- */}
             <motion.div 
-                className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-black/40 group aspect-video lg:aspect-[4/3] bg-gradient-to-br from-[#E8DCCA] via-[#D6C0B0] to-[#BFA08E]" // <--- CAMBIO CLAVE: Tonos Mocha/Arcilla suaves
+                className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-black/40 group aspect-video lg:aspect-[4/3] bg-gradient-to-br from-[#E8DCCA] via-[#D6C0B0] to-[#BFA08E]"
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
@@ -159,54 +149,47 @@ export default function Transformation() {
                     src={handshake} 
                     alt="Alianza Terapéutica"
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-100" // Eliminé 'mix-blend' para que la foto se vea nítida y natural sobre el color
+                    className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-100"
                 />
-                
-                {/* Overlay Gradiente Oscuro en la base (Más fuerte para asegurar lectura del texto) */}
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-900/90 via-stone-900/10 to-transparent" />
-                
-                {/* Texto sobre imagen */}
                 <div className="absolute bottom-6 left-6 right-6 z-10">
                     <p className="text-white font-serif text-xl md:text-2xl leading-snug drop-shadow-md">
                         "No es solo alivio momentáneo. Es arquitectura interna para la vida."
                     </p>
                 </div>
             </motion.div>
-
         </div>
 
-        {/* --- COLUMNA 2: ACORDEÓN INTERACTIVO --- */}
+        {/* --- COLUMNA 2: ACORDEÓN OPTIMIZADO PARA MÓVIL --- */}
         <div className="flex flex-col gap-4 h-auto lg:h-[600px]">
-            
             {pillars.map((pillar) => {
                 const isActive = activePillar === pillar.id;
                 
                 return (
                     <motion.div
                         key={pillar.id}
-                        layout 
+                        layout="position" // OPTIMIZACIÓN: Solo animamos posición, no el layout completo en móvil
                         onClick={() => setActivePillar(isActive ? null : pillar.id)}
                         onHoverStart={() => setActivePillar(pillar.id)}
                         className={`relative rounded-3xl overflow-hidden cursor-pointer border transition-all duration-500 ease-out
                             ${isActive 
-                                ? `flex-[3] ${pillar.color} shadow-lg shadow-teal-900/10` 
-                                : 'flex-[1] bg-stone-900/50 border-stone-800 hover:bg-stone-800/80'}
-                            flex flex-col
+                                ? `lg:flex-[3] ${pillar.color} shadow-lg shadow-teal-900/10` // En móvil eliminamos el flex-[3]
+                                : 'lg:flex-[1] bg-stone-900/50 border-stone-800 hover:bg-stone-800/80'}
+                            flex flex-col w-full
                         `}
-                        style={{ willChange: "flex-grow" }}
                     >
+                        {/* Gradiente de Fondo */}
                         <div className={`absolute inset-0 bg-gradient-to-br ${pillar.gradient} opacity-0 transition-opacity duration-500 ${isActive ? 'opacity-20' : ''}`} />
 
-                        <div className="relative z-10 p-6 md:p-8 flex flex-row lg:flex-row items-center gap-6 h-full">
+                        {/* Cabecera de la Card */}
+                        <div className="relative z-10 p-6 md:p-8 flex flex-row items-center gap-6 h-full min-h-[100px] lg:min-h-0">
                              
                              <div className="flex items-center gap-4 min-w-max">
                                  <div className={`p-3 rounded-2xl bg-white/10 backdrop-blur-md transition-transform duration-500 ${isActive ? 'scale-110 text-white' : 'scale-100 text-stone-500'}`}>
                                      {pillar.icon}
                                  </div>
                                  
-                                 <h3 className={`font-serif text-xl md:text-2xl transition-colors duration-300
-                                     ${isActive ? 'text-white' : 'text-stone-500'}
-                                 `}>
+                                 <h3 className={`font-serif text-xl md:text-2xl transition-colors duration-300 ${isActive ? 'text-white' : 'text-stone-500'}`}>
                                      {pillar.title}
                                  </h3>
                              </div>
@@ -217,6 +200,7 @@ export default function Transformation() {
                                  </div>
                              )}
 
+                            {/* Contenido Desktop (Mantenemos como estaba) */}
                             <AnimatePresence mode="wait">
                                 {isActive && (
                                     <motion.div 
@@ -237,17 +221,24 @@ export default function Transformation() {
                             </AnimatePresence>
                         </div>
                         
+                        {/* --- CONTENIDO MÓVIL OPTIMIZADO --- */}
+                        {/* Usamos un AnimatePresence separado con transición suavizada para height */}
                         <AnimatePresence>
                              {isActive && (
                                 <motion.div
                                     initial={{ height: 0, opacity: 0 }}
                                     animate={{ height: "auto", opacity: 1 }}
                                     exit={{ height: 0, opacity: 0 }}
-                                    className="lg:hidden px-6 pb-6 pt-0"
+                                    // OPTIMIZACIÓN: Transición suave sin rebote (spring) para evitar el salto
+                                    transition={{ duration: 0.3, ease: "easeOut" }}
+                                    className="lg:hidden px-6 pb-6 pt-0 relative z-10"
                                 >
+                                     <h4 className="text-xs font-bold uppercase tracking-widest text-white/60 mb-2 block">
+                                            {pillar.subtitle}
+                                     </h4>
                                      <p className="text-stone-300 leading-relaxed text-sm">
-                                        {pillar.description}
-                                    </p>
+                                         {pillar.description}
+                                     </p>
                                 </motion.div>
                              )}
                         </AnimatePresence>
