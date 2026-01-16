@@ -106,9 +106,11 @@ export default function Navbar() {
               ))}
             </div>
             
+            {/* BOTÓN DESKTOP CON ENLACE WALINK */}
             <a
-              href="#contacto"
-              onClick={(e) => handleScrollToSection(e, "#contacto")}
+              href="https://wa.link/2x3i8s"
+              target="_blank"
+              rel="noopener noreferrer"
               className="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#14b8a6] hover:bg-[#0f766e] text-white text-sm font-semibold transition-all duration-300 shadow-md shadow-teal-100 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
             >
               Solicitar Información
@@ -153,9 +155,12 @@ export default function Navbar() {
                 className={`mt-8 transition-all duration-700 delay-300 transform
                 ${isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}
             >
+                {/* BOTÓN MOBILE CON ENLACE WALINK */}
                 <a
-                href="#contacto"
-                onClick={(e) => handleScrollToSection(e, "#contacto")}
+                href="https://wa.link/2x3i8s"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsMobileMenuOpen(false)} // Cerramos el menú al hacer click
                 className="inline-flex px-10 py-4 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 text-white font-bold shadow-xl shadow-teal-500/20 active:scale-95 transition-transform"
                 >
                 Agendar Sesión
