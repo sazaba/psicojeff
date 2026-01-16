@@ -90,6 +90,7 @@ const faqData = [
       </>
     )
   },
+  // --- CORRECCIÓN RESPONSIVE AQUÍ ---
   {
     id: "ubicacion",
     question: "¿Dónde se encuentran las sedes y qué horarios manejan?",
@@ -97,13 +98,14 @@ const faqData = [
     answer: (
       <>
         Contamos con dos sedes estratégicas en Manizales para tu comodidad:
-        <ul className="space-y-3 mt-3">
-            <li className="flex items-start gap-2">
-                <span className="bg-teal-100 text-teal-800 text-xs font-bold px-2 py-0.5 rounded mt-0.5">MAÑANA</span>
+        <ul className="space-y-4 mt-3">
+            {/* CORRECCIÓN: 'flex-col' en móvil para apilar, 'sm:flex-row' en PC para alinear */}
+            <li className="flex flex-col sm:flex-row items-start gap-1 sm:gap-2">
+                <span className="shrink-0 w-fit bg-teal-100 text-teal-800 text-xs font-bold px-2 py-0.5 rounded sm:mt-0.5">MAÑANA</span>
                 <span><strong>Sede Centro:</strong> (Cra 22 # 24-24). Atención hasta las 2:00 p.m.</span>
             </li>
-            <li className="flex items-start gap-2">
-                <span className="bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-0.5 rounded mt-0.5">TARDE</span>
+            <li className="flex flex-col sm:flex-row items-start gap-1 sm:gap-2">
+                <span className="shrink-0 w-fit bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-0.5 rounded sm:mt-0.5">TARDE</span>
                 <span><strong>Sede Av. Santander:</strong> (Edificio Cristóbal Colón). Atención hasta las 8:00 p.m.</span>
             </li>
         </ul>
@@ -153,16 +155,13 @@ const faqData = [
 ];
 
 export default function FAQ() {
-  // CORRECCIÓN: Tipado explícito para 'id' (string | null) para evitar el error de TS
   const [openId, setOpenId] = useState<string | null>(null);
 
-  // CORRECCIÓN: Tipado explícito del parámetro 'id' como string
   const toggleFAQ = (id: string) => {
     setOpenId(openId === id ? null : id);
   };
 
   return (
-    // Se elimina bg-white para usar el fondo global, pero mantenemos glassmorphism en las tarjetas
     <section className="py-24 px-6 relative overflow-hidden">
       
       <div className="max-w-4xl mx-auto relative z-10">
