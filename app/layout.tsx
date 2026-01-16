@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     template: "%s | Jefferson Bastidas Mejía",
   },
   // Descripción: Ataca dolores (ansiedad), método (PIAP) y ubicaciones (Manizales, Pereira, NY)
-  description: "Psicoterapia Integrativa. Atención presencial en Manizales y Pereira. Psicólogo online para colombianos en el exterior y pacientes en Nueva York, Miami y España.",
+  description: "Psicólogo en Manizales y Online",
   
   // Palabras clave: Cruciales para que Google entienda tu alcance geográfico y temático
   keywords: [
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
         "Psicólogo Itagui",
          "Psicólogo Nueva York",
           "Psicólogo New York",
-           "Psicólogo Miami",
+           "Psicólogo ",
     "Psicoterapia Online",
     "Jefferson Bastidas Mejía",
     "Salud Mental Colombia",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
 
   // Open Graph: Para que se vea bonito cuando compartes el link en WhatsApp/Facebook
   openGraph: {
-    title: "Jefferson Bastidas | Psicólogo Clínico de Alta Precisión",
+    title: "Jefferson Bastidas | Psicólogo en Manizales y Online",
     description: "Recupera tu calma vitalizada. Terapia presencial en Manizales y Online para todo el mundo.",
     url: "https://psicologojeffersonbastidas.com", // (Reemplaza con tu dominio real cuando lo tengas)
     siteName: "Jefferson Bastidas Psicólogo",
