@@ -35,6 +35,13 @@ export const metadata: Metadata = {
   keywords: [
     "Psicólogo Manizales",
     "Psicólogo Pereira",
+     "Psicólogo Medellin",
+      "Psicólogo Sabaneta",
+       "Psicólogo Envigado",
+        "Psicólogo Itagui",
+         "Psicólogo Nueva York",
+          "Psicólogo New York",
+           "Psicólogo Miami",
     "Psicoterapia Online",
     "Jefferson Bastidas Mejía",
     "Salud Mental Colombia",
