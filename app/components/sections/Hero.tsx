@@ -1,35 +1,47 @@
 import Link from 'next/link';
 import Image from 'next/image';
+// Asegúrate de que esta importación sea correcta
 import Headerpsicojeff from '@/app/assets/Headerpsicojeff.webp'; 
 
 export default function Hero() {
   return (
-    // CORRECCIÓN CRÍTICA 1: Cambié 'overflow-visible' por 'overflow-hidden'.
-    // Esto corta cualquier elemento (como las luces) que intente salirse del ancho de la pantalla.
     <section className="relative min-h-[90vh] flex items-center pt-32 md:pt-20 overflow-hidden w-full">
       
-      {/* CORRECCIÓN 2: LUZ DE FONDO AMBIENTAL */}
-      {/* Cambié w-[600px] por w-[80vw] en móviles. Así nunca excederá el ancho del dispositivo. */}
+      {/* LUZ DE FONDO AMBIENTAL */}
       <div className="absolute top-1/2 right-0 md:right-20 -translate-y-1/2 w-[80vw] md:w-[600px] h-[600px] bg-teal-50/40 rounded-full blur-[120px] -z-10 pointer-events-none" />
 
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
             
-            {/* COLUMNA 1: SOLUCIÓN "GHOST FADE" (MOCKUP STYLE) */}
+            {/* COLUMNA 1: IMAGEN */}
             <div className="relative order-last md:order-first flex justify-center md:justify-end">
                 
                 <div className="relative w-full max-w-[500px]"> 
                     
-                    {/* 1. GLOW TRASERO (Sutil) */}
+                    {/* 1. GLOW TRASERO */}
                     <div className="absolute top-10 left-1/2 -translate-x-1/2 w-3/4 h-3/4 bg-teal-200/30 rounded-full blur-[60px] -z-10"></div>
 
-                    {/* 2. IMAGEN CON MÁSCARA DE DESVANECIMIENTO */}
+                    {/* 2. IMAGEN OPTIMIZADA */}
                     <Image
                         src={Headerpsicojeff}
                         alt="Psicólogo Jefferson Bastidas"
-                        className="w-full h-auto object-contain drop-shadow-2xl z-10 [mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)]" 
-                        priority
-                        sizes="(max-width: 768px) 100vw, 500px"
+                        // CLASE: Agregamos 'will-change-transform' para que la GPU del móvil ayude a renderizar
+                        className="w-full h-auto object-contain drop-shadow-2xl z-10 [mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)] will-change-transform" 
+                        
+                        // 1. PRIORITY: Obligatorio en el Hero. Desactiva lazy loading.
+                        priority={true} 
+
+                        // 2. PLACEHOLDER: Esto crea el efecto de transición suave (blur-up)
+                        placeholder="blur"
+
+                        // 3. QUALITY: Bajamos un poco (de 75 a 85 es estándar, pero 75 suele bastar para webp)
+                        // Si la imagen pesa mucho, ponle 75.
+                        quality={85}
+
+                        // 4. SIZES: Definición exacta para que el móvil no baje la versión de escritorio
+                        // Móvil (hasta 768px): ocupa casi todo el ancho (90vw)
+                        // Tablet/Desktop: ocupa máximo 500px
+                        sizes="(max-width: 768px) 90vw, 500px"
                     />
                 </div>
             </div>
