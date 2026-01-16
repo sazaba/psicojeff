@@ -13,7 +13,8 @@ const locations = [
     landmark: "Corazón de la ciudad",
     schedule: "Mañanas: hasta las 2:00 p.m.",
     description: "Ideal si te mueves por el centro histórico o administrativo. Un espacio diseñado para hacer una pausa productiva en tu día.",
-    mapSrc: "https://maps.google.com/maps?q=Cra.+22+%23+24-24,+Manizales,+Caldas&t=&z=17&ie=UTF8&iwloc=&output=embed",
+    // NOTA: Asegúrate de poner el src real de tu iframe de Google Maps aquí
+    mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.924823733979!2d-75.51737742416168!3d5.068474639420794!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e476ff60714ed99%3A0x6e7687848464670c!2sCra.+22+%2324-24%2C+Manizales%2C+Caldas!5e0!3m2!1ses!2sco!4v1562693892837!5m2!1ses!2sco",
     color: "from-teal-600 to-teal-800"
   },
   {
@@ -23,7 +24,8 @@ const locations = [
     landmark: "Edificio Cristóbal Colón",
     schedule: "Tarde Noche: hasta las 8:00 p.m.",
     description: "Perfecta para cerrar tu jornada laboral o de estudio. Ubicación estratégica con fácil acceso y ambiente tranquilo.",
-    mapSrc: "https://maps.google.com/maps?q=Av.+Santander+%2355a+35,+Manizales,+Caldas&t=&z=17&ie=UTF8&iwloc=&output=embed",
+    // NOTA: Asegúrate de poner el src real de tu iframe de Google Maps aquí
+    mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.845689123456!2d-75.505678!3d5.074678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNcKwMDQnMjguOCJOIDc1wrAzMCcyMC40Ilc!5e0!3m2!1ses!2sco!4v1600000000000!5m2!1ses!2sco", 
     color: "from-indigo-600 to-indigo-800"
   }
 ];
@@ -33,11 +35,8 @@ export default function Location() {
   const activeLocation = locations.find((l) => l.id === activeTab) || locations[0];
 
   return (
-    // CAMBIO: Se eliminó bg-stone-50 para que sea transparente y use el global
-    <section className="py-24 px-6 relative overflow-hidden">
+    <section className="py-24 px-6 relative overflow-hidden bg-[#fffcf8]">
       
-      {/* CAMBIO: Se eliminó el div del "Fondo Decorativo" para que no tape el fondo global */}
-
       <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-0 min-h-[600px] rounded-3xl overflow-hidden shadow-2xl shadow-stone-200">
         
         {/* --- COLUMNA IZQUIERDA: INFORMACIÓN Y SELECTOR --- */}
@@ -116,17 +115,23 @@ export default function Location() {
                         </p>
                     </div>
 
-                    {/* Botón CTA Contextual */}
-                    <button className="group flex items-center gap-2 text-stone-800 font-bold hover:text-teal-700 transition-colors mt-4">
+                    {/* --- BOTÓN CORREGIDO --- */}
+                    {/* Se cambió <button> por <a> para que funcione el enlace */}
+                    <a 
+                        href="https://wa.link/2x3i8s"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex items-center gap-2 text-stone-800 font-bold hover:text-teal-700 transition-colors mt-4 cursor-pointer relative z-20 w-fit"
+                    >
                         <span>Agendar en {activeLocation.name}</span>
                         <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                    </button>
+                    </a>
                 </motion.div>
             </AnimatePresence>
 
         </div>
 
-        {/* --- COLUMNA DERECHA: MAPA ORIGINAL --- */}
+        {/* --- COLUMNA DERECHA: MAPA --- */}
         <div className="relative h-[400px] lg:h-auto bg-stone-100 overflow-hidden">
             
             <AnimatePresence mode="wait">
@@ -138,7 +143,6 @@ export default function Location() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 1 }}
                 >
-                    {/* IFRAME SIN FILTROS: Color Original de Google Maps */}
                     <iframe
                         src={activeLocation.mapSrc}
                         width="100%"
@@ -152,10 +156,8 @@ export default function Location() {
                 </motion.div>
             </AnimatePresence>
 
-            {/* Overlay sutil solo en los bordes para integración */}
             <div className="absolute inset-0 pointer-events-none border-[12px] border-white/50 lg:border-white/0" />
             
-            {/* Badge Flotante sobre el mapa */}
             <motion.div 
                 key={activeLocation.id + "-badge"}
                 initial={{ y: 20, opacity: 0 }}
