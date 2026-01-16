@@ -16,8 +16,7 @@ const IconWrapper = ({ children }: { children: React.ReactNode }) => (
         className="absolute inset-0 bg-teal-100 rounded-full" 
         style={{ willChange: "transform, opacity" }} 
     />
-    {/* SVG: Mantenemos overflow visible AQUÍ para que los trazos se vean completos, 
-        pero el SECTION padre los contendrá. */}
+    {/* SVG */}
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
@@ -35,7 +34,7 @@ const IconWrapper = ({ children }: { children: React.ReactNode }) => (
 );
 
 // --- DEFINICIÓN DE LOS TRAZOS SVG (Motion Paths) ---
-// (Sin cambios en los iconos, están correctos)
+
 const ShieldAlertIcon = () => (
   <IconWrapper>
     <motion.path
@@ -108,6 +107,7 @@ const CloudRainIcon = () => (
   </IconWrapper>
 );
 
+// --- ICONOS RESTAURADOS ---
 const LightningBoltIcon = () => (
   <IconWrapper>
     <motion.path
@@ -139,8 +139,53 @@ const BrainIcon = () => (
   </IconWrapper>
 );
 
-// --- DATOS ---
+// --- NUEVOS ICONOS ---
+const BriefcaseIcon = () => (
+  <IconWrapper>
+    <motion.rect
+      x="2" y="7" width="20" height="14" rx="2" ry="2"
+      initial={{ pathLength: 0 }}
+      whileInView={{ pathLength: 1 }}
+      viewport={drawViewportConfig}
+      transition={{ duration: 1.5 }}
+    />
+    <motion.path
+      d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"
+      initial={{ pathLength: 0 }}
+      whileInView={{ pathLength: 1 }}
+      viewport={drawViewportConfig}
+      transition={{ duration: 1.5, delay: 0.2 }}
+    />
+  </IconWrapper>
+);
+
+const FlameIcon = () => (
+  <IconWrapper>
+    <motion.path
+      d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.1.2-2.2.6-3.3a1 1 0 0 1 .9.8z"
+      initial={{ pathLength: 0 }}
+      whileInView={{ pathLength: 1 }}
+      viewport={drawViewportConfig}
+      transition={{ duration: 1.8 }}
+    />
+  </IconWrapper>
+);
+
+const WaveIcon = () => (
+  <IconWrapper>
+    <motion.path
+      d="M2 12c.5-5 2-9 4-9s4 9 7 9c3 0 2-7 5-7s4 6 4 12"
+      initial={{ pathLength: 0 }}
+      whileInView={{ pathLength: 1 }}
+      viewport={drawViewportConfig}
+      transition={{ duration: 1.8, ease: "easeInOut" }}
+    />
+  </IconWrapper>
+);
+
+// --- DATOS COMPLETOS (9 ITEMS) ---
 const painPoints = [
+  // ORIGINALES (1-6)
   {
     icon: ShieldAlertIcon,
     title: "Ansiedad y Pánico",
@@ -171,6 +216,22 @@ const painPoints = [
     title: "Atención Dispersa",
     desc: "Te cuesta enfocarte, sientes una neblina mental constante o saltas de una tarea a otra sin lograr concretar.",
   },
+  // NUEVOS (7-9)
+  {
+    icon: BriefcaseIcon,
+    title: "Estrés Laboral",
+    desc: "Sientes que las demandas del trabajo superan tus recursos. La presión, los plazos y la carga mental no terminan al salir de la oficina.",
+  },
+  {
+    icon: FlameIcon,
+    title: "Síndrome de Burnout",
+    desc: "Más que cansancio, es un agotamiento emocional profundo. Te sientes 'quemado', cínico respecto a tu labor y sin sensación de logro.",
+  },
+  {
+    icon: WaveIcon,
+    title: "Desregulación Emocional",
+    desc: "Tus emociones toman el control rápidamente. Reaccionas con una intensidad desproporcionada y te cuesta mucho tiempo volver a la calma.",
+  },
 ];
 
 // --- VARIANTS ---
@@ -193,9 +254,6 @@ const cardVariants: Variants = {
 
 export default function PainPoints() {
   return (
-    // CORRECCIÓN CRÍTICA:
-    // 1. Agregado 'overflow-hidden': Corta cualquier sombra o animación que intente salir del ancho.
-    // 2. Agregado 'w-full': Asegura que la sección respete el ancho del padre.
     <section className="py-24 px-4 md:px-6 relative z-10 overflow-hidden w-full">
       <div className="max-w-7xl mx-auto">
         
@@ -238,8 +296,6 @@ export default function PainPoints() {
           {painPoints.map((item, index) => (
             <motion.div
               key={index}
-              // NOTA: hover:shadow-xl puede ser muy amplio en móviles. 
-              // Gracias a overflow-hidden en la section, ya no romperá el layout.
               className="group relative p-6 md:p-8 rounded-2xl bg-white/60 backdrop-blur-md border border-white/60 shadow-sm hover:shadow-xl hover:shadow-teal-900/5 transition-all duration-300"
               variants={cardVariants}
             >
