@@ -259,9 +259,15 @@ export default function FAQ() {
         {/* --- CTA FINAL DISCRETO --- */}
         <div className="mt-16 text-center">
             <p className="text-stone-500 mb-4">¿Tienes alguna otra pregunta específica?</p>
-            <button className="px-8 py-3 rounded-full bg-stone-800 text-white font-bold hover:bg-stone-700 transition-colors shadow-lg hover:shadow-xl">
+            {/* CAMBIO: Se reemplazó <button> por <a> con el enlace de Walink */}
+            <a 
+                href="https://wa.link/2x3i8s"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-8 py-3 rounded-full bg-stone-800 text-white font-bold hover:bg-stone-700 transition-colors shadow-lg hover:shadow-xl cursor-pointer"
+            >
                 Contáctame Directamente
-            </button>
+            </a>
         </div>
 
       </div>
