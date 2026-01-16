@@ -3,6 +3,11 @@ import { Playfair_Display, Lato } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 
+// --- OPCIÓN B: IMPORTACIÓN EXPLÍCITA DEL ICONO ---
+// Esto asegura que Next.js reconozca la ruta del archivo, incluso al compilar.
+// Como layout.tsx y icon.webp están en la misma carpeta 'app', usamos ruta relativa:
+import iconImage from "./icon.webp"; 
+
 const playfair = Playfair_Display({ 
   subsets: ["latin"],
   variable: "--font-serif",
@@ -67,12 +72,11 @@ export const metadata: Metadata = {
     },
   },
 
-  // ÍCONO: Al tener 'icon.webp' en la carpeta 'app', Next lo hace automático.
-  // Pero si quieres forzarlo o asegurarte, puedes descomentar esto:
-  
+  // --- CONFIGURACIÓN DE ICONOS EXPLÍCITA ---
+  // Usamos .src porque al importar la imagen, Next devuelve un objeto.
   icons: {
-    icon: '/icon.webp', 
-    apple: '/icon.webp',
+    icon: iconImage.src, 
+    apple: iconImage.src,
   },
 
 };
