@@ -13,21 +13,24 @@ const credentials = [
     title: "Evidencia Científica",
     institution: "Universidad Javeriana",
     text: "Diplomado en Psicología Clínica Basada en la Evidencia. Métodos con eficacia probada.",
-    color: "bg-teal-50 border-teal-100 text-teal-800"
+    // CORRECCIÓN: Eliminadas las clases de border-color
+    color: "bg-teal-50 text-teal-800"
   },
   {
     icon: <HeartHandshake size={24} />,
     title: "Visión Holística",
     institution: "Universidad del Rosario",
     text: "Diplomado en Terapias Complementarias. Abordo tu sanación desde la totalidad del ser.",
-    color: "bg-stone-50 border-stone-100 text-stone-700"
+    // CORRECCIÓN: Eliminadas las clases de border-color
+    color: "bg-stone-50 text-stone-700"
   },
   {
     icon: <BookOpen size={24} />,
     title: "Metodología PBE",
     institution: "ACT & DBT",
     text: "Terapia de Aceptación y Compromiso + Dialéctico Conductual. Respaldadas por meta-análisis.",
-    color: "bg-blue-50 border-blue-100 text-blue-800"
+    // CORRECCIÓN: Eliminadas las clases de border-color
+    color: "bg-blue-50 text-blue-800"
   }
 ];
 
@@ -69,10 +72,10 @@ export default function ProfessionalProfile() {
                     fill
                     className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                     
-                    // --- OPTIMIZACIÓN CRÍTICA ---
+                    // --- OPTIMIZACIÓN CRÍTICA (CORREGIDA) ---
                     // 1. Quitamos priority (dejamos que el Hero cargue primero)
-                    // 2. Definimos tamaños exactos para ahorrar datos en móvil
-                    sizes="(max-width: 768px) 90vw, (max-width: 1200px) 50vw, 500px"
+                    // 2. CORRECCIÓN: Aumentado el tamaño final a 800px para escritorio nítido
+                    sizes="(max-width: 768px) 90vw, (max-width: 1200px) 50vw, 800px"
                     placeholder="blur"
                     loading="lazy"
                 />
@@ -123,7 +126,8 @@ export default function ProfessionalProfile() {
                 {credentials.map((cred, index) => (
                     <motion.div
                         key={index}
-                        className={`p-4 rounded-xl border ${cred.color} bg-white relative overflow-hidden group hover:shadow-md transition-all duration-300 transform-gpu`}
+                        // CORRECCIÓN: Eliminada la clase 'border' aquí
+                        className={`p-4 rounded-xl ${cred.color} bg-white relative overflow-hidden group hover:shadow-md transition-all duration-300 transform-gpu`}
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
@@ -138,7 +142,8 @@ export default function ProfessionalProfile() {
                             <div>
                                 <h4 className="font-bold text-stone-800 text-sm flex flex-wrap items-center gap-2">
                                     {cred.title}
-                                    <span className="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded bg-white border border-stone-100 font-semibold text-stone-400">
+                                    {/* CORRECCIÓN: Eliminado 'border border-stone-100' del badge de la institución */}
+                                    <span className="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded bg-white font-semibold text-stone-400">
                                         {cred.institution}
                                     </span>
                                 </h4>
