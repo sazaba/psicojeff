@@ -11,7 +11,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-// 1. DEFINIMOS LA INTERFAZ CON EL NUEVO CAMPO
 interface Post {
   id: number;
   title: string;
@@ -20,7 +19,7 @@ interface Post {
   category: string;
   readTime: string;
   createdAt: string;
-  isFeatured: boolean; // <--- Nuevo campo para saber si lleva estrella
+  isFeatured: boolean;
 }
 
 export default function BlogCarousel() {
@@ -28,7 +27,6 @@ export default function BlogCarousel() {
   const [posts, setPosts] = useState<Post[]>([]); 
   const [loading, setLoading] = useState(true);
 
-  // 2. PEDIMOS LOS DATOS (Ya vienen ordenados por la API: Destacados primero)
   useEffect(() => {
     fetch('/api/posts/list')
       .then(res => res.json())
@@ -106,17 +104,22 @@ export default function BlogCarousel() {
             >
             {posts.map((post: Post) => {
                 
-                // LÓGICA DE LIMPIEZA DE ETIQUETAS (CRÍTICO)
-                // Convierte '["Ansiedad","Trauma"]' en simplemente "Ansiedad"
-                let displayTag = post.category;
+                // LÓGICA DE LIMPIEZA DE ETIQUETAS (CORREGIDA)
+                let tags: string[] = [];
                 try {
-                    const parsed = JSON.parse(post.category);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
-                        displayTag = parsed[0]; 
+                    // Intenta parsear si es JSON
+                    if (post.category.startsWith("[")) {
+                        tags = JSON.parse(post.category);
+                    } else {
+                        // Soporte legacy (si alguna quedo como texto simple)
+                        tags = [post.category];
                     }
                 } catch (e) {
-                    // Si falla el parseo (es texto antiguo), se deja tal cual
+                    tags = ["General"];
                 }
+
+                // Tomamos solo las primeras 2 para no saturar la tarjeta
+                const visibleTags = tags.slice(0, 2); 
 
                 return (
                     <SwiperSlide key={post.id} className="h-auto">
@@ -125,7 +128,6 @@ export default function BlogCarousel() {
                         <div className="relative h-64 overflow-hidden bg-stone-200">
                         <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/20 transition-colors duration-500 z-10"></div>
                         
-                        {/* IMAGEN */}
                         {post.image ? (
                             <Image 
                             src={post.image} 
@@ -138,12 +140,21 @@ export default function BlogCarousel() {
                             <div className="w-full h-full flex items-center justify-center text-stone-400 font-serif italic">Sin Imagen</div>
                         )}
 
-                        {/* ETIQUETA DE CATEGORÍA */}
-                        <span className="absolute top-4 left-4 z-20 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-teal-700 shadow-sm border border-white/50">
-                            {displayTag}
-                        </span>
+                        {/* CONTENEDOR DE ETIQUETAS MULTIPLES */}
+                        <div className="absolute top-4 left-4 z-20 flex flex-wrap gap-2 max-w-[80%]">
+                            {visibleTags.map((tag, index) => (
+                                <span key={index} className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-teal-700 shadow-sm border border-white/50">
+                                    {tag}
+                                </span>
+                            ))}
+                            {tags.length > 2 && (
+                                <span className="bg-stone-800/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-bold text-white shadow-sm">
+                                    +{tags.length - 2}
+                                </span>
+                            )}
+                        </div>
 
-                        {/* INDICADOR DE DESTACADO (Solo si es true) */}
+                        {/* INDICADOR DE DESTACADO */}
                         {post.isFeatured && (
                              <span className="absolute top-4 right-4 z-20 bg-amber-400 text-white p-1.5 rounded-full shadow-md" title="Artículo Destacado">
                                 <Star size={12} fill="currentColor" />
