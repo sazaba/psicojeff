@@ -98,7 +98,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       </div>
 
       {/* --- CONTENIDO PRINCIPAL --- */}
-      {/* z-10 asegura que esta tarjeta flote SOBRE el hero, pero bajo elementos modales */}
       <div className="container mx-auto px-4 md:px-8 -mt-12 relative z-10 max-w-5xl">
         <div className="bg-white rounded-t-3xl md:rounded-3xl shadow-2xl p-8 md:p-16 border border-stone-100 relative">
             
@@ -139,10 +138,38 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             word-break: normal !important;
             overflow-wrap: break-word !important;
             white-space: normal !important; 
-            /* SE ELIMINÓ text-align: left !important PARA PERMITIR JUSTIFICACIÓN */
         }
 
-        /* CLASES NECESARIAS PARA EL EDITOR QUILL */
+        /* --- 1. SOLUCIÓN PARA VIÑETAS (DOTS) --- */
+        /* Tailwind elimina los estilos de lista por defecto. Esto los fuerza a aparecer. */
+        .safe-content ul {
+            list-style-type: disc !important;
+            padding-left: 1.5rem !important;
+            margin-bottom: 2rem;
+        }
+        .safe-content ol {
+            list-style-type: decimal !important;
+            padding-left: 1.5rem !important;
+            margin-bottom: 2rem;
+        }
+
+        /* --- 2. SOLUCIÓN PARA JUSTIFICAR LISTAS --- */
+        /* Fuerza la justificación en todos los items de lista, 
+           arreglando el problema de que la BD no guarde la clase. */
+        .safe-content li {
+            margin-bottom: 0.5rem;
+            padding-left: 0.25rem;
+            text-align: justify !important;
+            text-justify: inter-word !important;
+        }
+        
+        /* Color del punto de la viñeta */
+        .safe-content ul li::marker { 
+            color: #0d9488; 
+            font-size: 1.2em;
+        }
+
+        /* Clases estándar de alineación para párrafos normales */
         .safe-content .ql-align-justify {
             text-align: justify;
             text-justify: inter-word;
@@ -154,6 +181,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             text-align: right;
         }
 
+        /* Tipografía de Títulos */
         .safe-content h1, .safe-content h2, .safe-content h3 {
             font-family: 'Playfair Display', serif;
             font-weight: 800;
@@ -167,19 +195,10 @@ export default async function BlogPostPage({ params }: { params: Params }) {
 
         .safe-content p { margin-bottom: 1.5rem; }
 
-        .safe-content ul, .safe-content ol {
-            margin-bottom: 2rem;
-            padding-left: 1.5rem;
-        }
-        .safe-content li {
-            margin-bottom: 0.5rem;
-            padding-left: 0.5rem;
-        }
-        .safe-content ul li::marker { color: #0d9488; }
-
+        /* Blockquotes Estilizados */
         .safe-content blockquote {
-            border-left: 4px solid #34d399; /* Verde pastel en borde */
-            background: #ecfdf5; /* Fondo muy suave verde */
+            border-left: 4px solid #34d399;
+            background: #ecfdf5;
             padding: 1.5rem 2rem;
             margin: 2.5rem 0;
             font-family: 'Playfair Display', serif;
@@ -197,23 +216,23 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
-        /* --- ESTILOS DEL ENLACE VERDE PASTEL --- */
+        /* Enlaces */
         .safe-content a {
-            color: #34d399 !important; /* Verde Pastel (Emerald-400) */
+            color: #34d399 !important;
             text-decoration: underline !important;
             text-decoration-color: #34d399 !important;
             text-underline-offset: 4px;
             font-weight: 800;
-            cursor: pointer !important; /* Forzar cursor de mano */
+            cursor: pointer !important;
             position: relative;
-            z-index: 50; /* Forzar capa superior para asegurar el clic */
+            z-index: 50;
             transition: all 0.2s ease;
         }
         
         .safe-content a:hover {
-            color: #10b981 !important; /* Un poco más oscuro al pasar el mouse */
+            color: #10b981 !important;
             text-decoration-color: #10b981 !important;
-            background-color: #ecfdf5; /* Fondo sutil al hover */
+            background-color: #ecfdf5;
         }
 
         .safe-content strong, .safe-content b {
