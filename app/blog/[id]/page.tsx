@@ -134,52 +134,75 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             white-space: normal !important; 
         }
 
-        /* --- 1. SOLUCIÓN PARA VIÑETAS (DOTS) --- */
-        .safe-content ul {
-            list-style-type: disc !important;
-            padding-left: 1.5rem !important;
+        /* --- 1. SOLUCIÓN VIÑETAS DOBLES (CUSTOM BULLETS) --- */
+        /* Quitamos el estilo por defecto del navegador para evitar duplicados */
+        .safe-content ul, .safe-content ol {
+            list-style: none !important; 
+            padding-left: 0 !important;
             margin-bottom: 2rem;
-        }
-        .safe-content ol {
-            list-style-type: decimal !important;
-            padding-left: 1.5rem !important;
-            margin-bottom: 2rem;
+            margin-left: 0.5rem;
         }
 
-        /* --- 2. SOLUCIÓN PARA JUSTIFICAR LISTAS --- */
+        /* Creamos el espacio para nuestra propia viñeta */
         .safe-content li {
+            position: relative;
+            padding-left: 1.5rem; /* Espacio a la izquierda para el punto */
             margin-bottom: 0.5rem;
-            padding-left: 0.25rem;
             text-align: justify !important;
             text-justify: inter-word !important;
         }
-        
-        .safe-content ul li::marker { 
-            color: #0d9488; 
-            font-size: 1.2em;
+
+        /* DIBUJAMOS EL PUNTO NOSOTROS MISMOS (::before) */
+        .safe-content ul li::before {
+            content: "•";           /* El punto */
+            color: #0d9488;         /* Color Teal */
+            font-weight: bold;
+            font-size: 1.5rem;      /* Tamaño del punto */
+            position: absolute;
+            left: 0;
+            top: -0.2rem;           /* Ajuste fino de altura */
+            line-height: 1.5rem;
         }
 
-        /* --- 3. SOLUCIÓN PARA SANGRÍAS (INDENTACIÓN) --- */
-        /* Estas clases son las que usa Quill para la sangría */
-        .safe-content .ql-indent-1 { padding-left: 3em !important; }
-        .safe-content .ql-indent-2 { padding-left: 6em !important; }
-        .safe-content .ql-indent-3 { padding-left: 9em !important; }
-        
-        /* Ajuste específico para listas con sangría */
-        .safe-content li.ql-indent-1 { margin-left: 1.5rem !important; padding-left: 0.25rem !important; }
-        .safe-content li.ql-indent-2 { margin-left: 3rem !important; padding-left: 0.25rem !important; }
+        /* DIBUJAMOS LOS NÚMEROS PARA LISTAS ORDENADAS */
+        .safe-content ol {
+            counter-reset: list-counter; /* Iniciamos contador */
+        }
+        .safe-content ol li {
+            counter-increment: list-counter;
+        }
+        .safe-content ol li::before {
+            content: counter(list-counter) ".";
+            color: #0d9488;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
 
-        /* Alineación General */
+        /* --- 2. SOLUCIÓN PARA SANGRÍAS (INDENTACIÓN) --- */
+        /* Aplica tanto a Párrafos <p> como a Listas <li> */
+        
+        /* Nivel 1 */
+        .safe-content .ql-indent-1 { 
+            margin-left: 2rem !important; 
+            padding-left: 1rem !important;
+            border-left: 2px solid #e7e5e4; /* Opcional: una línea sutil gris para guiar el ojo */
+        }
+        
+        /* Nivel 2 */
+        .safe-content .ql-indent-2 { 
+            margin-left: 4rem !important; 
+            padding-left: 1rem !important;
+            border-left: 2px solid #e7e5e4;
+        }
+
+        /* --- 3. ALINEACIÓN GENERAL --- */
         .safe-content .ql-align-justify {
             text-align: justify;
             text-justify: inter-word;
         }
-        .safe-content .ql-align-center {
-            text-align: center;
-        }
-        .safe-content .ql-align-right {
-            text-align: right;
-        }
+        .safe-content .ql-align-center { text-align: center; }
+        .safe-content .ql-align-right { text-align: right; }
 
         /* Tipografía */
         .safe-content h1, .safe-content h2, .safe-content h3 {
@@ -192,9 +215,9 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         }
         .safe-content h2 { font-size: 2rem; }
         .safe-content h3 { font-size: 1.5rem; }
-
         .safe-content p { margin-bottom: 1.5rem; }
 
+        /* Blockquotes */
         .safe-content blockquote {
             border-left: 4px solid #34d399;
             background: #ecfdf5;

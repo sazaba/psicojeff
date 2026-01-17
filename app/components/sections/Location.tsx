@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, ArrowRight } from "lucide-react";
+import { MapPin, Clock, ArrowRight, Loader2 } from "lucide-react";
 
-// --- DATOS DE LAS SEDES ---
-const locations = [
+// --- DATOS CONSTANTES (Fuera del componente para optimizar memoria) ---
+const LOCATIONS = [
   {
     id: "centro",
     name: "Sede Centro",
@@ -13,8 +13,8 @@ const locations = [
     landmark: "Corazón de la ciudad",
     schedule: "Mañanas: hasta las 2:00 p.m.",
     description: "Ideal si te mueves por el centro histórico o administrativo. Un espacio diseñado para hacer una pausa productiva en tu día.",
-    // NOTA: Asegúrate de poner el src real de tu iframe de Google Maps aquí
-    mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.924823733979!2d-75.51737742416168!3d5.068474639420794!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e476ff60714ed99%3A0x6e7687848464670c!2sCra.+22+%2324-24%2C+Manizales%2C+Caldas!5e0!3m2!1ses!2sco!4v1562693892837!5m2!1ses!2sco",
+    // RECUERDA: Cambiar por los links reales de 'Embed map' de Google
+    mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.241376843383!2d-75.5186789!3d5.0686909!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e476ff4f1ad8bb3%3A0x67a810626356331c!2sCra.%2022%20%2324-24%2C%20Manizales%2C%20Caldas!5e0!3m2!1ses!2sco!4v1705461111111!5m2!1ses!2sco", 
     color: "from-teal-600 to-teal-800"
   },
   {
@@ -24,22 +24,47 @@ const locations = [
     landmark: "Edificio Cristóbal Colón",
     schedule: "Tarde Noche: hasta las 8:00 p.m.",
     description: "Perfecta para cerrar tu jornada laboral o de estudio. Ubicación estratégica con fácil acceso y ambiente tranquilo.",
-    // NOTA: Asegúrate de poner el src real de tu iframe de Google Maps aquí
-    mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.845689123456!2d-75.505678!3d5.074678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNcKwMDQnMjguOCJOIDc1wrAzMCcyMC40Ilc!5e0!3m2!1ses!2sco!4v1600000000000!5m2!1ses!2sco", 
+    // RECUERDA: Cambiar por los links reales de 'Embed map' de Google
+    mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.123456789!2d-75.5000000!3d5.0700000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMDQnMjEuNiJOIDc1wrAyOSczOC40Ilc!5e0!3m2!1ses!2sco!4v1705462222222!5m2!1ses!2sco",
     color: "from-indigo-600 to-indigo-800"
   }
 ];
 
 export default function Location() {
   const [activeTab, setActiveTab] = useState("centro");
-  const activeLocation = locations.find((l) => l.id === activeTab) || locations[0];
+  const [shouldLoadMap, setShouldLoadMap] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  
+  const activeLocation = LOCATIONS.find((l) => l.id === activeTab) || LOCATIONS[0];
+
+  // --- INTERSECTION OBSERVER (Detecta cuando el usuario ve la sección) ---
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setShouldLoadMap(true); // Solo carga el mapa si el usuario llega aquí
+          observer.disconnect(); // Deja de observar una vez cargado
+        }
+      },
+      { rootMargin: "200px" } // Carga 200px antes de llegar para que parezca instantáneo
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section className="py-24 px-6 relative overflow-hidden bg-[#fffcf8]">
+    <section 
+      ref={sectionRef} 
+      className="py-24 px-6 relative overflow-hidden bg-[#fffcf8]"
+    >
       
       <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-0 min-h-[600px] rounded-3xl overflow-hidden shadow-2xl shadow-stone-200">
         
-        {/* --- COLUMNA IZQUIERDA: INFORMACIÓN Y SELECTOR --- */}
+        {/* --- COLUMNA IZQUIERDA --- */}
         <div className="bg-white p-8 md:p-12 lg:p-16 flex flex-col justify-center relative">
             
             <div className="mb-10">
@@ -54,9 +79,9 @@ export default function Location() {
                 </p>
             </div>
 
-            {/* Selector de Pestañas (Tabs) */}
+            {/* Selector de Pestañas */}
             <div className="flex space-x-1 bg-stone-100 p-1 rounded-xl mb-8 w-fit">
-                {locations.map((loc) => (
+                {LOCATIONS.map((loc) => (
                     <button
                         key={loc.id}
                         onClick={() => setActiveTab(loc.id)}
@@ -115,8 +140,6 @@ export default function Location() {
                         </p>
                     </div>
 
-                    {/* --- BOTÓN CORREGIDO --- */}
-                    {/* Se cambió <button> por <a> para que funcione el enlace */}
                     <a 
                         href="https://wa.link/2x3i8s"
                         target="_blank"
@@ -128,46 +151,43 @@ export default function Location() {
                     </a>
                 </motion.div>
             </AnimatePresence>
-
         </div>
 
-        {/* --- COLUMNA DERECHA: MAPA --- */}
-        <div className="relative h-[400px] lg:h-auto bg-stone-100 overflow-hidden">
+        {/* --- COLUMNA DERECHA: MAPA OPTIMIZADO --- */}
+        <div className="relative h-[400px] lg:h-auto bg-stone-100 overflow-hidden flex items-center justify-center">
             
-            <AnimatePresence mode="wait">
-                <motion.div
-                    key={activeLocation.id}
-                    className="absolute inset-0 w-full h-full"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 1 }}
-                >
-                    <iframe
-                        src={activeLocation.mapSrc}
-                        width="100%"
-                        height="100%"
-                        style={{ border: 0 }}
-                        allowFullScreen
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                        className="opacity-100 transition-opacity duration-700"
-                    />
-                </motion.div>
-            </AnimatePresence>
+            {/* Solo renderizamos el iframe si shouldLoadMap es true */}
+            {shouldLoadMap ? (
+                <iframe
+                    key={activeLocation.id} // Cambiar el key fuerza al iframe a recargar solo lo necesario
+                    src={activeLocation.mapSrc}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0, opacity: 1 }} // Opacidad directa, sin Framer Motion en el iframe
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title={`Mapa de ${activeLocation.name}`}
+                    className="absolute inset-0 w-full h-full animate-in fade-in duration-700"
+                />
+            ) : (
+                // Placeholder mientras el usuario hace scroll hacia abajo
+                <div className="absolute inset-0 flex items-center justify-center bg-stone-200">
+                    <div className="flex flex-col items-center gap-2 text-stone-400">
+                        <Loader2 className="animate-spin" />
+                        <span className="text-xs">Cargando mapa...</span>
+                    </div>
+                </div>
+            )}
 
-            <div className="absolute inset-0 pointer-events-none border-[12px] border-white/50 lg:border-white/0" />
+            <div className="absolute inset-0 pointer-events-none border-[12px] border-white/50 lg:border-white/0 z-20" />
             
-            <motion.div 
-                key={activeLocation.id + "-badge"}
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="absolute bottom-8 right-8 bg-white/95 backdrop-blur-md px-4 py-3 rounded-xl shadow-xl border border-stone-200 flex items-center gap-3 z-10"
+            <div 
+                className="absolute bottom-8 right-8 bg-white/95 backdrop-blur-md px-4 py-3 rounded-xl shadow-xl border border-stone-200 flex items-center gap-3 z-30"
             >
                 <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
                 <span className="text-xs font-bold text-stone-700 uppercase tracking-wider">Ubicación Exacta</span>
-            </motion.div>
+            </div>
 
         </div>
 
