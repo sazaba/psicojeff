@@ -9,12 +9,19 @@ interface ReviewWidgetProps {
 }
 
 export default function ReviewWidget({ initialCount }: ReviewWidgetProps) {
-  const [count, setCount] = useState(initialCount);
+  // CAMBIO 1: Inicializamos como string para poder manejar el campo vacío
+  const [count, setCount] = useState(initialCount.toString());
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
   const router = useRouter();
 
+  // Helper para obtener el valor numérico real (si está vacío es 0 o el valor que prefieras)
+  const currentNumber = count === "" ? 0 : Number(count);
+
   const handleSave = async () => {
+    // Evitar guardar si está vacío
+    if (count === "") return;
+
     setLoading(true);
     setSaved(false);
 
@@ -22,13 +29,14 @@ export default function ReviewWidget({ initialCount }: ReviewWidgetProps) {
       const res = await fetch("/api/review-count", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ newCount: count }),
+        // CAMBIO 2: Convertimos a número antes de enviar a la API
+        body: JSON.stringify({ newCount: Number(count) }),
       });
 
       if (res.ok) {
         setSaved(true);
-        router.refresh(); // Refresca los datos del servidor
-        setTimeout(() => setSaved(false), 3000); // Quita el mensaje de éxito a los 3 seg
+        router.refresh();
+        setTimeout(() => setSaved(false), 3000);
       }
     } catch (error) {
       console.error("Error al guardar", error);
@@ -46,7 +54,6 @@ export default function ReviewWidget({ initialCount }: ReviewWidgetProps) {
           <Star size={28} fill="currentColor" className="text-yellow-400" />
         </div>
         
-        {/* Indicador de Guardado */}
         {saved && (
           <span className="text-xs font-bold text-green-600 bg-green-50 px-3 py-1 rounded-full flex items-center gap-1 animate-in fade-in slide-in-from-top-2">
             <Check size={12} /> Guardado
@@ -58,21 +65,20 @@ export default function ReviewWidget({ initialCount }: ReviewWidgetProps) {
         <p className="text-stone-400 text-xs font-bold uppercase tracking-widest mb-2">Total Reseñas (Google)</p>
         
         <div className="flex items-center gap-3">
-         <input 
-  type="number" 
-  value={count}
-  onChange={(e) => setCount(Number(e.target.value))}
-  // CLASES NUEVAS AGREGADAS AL FINAL:
-  // [appearance:textfield] -> Para Firefox
-  // [&::-webkit-outer-spin-button]:appearance-none -> Para Chrome/Safari
-  // [&::-webkit-inner-spin-button]:appearance-none -> Para Chrome/Safari
-  className="text-3xl font-serif font-bold text-stone-800 bg-stone-50 border border-transparent hover:border-stone-200 focus:border-teal-500 focus:ring-0 rounded-lg w-32 px-2 py-1 transition-all outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-/>
+          <input 
+            type="number" 
+            value={count}
+            // CAMBIO 3: Guardamos el valor directo (string) sin forzar Number()
+            onChange={(e) => setCount(e.target.value)}
+            className="text-3xl font-serif font-bold text-stone-800 bg-stone-50 border border-transparent hover:border-stone-200 focus:border-teal-500 focus:ring-0 rounded-lg w-32 px-2 py-1 transition-all outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          />
+          
           <button
             onClick={handleSave}
-            disabled={loading || count === initialCount}
+            // CAMBIO 4: Lógica ajustada para comparar string vs numero y evitar guardar vacíos
+            disabled={loading || count === "" || currentNumber === initialCount}
             className={`p-3 rounded-xl transition-all ${
-              count !== initialCount 
+              count !== "" && currentNumber !== initialCount 
                 ? "bg-stone-900 text-white hover:bg-teal-600 shadow-lg translate-y-0" 
                 : "bg-stone-100 text-stone-300 cursor-not-allowed"
             }`}
@@ -87,7 +93,6 @@ export default function ReviewWidget({ initialCount }: ReviewWidgetProps) {
         </p>
       </div>
 
-      {/* Decoración de fondo */}
       <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-yellow-100/50 rounded-full blur-2xl pointer-events-none"></div>
     </div>
   );
