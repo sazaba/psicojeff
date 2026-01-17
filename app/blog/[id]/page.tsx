@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { prisma } from "@/lib/prisma";
-// IMPORTANTE: Asegúrate de que la ruta sea correcta según donde guardaste el archivo del Paso 1
+// Mantengo tu ruta de importación tal cual la enviaste
 import ShareButton from "@/app/components/ui/ShareButton"; 
 
 type Params = Promise<{ id: string }>;
@@ -32,9 +32,15 @@ export default async function BlogPostPage({ params }: { params: Params }) {
     dateStyle: 'long'
   }).format(post.createdAt);
 
+  // --- FIX CRÍTICO DE URLS Y LIMPIEZA ---
   const cleanContent = post.content
+    // 1. Limpiar espacios duros que rompen el diseño móvil
     .replace(/&nbsp;/g, ' ')
-    .replace(/\u00a0/g, ' ');
+    .replace(/\u00a0/g, ' ')
+    // 2. CORRECCIÓN DE URLS:
+    // Busca href="www.algo" y lo reemplaza por href="https://www.algo"
+    // Esto fuerza al navegador a salir de tu sitio e ir a la web externa.
+    .replace(/href=(["'])www\./g, 'href=$1https://www.');
 
   let tags: string[] = [];
   try {
@@ -114,7 +120,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                     <span>Publicado el {formattedDate}</span>
                 </div>
                 
-                {/* AQUI INSERTAMOS EL NUEVO COMPONENTE */}
                 <ShareButton />
                 
             </div>
