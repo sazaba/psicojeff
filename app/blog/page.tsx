@@ -1,10 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Calendar, Clock, ArrowRight } from "lucide-react";
+// 1. IMPORTAMOS STAR
+import { ArrowLeft, Calendar, Clock, ArrowRight, Star } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
-// 1. DEFINIMOS LA INTERFAZ
+// 2. ACTUALIZAMOS LA INTERFAZ
 interface BlogPost {
   id: number;
   title: string;
@@ -15,6 +16,7 @@ interface BlogPost {
   readTime: string;
   createdAt: Date;
   updatedAt: Date;
+  isFeatured: boolean; // Agregamos esta propiedad
 }
 
 export const dynamic = 'force-dynamic';
@@ -28,8 +30,12 @@ const formatDate = (date: Date) => {
 };
 
 export default async function BlogIndex() {
+  // 3. MODIFICAMOS EL ORDENAMIENTO DE LA BASE DE DATOS
   const posts = await prisma.post.findMany({
-    orderBy: { createdAt: 'desc' }
+    orderBy: [
+      { isFeatured: 'desc' }, // Primero los destacados (true va antes que false)
+      { createdAt: 'desc' }   // Luego por fecha (más recientes primero)
+    ]
   });
 
   return (
@@ -71,7 +77,7 @@ export default async function BlogIndex() {
             const visibleTags = tags.slice(0, 2);
 
             return (
-                <article key={post.id} className="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-stone-100">
+                <article key={post.id} className={`group flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border ${post.isFeatured ? 'border-amber-200 ring-1 ring-amber-100' : 'border-stone-100'}`}>
                   <div className="relative h-56 overflow-hidden bg-stone-200">
                     {post.image ? (
                         <Image 
@@ -85,20 +91,26 @@ export default async function BlogIndex() {
                     )}
                     
                     {/* --- RENDERIZADO DE ETIQUETAS (BADGES) --- */}
-                    <div className="absolute top-4 left-4 flex flex-wrap gap-2 max-w-[90%]">
+                    <div className="absolute top-4 left-4 flex flex-wrap gap-2 max-w-[80%] z-20">
                         {visibleTags.map((tag, index) => (
                             <span key={index} className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-teal-700 shadow-sm border border-white/50">
                                 {tag}
                             </span>
                         ))}
                         
-                        {/* Si hay más de 2, mostramos un contador (Ej: +1) */}
                         {tags.length > 2 && (
                             <span className="bg-stone-800/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-bold text-white shadow-sm border border-white/20">
                                 +{tags.length - 2}
                             </span>
                         )}
                     </div>
+
+                    {/* 4. AGREGAMOS EL INDICADOR DE ESTRELLA (VISUAL) */}
+                    {post.isFeatured && (
+                         <span className="absolute top-4 right-4 z-20 bg-amber-400 text-white p-1.5 rounded-full shadow-md animate-in fade-in zoom-in duration-300" title="Artículo Destacado">
+                            <Star size={12} fill="currentColor" />
+                         </span>
+                    )}
 
                   </div>
                   
