@@ -1,14 +1,17 @@
 import Link from 'next/link';
 import Image from 'next/image';
-// Asegúrate de que esta importación sea correcta
 import Headerpsicojeff from '@/app/assets/Headerpsicojeff.webp'; 
 
 export default function Hero() {
   return (
     <section className="relative min-h-[90vh] flex items-center pt-32 md:pt-20 overflow-hidden w-full">
       
-      {/* LUZ DE FONDO AMBIENTAL */}
-      <div className="absolute top-1/2 right-0 md:right-20 -translate-y-1/2 w-[80vw] md:w-[600px] h-[600px] bg-teal-50/40 rounded-full blur-[120px] -z-10 pointer-events-none" />
+      {/* OPTIMIZACIÓN 1: GPU ACCELERATION
+         Agregamos 'transform-gpu' y 'will-change-transform'.
+         Esto saca el cálculo del desenfoque de la CPU y lo pasa a la tarjeta gráfica.
+         Resultado: Scroll suave en iPhone sin tirones.
+      */}
+      <div className="absolute top-1/2 right-0 md:right-20 -translate-y-1/2 w-[80vw] md:w-[600px] h-[600px] bg-teal-50/40 rounded-full blur-[120px] -z-10 pointer-events-none transform-gpu will-change-transform" />
 
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
@@ -16,47 +19,42 @@ export default function Hero() {
             {/* COLUMNA 1: IMAGEN */}
             <div className="relative order-last md:order-first flex justify-center md:justify-end">
                 
-                <div className="relative w-full max-w-[500px]"> 
-                    
-                    {/* 1. GLOW TRASERO */}
-                    <div className="absolute top-10 left-1/2 -translate-x-1/2 w-3/4 h-3/4 bg-teal-200/30 rounded-full blur-[60px] -z-10"></div>
+                {/* OPTIMIZACIÓN GPU TAMBIÉN AQUÍ */}
+                <div className="absolute top-10 left-1/2 -translate-x-1/2 w-3/4 h-3/4 bg-teal-200/30 rounded-full blur-[60px] -z-10 transform-gpu will-change-transform"></div>
 
-                    {/* 2. IMAGEN OPTIMIZADA */}
+                <div className="relative w-full max-w-[500px]"> 
                     <Image
                         src={Headerpsicojeff}
-                        alt="Psicólogo Jefferson Bastidas"
-                        // CLASE: Agregamos 'will-change-transform' para que la GPU del móvil ayude a renderizar
+                        alt="Psicólogo Jefferson Bastidas - Terapia Online y Presencial"
+                        // Mantenemos tus clases de diseño intactas
                         className="w-full h-auto object-contain drop-shadow-2xl z-10 [mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)] will-change-transform" 
                         
-                        // 1. PRIORITY: Obligatorio en el Hero. Desactiva lazy loading.
+                        // 1. PRIORITY: Correcto, esto es vital para el LCP.
                         priority={true} 
 
-                        // 2. PLACEHOLDER: Esto crea el efecto de transición suave (blur-up)
                         placeholder="blur"
 
-                        // 3. QUALITY: Bajamos un poco (de 75 a 85 es estándar, pero 75 suele bastar para webp)
-                        // Si la imagen pesa mucho, ponle 75.
-                        quality={85}
+                        // OPTIMIZACIÓN 2: CALIDAD
+                        // Bajamos a 80. La diferencia visual es nula en WebP, 
+                        // pero ahorramos KB valiosos para redes móviles 4G.
+                        quality={80}
 
-                        // 4. SIZES: Definición exacta para que el móvil no baje la versión de escritorio
-                        // Móvil (hasta 768px): ocupa casi todo el ancho (90vw)
-                        // Tablet/Desktop: ocupa máximo 500px
-                        sizes="(max-width: 768px) 90vw, 500px"
+                        // OPTIMIZACIÓN 3: SIZES AJUSTADOS
+                        // 100vw en móvil asegura que se descargue la versión nítida para pantallas retina
+                        sizes="(max-width: 768px) 100vw, 500px"
                     />
                 </div>
             </div>
 
-            {/* COLUMNA 2: TEXTO */}
+            {/* COLUMNA 2: TEXTO (Sin cambios estructurales, solo limpieza) */}
             <div className="text-center md:text-left z-10 relative">
                 
-                {/* BADGE / ETIQUETA */}
                 <div className="inline-block mb-8 mt-4 md:mt-0 px-5 py-2 rounded-full border border-teal-100 bg-white/50 backdrop-blur-sm">
                     <span className="text-xs md:text-sm font-bold text-teal-700 tracking-widest uppercase font-sans">
                         Psicólogo en Manizales y Online
                     </span>
                 </div>
                 
-                {/* TÍTULO H1 */}
                 <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium tracking-tight text-stone-800 mb-8 leading-[1.1] font-serif">
                     Impactar vidas a través del <br />
                     bienestar mental con <br className="hidden md:block" />
@@ -68,7 +66,6 @@ export default function Hero() {
                     </span>
                 </h1>
 
-                {/* PÁRRAFO */}
                 <p className="text-lg md:text-xl text-stone-600 mb-10 max-w-lg mx-auto md:mx-0 leading-relaxed font-sans font-medium flex flex-wrap justify-center md:justify-start items-center gap-1.5">
                     Un espacio terapéutico de alta precisión para generar
                     
@@ -77,6 +74,7 @@ export default function Hero() {
                         <span className="relative font-serif italic font-semibold text-teal-800 text-xl md:text-2xl tracking-wide">
                         Calma Vitalizada
                         </span>
+                        {/* SVG pequeño: no impacta rendimiento, se deja igual */}
                         <svg className="absolute -top-2 -right-3 w-5 h-5 text-teal-400 opacity-0 group-hover/highlight:opacity-100 transition-opacity duration-500" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M10 0L12.5 7.5L20 10L12.5 12.5L10 20L7.5 12.5L0 10L7.5 7.5L10 0Z" />
                         </svg>
@@ -84,10 +82,7 @@ export default function Hero() {
                     <span>.</span>
                 </p>
 
-                {/* BOTONES */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center">
-                    
-                    {/* BOTÓN CON ENLACE WALINK */}
                     <a 
                         href="https://wa.link/2x3i8s" 
                         target="_blank"

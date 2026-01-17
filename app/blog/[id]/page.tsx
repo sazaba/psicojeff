@@ -134,7 +134,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             white-space: normal !important; 
         }
 
-        /* --- 1. SOLUCIÓN VIÑETAS DOBLES (CUSTOM BULLETS) --- */
+        /* --- 1. SOLUCIÓN VIÑETAS (CUSTOM BULLETS) --- */
         /* Quitamos el estilo por defecto del navegador para evitar duplicados */
         .safe-content ul, .safe-content ol {
             list-style: none !important; 

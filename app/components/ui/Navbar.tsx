@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, ArrowRight } from "lucide-react";
@@ -9,16 +9,22 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // 1. DETECTOR DE SCROLL
+  // --- OPTIMIZACIÓN 1: Scroll Listener Pasivo y Eficiente ---
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const scrolledNow = window.scrollY > 20;
+      // Solo actualizamos el estado si el valor CAMBIA.
+      // Esto evita miles de re-renderizados innecesarios mientras bajas la página.
+      setIsScrolled((prev) => (prev !== scrolledNow ? scrolledNow : prev));
     };
-    window.addEventListener("scroll", handleScroll);
+
+    // { passive: true } es MÁGICO para móviles. 
+    // Le dice a Safari: "No voy a detener el scroll, hazlo suave y no me esperes".
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 2. BLOQUEO DE SCROLL EN BODY
+  // 2. BLOQUEO DE SCROLL EN BODY (Sin cambios, está bien)
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -28,7 +34,6 @@ export default function Navbar() {
     return () => { document.body.style.overflow = "unset"; };
   }, [isMobileMenuOpen]);
 
-  // --- ENLACES ---
   const navLinks = [
     { name: "Inicio", href: "#inicio" },
     { name: "Acerca de Mí", href: "#sobre-mi" },
@@ -58,14 +63,13 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b ${
+        // Agregamos 'will-change-transform' para avisar al navegador que esta barra cambiará
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b will-change-transform ${
           isScrolled || isMobileMenuOpen 
-            ? "bg-[#f0fdfa]/90 backdrop-blur-md border-teal-100/50 shadow-sm py-3"
+            ? "bg-[#f0fdfa]/95 backdrop-blur-md border-teal-100/50 shadow-sm py-3" // Subí opacidad a 95 para reducir trabajo de mezcla de colores
             : "bg-transparent border-transparent py-6"
         }`}
       >
-        {/* CORRECCIÓN: Se elimina 'max-w-[100vw]' que causa el scroll horizontal. 
-            Se usa 'w-full max-w-7xl' para contención segura sin desbordamiento. */}
         <div className="w-full max-w-7xl mx-auto px-6 flex items-center justify-between h-full">
           
           {/* LOGO */}
@@ -76,7 +80,9 @@ export default function Navbar() {
                 alt="Logo Jefferson Bastidas" 
                 fill 
                 className="object-contain"
+                // El logo siempre es prioridad alta
                 priority
+                sizes="(max-width: 768px) 48px, 64px"
               />
             </div>
             
@@ -106,7 +112,6 @@ export default function Navbar() {
               ))}
             </div>
             
-            {/* BOTÓN DESKTOP CON ENLACE WALINK */}
             <a
               href="https://wa.link/2x3i8s"
               target="_blank"
@@ -129,9 +134,11 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* MOBILE MENU */}
+      {/* MOBILE MENU OPTIMIZADO */}
       <div
-        className={`fixed inset-0 z-40 bg-[#fffcf8]/95 backdrop-blur-xl flex flex-col items-center justify-center transition-all duration-500 md:hidden h-[100dvh] supports-[height:100dvh]:h-screen w-full
+        // OPTIMIZACIÓN GPU: 'transform-gpu' para aceleración de hardware.
+        // Se mantiene backdrop-blur, pero la GPU se encarga de ello.
+        className={`fixed inset-0 z-40 bg-[#fffcf8]/98 backdrop-blur-xl flex flex-col items-center justify-center transition-all duration-500 md:hidden h-[100dvh] supports-[height:100dvh]:h-screen w-full transform-gpu will-change-transform
         ${isMobileMenuOpen 
             ? "opacity-100 visible translate-y-0" 
             : "opacity-0 invisible -translate-y-4 pointer-events-none"
@@ -155,12 +162,11 @@ export default function Navbar() {
                 className={`mt-8 transition-all duration-700 delay-300 transform
                 ${isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}
             >
-                {/* BOTÓN MOBILE CON ENLACE WALINK */}
                 <a
                 href="https://wa.link/2x3i8s"
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => setIsMobileMenuOpen(false)} // Cerramos el menú al hacer click
+                onClick={() => setIsMobileMenuOpen(false)}
                 className="inline-flex px-10 py-4 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 text-white font-bold shadow-xl shadow-teal-500/20 active:scale-95 transition-transform"
                 >
                 Agendar Sesión
