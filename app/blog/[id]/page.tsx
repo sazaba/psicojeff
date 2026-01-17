@@ -134,55 +134,46 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             white-space: normal !important; 
         }
 
-        /* --- SOLUCIÓN DEFINITIVA VIÑETAS (USANDO ::MARKER) --- */
-        /* Esta es la forma moderna que evita viñetas dobles */
-
-        /* 1. Configurar el contenedor de la lista para que tenga espacio a la izquierda */
+        /* --- SOLUCIÓN VIÑETAS (::MARKER) --- */
         .safe-content ul, .safe-content ol {
             padding-left: 1.5rem !important; 
             margin-bottom: 2rem;
-            list-style-position: outside !important; /* La viñeta queda fuera del bloque de texto */
+            list-style-position: outside !important;
         }
-
-        /* 2. Asegurar que el navegador sepa qué tipo de lista es */
         .safe-content ul { list-style-type: disc !important; }
         .safe-content ol { list-style-type: decimal !important; }
 
-        /* 3. Colorear la viñeta nativa directamente. ¡Esto evita duplicados! */
         .safe-content li::marker {
-            color: #0d9488; /* Tu color Teal */
-            font-size: 1.2em; /* Un poco más grandes para que destaquen */
+            color: #0d9488;
+            font-size: 1.2em;
         }
 
-        /* 4. Estilar el ítem de lista y forzar JUSTIFICADO */
+        /* --- FUERZA LA JUSTIFICACIÓN EN LISTAS --- */
         .safe-content li {
             margin-bottom: 0.5rem;
-            padding-left: 0.5rem; /* Un pequeño respiro entre la viñeta y el texto */
-            text-align: justify !important;
+            padding-left: 0.5rem;
+            text-align: justify !important;      /* <--- Forzado */
             text-justify: inter-word !important;
         }
 
-        /* --- SOLUCIÓN PARA SANGRÍAS (INDENTACIÓN) --- */
-        /* Aplica tanto a Párrafos <p> como a Listas <li> con sangría */
-        .safe-content .ql-indent-1, .safe-content li.ql-indent-1 { 
-            margin-left: 2rem !important; 
-        }
-        .safe-content .ql-indent-2, .safe-content li.ql-indent-2 { 
-            margin-left: 4rem !important; 
-        }
-        .safe-content .ql-indent-3, .safe-content li.ql-indent-3 { 
-            margin-left: 6rem !important; 
+        /* --- SOLUCIÓN SANGRÍAS --- */
+        .safe-content .ql-indent-1, .safe-content li.ql-indent-1 { margin-left: 2rem !important; }
+        .safe-content .ql-indent-2, .safe-content li.ql-indent-2 { margin-left: 4rem !important; }
+        .safe-content .ql-indent-3, .safe-content li.ql-indent-3 { margin-left: 6rem !important; }
+
+        /* --- FUERZA LA JUSTIFICACIÓN EN PÁRRAFOS TAMBIÉN --- */
+        /* AGREGADO: Esto asegura que el texto normal siempre se justifique */
+        .safe-content p { 
+            margin-bottom: 1.5rem;
+            text-align: justify !important;      /* <--- Forzado */
+            text-justify: inter-word !important;
         }
 
-        /* --- ALINEACIÓN GENERAL --- */
-        .safe-content .ql-align-justify {
-            text-align: justify;
-            text-justify: inter-word;
-        }
-        .safe-content .ql-align-center { text-align: center; }
-        .safe-content .ql-align-right { text-align: right; }
+        /* Alineación Específica (Por si quieres centrar algo explícitamente) */
+        .safe-content .ql-align-center { text-align: center !important; }
+        .safe-content .ql-align-right { text-align: right !important; }
 
-        /* Tipografía y otros elementos */
+        /* Tipografía */
         .safe-content h1, .safe-content h2, .safe-content h3 {
             font-family: 'Playfair Display', serif;
             font-weight: 800;
@@ -190,10 +181,10 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             margin-top: 3rem;
             margin-bottom: 1.5rem;
             line-height: 1.25;
+            text-align: left !important; /* Los títulos se ven mejor a la izquierda */
         }
         .safe-content h2 { font-size: 2rem; }
         .safe-content h3 { font-size: 1.5rem; }
-        .safe-content p { margin-bottom: 1.5rem; }
 
         /* Blockquotes */
         .safe-content blockquote {
