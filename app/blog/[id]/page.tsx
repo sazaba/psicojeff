@@ -5,8 +5,8 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
-// Mantenemos estilos base de Quill
-import "react-quill-new/dist/quill.snow.css"; 
+// No importamos estilos de Quill aquí para evitar conflictos.
+// Controlaremos todo manualmente.
 
 type Params = Promise<{ id: string }>;
 
@@ -36,7 +36,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
   return (
     <article className="min-h-screen bg-white pb-24">
       
-      {/* --- HERO SECTION RESTAURADO --- */}
+      {/* --- HERO SECTION --- */}
       <div className="relative w-full h-[50vh] min-h-[400px] bg-stone-900">
         {post.image && (
             <Image 
@@ -49,8 +49,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         )}
         
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end pb-12 md:pb-20">
-            <div className="container mx-auto px-4 md:px-6 max-w-4xl">
-                
+            <div className="container mx-auto px-4 md:px-8 max-w-5xl">
                 <Link href="/blog" className="inline-flex items-center text-white/80 hover:text-white mb-8 transition-colors text-sm font-medium tracking-wide">
                     <ArrowLeft size={18} className="mr-2" />
                     VOLVER A LA BITÁCORA
@@ -66,34 +65,34 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                     </span>
                 </div>
 
-                <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-white max-w-5xl leading-tight drop-shadow-xl">
+                <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-white leading-tight drop-shadow-xl">
                     {post.title}
                 </h1>
             </div>
         </div>
       </div>
 
-      {/* --- CONTENIDO PRINCIPAL --- */}
-      <div className="container mx-auto px-4 md:px-6 -mt-10 relative z-10 max-w-4xl">
-        <div className="bg-white rounded-t-3xl md:rounded-3xl shadow-xl p-6 md:p-12 lg:p-16 w-full border border-stone-100">
+      {/* --- CONTENEDOR PRINCIPAL --- */}
+      {/* AUMENTÉ max-w-4xl a max-w-5xl para dar más aire horizontal, como pediste revisar el ancho */}
+      <div className="container mx-auto px-4 md:px-8 -mt-10 relative z-10 max-w-5xl">
+        <div className="bg-white rounded-t-3xl md:rounded-3xl shadow-xl p-8 md:p-16 border border-stone-100">
             
             {post.excerpt && (
-                <div className="text-lg md:text-xl text-stone-600 font-serif italic mb-10 pb-10 border-b border-stone-200 leading-relaxed">
+                <div className="text-xl text-stone-600 font-serif italic mb-12 pb-8 border-b border-stone-200 leading-relaxed">
                     {post.excerpt}
                 </div>
             )}
             
-            {/* CONTENEDOR DEL TEXTO 
-                Usamos la clase 'safe-render' definida abajo en <style>
+            {/* CONTENEDOR DEL TEXTO (Renderizado)
+                Usamos la clase 'blog-content' definida abajo.
+                Eliminé todas las clases de Quill (ql-editor, etc) para evitar estilos ocultos.
             */}
-            <div className="ql-snow">
-                <div 
-                    className="ql-editor !h-auto !p-0 !overflow-visible safe-render"
-                    dangerouslySetInnerHTML={{ __html: post.content }} 
-                />
-            </div>
+            <div 
+                className="blog-content w-full"
+                dangerouslySetInnerHTML={{ __html: post.content }} 
+            />
 
-            {/* Footer del Artículo */}
+            {/* Footer */}
             <div className="mt-20 pt-8 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-center gap-6">
                 <div className="flex items-center gap-2 text-stone-500 font-medium text-sm">
                     <Calendar size={18} className="text-teal-600"/>
@@ -108,23 +107,31 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         </div>
       </div>
 
-      {/* --- CSS CORRRECTIVO --- */}
+      {/* --- CSS CORRRECTIVO NUCLEAR --- */}
       <style>{`
-        /* Configuración segura para renderizar texto */
-        .safe-render {
+        .blog-content {
+            /* Base */
             font-family: var(--font-sans, sans-serif);
-            font-size: 1.125rem;
+            font-size: 1.125rem; /* 18px */
             line-height: 1.8;
             color: #44403c;
-            
-            /* REGLA DE ORO ANTICORTE: */
-            word-break: normal !important;   /* Prohibe cortar palabras arbitrariamente */
-            overflow-wrap: break-word;       /* Solo corta si la palabra es más larga que la pantalla */
-            white-space: normal !important;  /* Evita que saltos de línea extraños rompan el flujo */
+            width: 100%;
+        }
+
+        /* REGLA MAESTRA ANTICORTE
+           Aplicamos esto a TODO (*) dentro del contenido para sobreescribir cualquier 
+           estilo inline que venga del editor.
+        */
+        .blog-content, 
+        .blog-content * {
+            word-break: normal !important;      /* Prohibido romper palabras arbitrariamente */
+            overflow-wrap: break-word !important; /* Solo romper si la palabra es más larga que la línea completa */
+            white-space: normal !important;     /* Ignorar pre-wrap del editor */
+            hyphens: none !important;           /* Sin guiones automáticos */
         }
 
         /* Títulos */
-        .safe-render h1, .safe-render h2, .safe-render h3 {
+        .blog-content h1, .blog-content h2, .blog-content h3 {
             font-family: var(--font-serif, serif);
             font-weight: 700;
             color: #1c1917;
@@ -132,41 +139,54 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             margin-bottom: 1.25rem;
             line-height: 1.3;
         }
-        .safe-render h2 { font-size: 1.8rem; }
-        .safe-render h3 { font-size: 1.5rem; }
+        .blog-content h2 { font-size: 1.8rem; }
+        .blog-content h3 { font-size: 1.5rem; }
 
         /* Párrafos */
-        .safe-render p {
+        .blog-content p {
             margin-bottom: 1.5rem;
         }
 
-        /* CORRECCIÓN DE JUSTIFICACIÓN (Vital para tus imágenes) */
-        /* Si el texto está justificado, usa inter-word para expandir espacios, NO romper letras */
-        .safe-render .ql-align-justify {
+        /* MANEJO DE JUSTIFICACIÓN
+           Si el editor mandó texto justificado (ql-align-justify), 
+           esto asegura que se distribuya por espacios y NO rompiendo letras.
+        */
+        .blog-content .ql-align-justify {
             text-align: justify;
             text-justify: inter-word; 
         }
-        .safe-render .ql-align-center { text-align: center; }
-        .safe-render .ql-align-right { text-align: right; }
+        .blog-content .ql-align-center { text-align: center; }
+        .blog-content .ql-align-right { text-align: right; }
 
-        /* Listas y Citas */
-        .safe-render ul, .safe-render ol { padding-left: 1.5rem; margin-bottom: 1.5rem; }
-        .safe-render li { margin-bottom: 0.5rem; padding-left: 0.5rem; }
-        
-        .safe-render blockquote {
+        /* Listas */
+        .blog-content ul { 
+            list-style-type: disc; 
+            padding-left: 1.5rem; 
+            margin-bottom: 1.5rem; 
+        }
+        .blog-content ol { 
+            list-style-type: decimal; 
+            padding-left: 1.5rem; 
+            margin-bottom: 1.5rem; 
+        }
+        .blog-content li { 
+            margin-bottom: 0.5rem; 
+        }
+
+        /* Citas */
+        .blog-content blockquote {
             border-left: 4px solid #0d9488;
             background: #f5f5f4;
             padding: 1.5rem;
             margin: 2rem 0;
             font-style: italic;
-            border-radius: 0 0.5rem 0.5rem 0;
         }
 
-        /* Imágenes responsivas */
-        .safe-render img {
+        /* Imágenes */
+        .blog-content img {
             max-width: 100%;
             height: auto;
-            border-radius: 0.75rem;
+            border-radius: 0.5rem;
             margin: 2rem auto;
             display: block;
         }
