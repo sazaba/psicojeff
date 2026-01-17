@@ -2,8 +2,10 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react";
+import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { prisma } from "@/lib/prisma";
+// IMPORTANTE: Asegúrate de que la ruta sea correcta según donde guardaste el archivo del Paso 1
+import ShareButton from "@/app/components/ui/ShareButton"; 
 
 type Params = Promise<{ id: string }>;
 
@@ -30,12 +32,10 @@ export default async function BlogPostPage({ params }: { params: Params }) {
     dateStyle: 'long'
   }).format(post.createdAt);
 
-  // FIX: Limpieza de espacios y PARSEO DE ETIQUETAS
   const cleanContent = post.content
     .replace(/&nbsp;/g, ' ')
     .replace(/\u00a0/g, ' ');
 
-  // Lógica para convertir el string de la DB en un Array de etiquetas
   let tags: string[] = [];
   try {
     if (post.category.startsWith("[")) {
@@ -62,7 +62,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             />
         )}
         
-        {/* Gradiente y Contenido del Header */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end pb-16 md:pb-24">
             <div className="container mx-auto px-4 md:px-8 max-w-5xl">
                 
@@ -72,7 +71,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                 </Link>
                 
                 <div className="flex flex-wrap items-center gap-4 mb-6">
-                    {/* Renderizado de Múltiples Etiquetas */}
                     <div className="flex gap-2 flex-wrap">
                         {tags.map((tag, i) => (
                             <span key={i} className="bg-teal-600 text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-wider shadow-sm">
@@ -116,15 +114,13 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                     <span>Publicado el {formattedDate}</span>
                 </div>
                 
-                <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3 bg-stone-100 hover:bg-stone-900 text-stone-600 hover:text-white rounded-full transition-all font-bold text-sm tracking-wide shadow-sm">
-                    <Share2 size={18} />
-                    Compartir artículo
-                </button>
+                {/* AQUI INSERTAMOS EL NUEVO COMPONENTE */}
+                <ShareButton />
+                
             </div>
         </div>
       </div>
 
-      {/* --- ESTILOS CSS DEL ARTÍCULO --- */}
       <style>{`
         .safe-content {
             font-family: 'Lato', system-ui, sans-serif;
