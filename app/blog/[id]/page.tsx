@@ -31,14 +31,10 @@ export default async function BlogPostPage({ params }: { params: Params }) {
     dateStyle: 'long'
   }).format(post.createdAt);
 
-  // --- LOGICA DE LIMPIEZA Y REPARACIÓN DE HTML ---
   const cleanContent = post.content
-    // 1. Arreglar espacios
     .replace(/&nbsp;/g, ' ')
     .replace(/\u00a0/g, ' ')
-    // 2. Arreglar URLs sin protocolo (www -> https://www)
     .replace(/href=(["'])www\./g, 'href=$1https://www.')
-    // 3. OBLIGATORIO: Forzar que los links abran en nueva pestaña
     .replace(/<a /g, '<a target="_blank" rel="noopener noreferrer" ');
 
   let tags: string[] = [];
@@ -107,13 +103,11 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                 </div>
             )}
             
-            {/* Contenedor del HTML seguro */}
             <div 
                 className="safe-content relative z-20" 
                 dangerouslySetInnerHTML={{ __html: cleanContent }} 
             />
 
-            {/* Footer del Artículo */}
             <div className="mt-20 pt-10 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-center gap-6 relative z-20">
                 <div className="flex items-center gap-2 text-stone-500 font-bold text-sm">
                     <Calendar size={18} className="text-teal-600"/>
@@ -141,7 +135,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         }
 
         /* --- 1. SOLUCIÓN PARA VIÑETAS (DOTS) --- */
-        /* Tailwind elimina los estilos de lista por defecto. Esto los fuerza a aparecer. */
         .safe-content ul {
             list-style-type: disc !important;
             padding-left: 1.5rem !important;
@@ -154,8 +147,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         }
 
         /* --- 2. SOLUCIÓN PARA JUSTIFICAR LISTAS --- */
-        /* Fuerza la justificación en todos los items de lista, 
-           arreglando el problema de que la BD no guarde la clase. */
         .safe-content li {
             margin-bottom: 0.5rem;
             padding-left: 0.25rem;
@@ -163,13 +154,22 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             text-justify: inter-word !important;
         }
         
-        /* Color del punto de la viñeta */
         .safe-content ul li::marker { 
             color: #0d9488; 
             font-size: 1.2em;
         }
 
-        /* Clases estándar de alineación para párrafos normales */
+        /* --- 3. SOLUCIÓN PARA SANGRÍAS (INDENTACIÓN) --- */
+        /* Estas clases son las que usa Quill para la sangría */
+        .safe-content .ql-indent-1 { padding-left: 3em !important; }
+        .safe-content .ql-indent-2 { padding-left: 6em !important; }
+        .safe-content .ql-indent-3 { padding-left: 9em !important; }
+        
+        /* Ajuste específico para listas con sangría */
+        .safe-content li.ql-indent-1 { margin-left: 1.5rem !important; padding-left: 0.25rem !important; }
+        .safe-content li.ql-indent-2 { margin-left: 3rem !important; padding-left: 0.25rem !important; }
+
+        /* Alineación General */
         .safe-content .ql-align-justify {
             text-align: justify;
             text-justify: inter-word;
@@ -181,7 +181,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             text-align: right;
         }
 
-        /* Tipografía de Títulos */
+        /* Tipografía */
         .safe-content h1, .safe-content h2, .safe-content h3 {
             font-family: 'Playfair Display', serif;
             font-weight: 800;
@@ -195,7 +195,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
 
         .safe-content p { margin-bottom: 1.5rem; }
 
-        /* Blockquotes Estilizados */
         .safe-content blockquote {
             border-left: 4px solid #34d399;
             background: #ecfdf5;
@@ -216,7 +215,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
-        /* Enlaces */
         .safe-content a {
             color: #34d399 !important;
             text-decoration: underline !important;
