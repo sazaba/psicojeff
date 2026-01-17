@@ -49,12 +49,14 @@ export default function EditPostPage() {
     isFeatured: false 
   });
 
+  // CONFIGURACIÓN DEL EDITOR (Alineada con NewPost)
   const modules = {
     toolbar: [
       [{ 'header': [2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
       [{ 'align': [] }],
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'indent': '-1'}, { 'indent': '+1' }], // <--- AGREGADO: Botones de Sangría
       ['link', 'clean']
     ],
   };
@@ -414,6 +416,20 @@ export default function EditPostPage() {
 
         </div>
       </form>
+
+      {/* Estilos locales para forzar la visualización correcta en el editor */}
+      <style jsx global>{`
+        /* Asegura que lo que ves en el editor es lo que obtienes */
+        .ql-editor .ql-align-justify {
+            text-align: justify;
+            text-justify: inter-word;
+        }
+        
+        /* Asegura que los elementos de lista (bullets/números) se justifiquen */
+        .ql-editor li.ql-align-justify {
+            text-align: justify;
+        }
+      `}</style>
     </div>
   );
 }
