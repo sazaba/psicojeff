@@ -47,8 +47,6 @@ export const metadata: Metadata = {
     "Salud Mental Colombia",
     "Psicólogo Latino Nueva York", // Clave para mercado en USA
     "Tratamiento Ansiedad Manizales",
-    "Psicología Clínica Basada en Evidencia",
-    "PIAP Arquitectura de la Sanación",
     "Consulta psicológica virtual"
   ],
 

@@ -1,7 +1,7 @@
 // app/admin/posts/new/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react"; // Agregamos useMemo
 import { useRouter } from "next/navigation";
 import { Save, ArrowLeft, Loader2, UploadCloud, X, Check, Star } from "lucide-react";
 import Link from "next/link";
@@ -34,7 +34,6 @@ export default function NewPostPage() {
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   
-  // ESTADO COMPLETO
   const [formData, setFormData] = useState({
     title: "",
     excerpt: "",
@@ -45,21 +44,47 @@ export default function NewPostPage() {
     isFeatured: false 
   });
 
-  // CONFIGURACIÓN DEL EDITOR (MODIFICADA)
-  const modules = {
+  // CONFIGURACIÓN AVANZADA DEL EDITOR
+  // Usamos useMemo para que esta configuración no se recalcule en cada render (evita bugs de foco)
+  const modules = useMemo(() => ({
     toolbar: [
       [{ 'header': [2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
       [{ 'align': [] }],
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'indent': '-1'}, { 'indent': '+1' }], 
+      [{ 'indent': '-1'}, { 'indent': '+1' }],
       ['link', 'clean']
     ],
-    // AGREGADO: Evita viñetas dobles al pegar desde Word/Gemini
     clipboard: {
       matchVisual: false,
+      // MATCHER PERSONALIZADO:
+      // Intercepta todo elemento (Node.ELEMENT_NODE = 1) y limpia sus estilos
+      matchers: [
+        [1, (node: any, delta: any) => {
+          delta.ops = delta.ops.map((op: any) => {
+            // Si no tiene atributos, devolvemos tal cual
+            if (!op.attributes) return op;
+
+            // Definimos SOLO lo que queremos permitir (Lista blanca)
+            const allowedAttributes = ['bold', 'italic', 'underline', 'strike', 'header', 'list', 'indent', 'link', 'align', 'blockquote'];
+            const newAttributes: any = {};
+
+            // Solo copiamos los atributos permitidos
+            allowedAttributes.forEach(attr => {
+              if (op.attributes[attr]) {
+                newAttributes[attr] = op.attributes[attr];
+              }
+            });
+
+            // Devolvemos el texto con los atributos limpios
+            // Esto elimina: color, background, font-family, size, etc.
+            return { insert: op.insert, attributes: newAttributes };
+          });
+          return delta;
+        }]
+      ]
     }
-  };
+  }), []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -69,7 +94,6 @@ export default function NewPostPage() {
     setFormData(prev => ({ ...prev, content: value }));
   };
 
-  // Manejador para activar/desactivar etiquetas
   const toggleTag = (tag: string) => {
     setFormData(prev => {
       const currentTags = prev.tags;
@@ -96,9 +120,7 @@ export default function NewPostPage() {
         `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
         { method: "POST", body: data }
       );
-      
       const file = await res.json();
-      
       if (file.secure_url) {
         setFormData((prev) => ({ ...prev, image: file.secure_url }));
       }
@@ -117,7 +139,6 @@ export default function NewPostPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validación de contenido
     if (!formData.content || formData.content === "<p><br></p>") {
         Swal.fire({
             icon: 'warning',
@@ -128,7 +149,6 @@ export default function NewPostPage() {
         return;
     }
 
-    // Validación de etiquetas
     if (formData.tags.length === 0) {
       Swal.fire({
           icon: 'warning',
@@ -180,7 +200,6 @@ export default function NewPostPage() {
 
   return (
     <div className="max-w-4xl mx-auto pb-20">
-      {/* Header */}
       <div className="flex items-center gap-4 mb-8">
         <Link href="/admin/posts" className="p-2 hover:bg-stone-200 rounded-full transition-colors text-stone-500">
             <ArrowLeft size={20} />
@@ -193,7 +212,6 @@ export default function NewPostPage() {
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        {/* COLUMNA IZQUIERDA */}
         <div className="lg:col-span-2 space-y-6">
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Título</label>
@@ -221,7 +239,6 @@ export default function NewPostPage() {
                 />
             </div>
 
-            {/* EDITOR WYSIWYG */}
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm min-h-[600px] flex flex-col resize-y overflow-hidden">
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-4 border-b border-stone-100 pb-2">Contenido Principal</label>
                 <div className="flex-1 h-full flex flex-col">
@@ -237,10 +254,7 @@ export default function NewPostPage() {
             </div>
         </div>
 
-        {/* COLUMNA DERECHA */}
         <div className="space-y-6">
-
-            {/* OPCIÓN DESTACADO (Feature Toggle) */}
             <div 
                 onClick={() => setFormData(prev => ({ ...prev, isFeatured: !prev.isFeatured }))}
                 className={`p-4 rounded-xl border cursor-pointer transition-all flex items-center justify-between group ${
@@ -261,7 +275,6 @@ export default function NewPostPage() {
                         </p>
                     </div>
                 </div>
-                {/* Switch visual */}
                 <div className={`w-10 h-5 rounded-full relative transition-colors ${formData.isFeatured ? "bg-amber-500" : "bg-stone-300"}`}>
                     <div className={`absolute top-1 w-3 h-3 bg-white rounded-full shadow-sm transition-all duration-300 ${formData.isFeatured ? "left-6" : "left-1"}`} />
                 </div>
@@ -276,7 +289,6 @@ export default function NewPostPage() {
                 Publicar
             </button>
 
-            {/* SELECCIÓN DE ETIQUETAS MULTIPLES */}
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-4">
                 <div>
                     <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-3">
@@ -321,12 +333,9 @@ export default function NewPostPage() {
                 </div>
             </div>
 
-            {/* SUBIDA DE IMAGEN */}
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-4">Imagen Destacada</label>
-                
                 <div className="relative w-full aspect-video bg-stone-50 rounded-lg overflow-hidden border border-stone-200 border-dashed flex flex-col items-center justify-center group mb-4">
-                    
                     {uploadingImage ? (
                         <div className="flex flex-col items-center text-teal-600 animate-pulse">
                             <Loader2 className="animate-spin mb-2" />
@@ -361,7 +370,6 @@ export default function NewPostPage() {
                         </>
                     )}
                 </div>
-                
                 <p className="text-[10px] text-stone-400 text-center">
                     Formatos: JPG, PNG, WEBP.
                 </p>
@@ -369,15 +377,9 @@ export default function NewPostPage() {
         </div>
       </form>
       
-      {/* Estilos locales */}
       <style jsx global>{`
-        .ql-editor .ql-align-justify {
-            text-align: justify;
-            text-justify: inter-word;
-        }
-        .ql-editor li.ql-align-justify {
-            text-align: justify;
-        }
+        .ql-editor .ql-align-justify { text-align: justify; text-justify: inter-word; }
+        .ql-editor li.ql-align-justify { text-align: justify; }
       `}</style>
     </div>
   );
