@@ -3,15 +3,31 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { Save, ArrowLeft, Loader2, UploadCloud, X } from "lucide-react";
+import { Save, ArrowLeft, Loader2, UploadCloud, X, Check, Star, Trash2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
+// Importaciones Premium
 import dynamic from "next/dynamic";
 import Swal from "sweetalert2";
 import "react-quill-new/dist/quill.snow.css"; 
 
+// Editor dinámico
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false }) as any;
+
+// LISTA DE ETIQUETAS (Debe ser la misma que en NewPost)
+const AVAILABLE_TAGS = [
+  "Psicología",
+  "Psicoterapia",
+  "Ansiedad",
+  "Depresión",
+  "Estrés",
+  "Estres laboral",
+  "Trauma",
+  "SST",
+  "Riesgo psicosocial en el trabajo",
+  "Manizales"
+];
 
 export default function EditPostPage() {
   const router = useRouter();
@@ -20,27 +36,30 @@ export default function EditPostPage() {
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   
+  // ESTADO ALINEADO CON NEW POST
   const [formData, setFormData] = useState({
     title: "",
     excerpt: "",
     content: "", 
-    category: "",
+    tags: [] as string[], 
     readTime: "",
     image: "",
+    isFeatured: false 
   });
 
-  // --- CAMBIO 1: AGREGAR ALINEACIÓN A LA BARRA DE HERRAMIENTAS ---
   const modules = {
     toolbar: [
       [{ 'header': [2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ 'align': [] }], // <--- ESTO AGREGA: Izquierda, Centro, Derecha, Justificar
+      [{ 'align': [] }],
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
       ['link', 'clean']
     ],
   };
 
+  // 1. CARGAR DATOS DEL ARTÍCULO
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -48,13 +67,28 @@ export default function EditPostPage() {
         if (!res.ok) throw new Error("Error al cargar");
         const data = await res.json();
         
+        // CRÍTICO: Parsear la categoría JSON a Array
+        let parsedTags: string[] = [];
+        try {
+            // Si viene como string JSON '["Tag1"]'
+            if (data.category.startsWith("[")) {
+                parsedTags = JSON.parse(data.category);
+            } else {
+                // Si es un dato viejo plano "Tag1"
+                parsedTags = [data.category]; 
+            }
+        } catch (e) {
+            parsedTags = [];
+        }
+
         setFormData({
             title: data.title || "",
             excerpt: data.excerpt || "",
             content: data.content || "",
-            category: data.category || "",
+            tags: Array.isArray(parsedTags) ? parsedTags : [], // Aseguramos que sea array
             readTime: data.readTime || "",
-            image: data.image || ""
+            image: data.image || "",
+            isFeatured: data.isFeatured || false
         });
       } catch (error) {
         Swal.fire({
@@ -72,12 +106,24 @@ export default function EditPostPage() {
     if (params.id) fetchPost();
   }, [params.id, router]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleEditorChange = (value: string) => {
     setFormData(prev => ({ ...prev, content: value }));
+  };
+
+  // Lógica de etiquetas (Igual que en NewPost)
+  const toggleTag = (tag: string) => {
+    setFormData(prev => {
+      const currentTags = prev.tags;
+      if (currentTags.includes(tag)) {
+        return { ...prev, tags: currentTags.filter(t => t !== tag) };
+      } else {
+        return { ...prev, tags: [...currentTags, tag] };
+      }
+    });
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,26 +146,37 @@ export default function EditPostPage() {
         setFormData((prev) => ({ ...prev, image: file.secure_url }));
       }
     } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Error al subir la imagen',
-        confirmButtonColor: '#0d9488'
-      });
+      Swal.fire({ icon: 'error', title: 'Error', text: 'Error al subir imagen' });
     } finally {
       setUploadingImage(false);
     }
   };
 
+  // 2. ACTUALIZAR (PUT)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!formData.content || formData.content === "<p><br></p>") {
+        Swal.fire({ icon: 'warning', title: 'Falta contenido', text: 'El contenido no puede estar vacío.' });
+        return;
+    }
+    if (formData.tags.length === 0) {
+        Swal.fire({ icon: 'warning', title: 'Sin etiquetas', text: 'Selecciona al menos una etiqueta.' });
+        return;
+    }
+
     setLoading(true);
 
     try {
+      const payload = {
+        ...formData,
+        category: JSON.stringify(formData.tags) // Convertimos Array a JSON string
+      };
+
       const res = await fetch(`/api/posts/${params.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
@@ -135,18 +192,47 @@ export default function EditPostPage() {
         throw new Error("Error en la respuesta");
       }
     } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'No se pudo guardar el artículo.',
-        confirmButtonColor: '#0d9488'
-      });
+      Swal.fire({ icon: 'error', title: 'Oops...', text: 'No se pudo guardar los cambios.' });
     } finally {
       setLoading(false);
     }
   };
 
-  if (fetching) return <div className="h-screen flex items-center justify-center text-stone-400">Cargando...</div>;
+  // 3. ELIMINAR (DELETE)
+  const handleDelete = async () => {
+    const result = await Swal.fire({
+        title: '¿Estás seguro?',
+        text: "No podrás revertir esta acción.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    });
+
+    if (result.isConfirmed) {
+        setDeleting(true);
+        try {
+            const res = await fetch(`/api/posts/${params.id}`, {
+                method: "DELETE",
+            });
+
+            if (res.ok) {
+                await Swal.fire('Eliminado', 'El artículo ha sido eliminado.', 'success');
+                router.push("/admin/posts");
+                router.refresh();
+            } else {
+                throw new Error("Error al eliminar");
+            }
+        } catch (error) {
+            Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo eliminar el artículo.' });
+            setDeleting(false);
+        }
+    }
+  };
+
+  if (fetching) return <div className="h-screen flex items-center justify-center text-stone-400 gap-2"><Loader2 className="animate-spin" /> Cargando datos...</div>;
 
   return (
     <div className="max-w-4xl mx-auto pb-20"> 
@@ -156,13 +242,13 @@ export default function EditPostPage() {
         </Link>
         <div>
             <h1 className="text-2xl font-serif font-bold text-stone-800">Editar Artículo</h1>
-            <p className="text-stone-500 text-sm">Mejora tu contenido con el nuevo editor</p>
+            <p className="text-stone-500 text-sm">Actualiza el contenido y configuración</p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        {/* COLUMNA IZQUIERDA */}
+        {/* COLUMNA IZQUIERDA (CONTENIDO) */}
         <div className="lg:col-span-2 space-y-6">
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Título</label>
@@ -188,8 +274,6 @@ export default function EditPostPage() {
                 />
             </div>
 
-            {/* --- CAMBIO 2: EDITOR AMPLIABLE Y MÁS GRANDE --- */}
-            {/* Agregamos 'resize-y' y 'overflow-hidden' al contenedor padre para permitir arrastrar */}
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm min-h-[600px] flex flex-col resize-y overflow-hidden">
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-4 border-b border-stone-100 pb-2">Contenido Principal</label>
                 <div className="flex-1 h-full flex flex-col">
@@ -198,43 +282,78 @@ export default function EditPostPage() {
                         value={formData.content} 
                         onChange={handleEditorChange}
                         modules={modules}
-                        // Quitamos la altura fija (h-[350px]) y ponemos h-full para que llene el contenedor resizable
                         className="h-full flex-1 mb-12" 
                     />
                 </div>
             </div>
         </div>
 
-        {/* COLUMNA DERECHA */}
+        {/* COLUMNA DERECHA (CONFIGURACIÓN) */}
         <div className="space-y-6">
+            
+            {/* OPCIÓN DESTACADO */}
+            <div 
+                onClick={() => setFormData(prev => ({ ...prev, isFeatured: !prev.isFeatured }))}
+                className={`p-4 rounded-xl border cursor-pointer transition-all flex items-center justify-between group ${
+                formData.isFeatured 
+                    ? "bg-amber-50 border-amber-200 shadow-sm" 
+                    : "bg-white border-stone-200 hover:border-stone-300"
+            }`}>
+                <div className="flex items-center gap-3">
+                    <div className={`p-2 rounded-full ${formData.isFeatured ? "bg-amber-100 text-amber-600" : "bg-stone-100 text-stone-400"}`}>
+                        <Star size={18} fill={formData.isFeatured ? "currentColor" : "none"} />
+                    </div>
+                    <div>
+                        <p className={`text-sm font-bold ${formData.isFeatured ? "text-amber-800" : "text-stone-600"}`}>
+                            Destacar Artículo
+                        </p>
+                        <p className="text-[10px] text-stone-400">
+                            Aparecerá primero en el inicio
+                        </p>
+                    </div>
+                </div>
+                <div className={`w-10 h-5 rounded-full relative transition-colors ${formData.isFeatured ? "bg-amber-500" : "bg-stone-300"}`}>
+                    <div className={`absolute top-1 w-3 h-3 bg-white rounded-full shadow-sm transition-all duration-300 ${formData.isFeatured ? "left-6" : "left-1"}`} />
+                </div>
+            </div>
+
             <button
                 type="submit"
-                disabled={loading || uploadingImage}
-                className="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                disabled={loading || uploadingImage || deleting}
+                className="w-full bg-stone-900 hover:bg-teal-600 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
             >
                 {loading ? <Loader2 className="animate-spin" /> : <Save size={20} />}
                 Guardar Cambios
             </button>
 
+            {/* SELECCIÓN DE ETIQUETAS MULTIPLES */}
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-4">
                 <div>
-                    <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Categoría</label>
-                    <select
-                        name="category"
-                        className="w-full bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 text-stone-700 focus:outline-none focus:border-teal-500"
-                        value={formData.category}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="">Seleccionar...</option>
-                        <option value="Trauma">Trauma</option>
-                        <option value="Ansiedad">Ansiedad</option>
-                        <option value="Relaciones">Relaciones</option>
-                        <option value="Metodología">Metodología</option>
-                        <option value="Neurociencia">Neurociencia</option>
-                        <option value="Psicosomática">Psicosomática</option>
-                    </select>
+                    <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-3">
+                        Etiquetas ({formData.tags.length})
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                        {AVAILABLE_TAGS.map((tag) => {
+                            const isSelected = formData.tags.includes(tag);
+                            return (
+                                <button
+                                    key={tag}
+                                    type="button"
+                                    onClick={() => toggleTag(tag)}
+                                    className={`text-xs px-3 py-1.5 rounded-full border transition-all flex items-center gap-1.5 ${
+                                        isSelected 
+                                            ? "bg-teal-600 text-white border-teal-600 shadow-md" 
+                                            : "bg-stone-50 text-stone-600 border-stone-200 hover:border-teal-400"
+                                    }`}
+                                >
+                                    {isSelected && <Check size={12} />}
+                                    {tag}
+                                </button>
+                            );
+                        })}
+                    </div>
                 </div>
+
                 <div>
                     <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Tiempo de Lectura</label>
                     <input
@@ -248,11 +367,15 @@ export default function EditPostPage() {
                 </div>
             </div>
 
+            {/* IMAGEN */}
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-4">Imagen Destacada</label>
                 <div className="relative w-full aspect-video bg-stone-50 rounded-lg overflow-hidden border border-stone-200 border-dashed flex flex-col items-center justify-center group mb-4">
                     {uploadingImage ? (
-                        <Loader2 className="animate-spin text-teal-600" />
+                        <div className="flex flex-col items-center text-teal-600 animate-pulse">
+                            <Loader2 className="animate-spin mb-2" />
+                            <span className="text-xs font-bold">Subiendo...</span>
+                        </div>
                     ) : formData.image ? (
                         <>
                             <Image src={formData.image} alt="Preview" fill className="object-cover" />
@@ -266,12 +389,29 @@ export default function EditPostPage() {
                         </>
                     ) : (
                         <>
-                            <UploadCloud className="text-stone-300 mb-2" size={32} />
+                            <UploadCloud className="text-stone-300 mb-2 group-hover:text-teal-500 transition-colors" size={32} />
+                            <span className="text-xs text-stone-400 group-hover:text-stone-600">Clic para subir imagen</span>
                             <input type="file" accept="image/*" onChange={handleImageUpload} className="absolute inset-0 opacity-0 cursor-pointer" />
                         </>
                     )}
                 </div>
             </div>
+
+            {/* ZONA DE PELIGRO: BORRAR */}
+            <div className="bg-red-50 p-6 rounded-2xl border border-red-100">
+                <h3 className="text-red-800 font-bold text-sm mb-2">Zona de Peligro</h3>
+                <p className="text-red-600 text-xs mb-4">Esta acción no se puede deshacer.</p>
+                <button
+                    type="button"
+                    onClick={handleDelete}
+                    disabled={loading || deleting}
+                    className="w-full bg-white border border-red-200 text-red-600 hover:bg-red-600 hover:text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm disabled:opacity-50"
+                >
+                    {deleting ? <Loader2 className="animate-spin" size={16}/> : <Trash2 size={16} />}
+                    Eliminar Artículo
+                </button>
+            </div>
+
         </div>
       </form>
     </div>

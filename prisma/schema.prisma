@@ -17,6 +17,7 @@ model Post {
   category  String
   image     String
   readTime  String
+  isFeatured Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

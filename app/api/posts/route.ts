@@ -1,6 +1,5 @@
-// app/api/posts/route.ts
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth"; // O "next-auth/next" según tu versión
 import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
@@ -12,7 +11,8 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
-    const { title, excerpt, content, category, readTime, image } = body;
+    // AÑADIDO: Extraemos 'isFeatured'
+    const { title, excerpt, content, category, readTime, image, isFeatured } = body;
 
     // 2. Validación simple
     if (!title || !content || !category) {
@@ -25,9 +25,11 @@ export async function POST(req: Request) {
         title,
         excerpt,
         content,
-        category,
+        category, // Ahora guarda el JSON string (ej: '["Ansiedad","Trauma"]')
         readTime,
         image,
+        // AÑADIDO: Guardamos el booleano. Si no viene, asume false.
+        isFeatured: isFeatured || false, 
       },
     });
 

@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ChevronLeft, ChevronRight, Calendar, Clock } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Calendar, Clock, Star } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
@@ -11,7 +11,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-// 1. DEFINIMOS LA INTERFAZ PARA EVITAR EL ERROR "ANY"
+// 1. DEFINIMOS LA INTERFAZ CON EL NUEVO CAMPO
 interface Post {
   id: number;
   title: string;
@@ -19,15 +19,16 @@ interface Post {
   image: string;
   category: string;
   readTime: string;
-  createdAt: string; // La API devuelve la fecha como string
+  createdAt: string;
+  isFeatured: boolean; // <--- Nuevo campo para saber si lleva estrella
 }
 
 export default function BlogCarousel() {
   const swiperRef = useRef<SwiperType | null>(null);
-  const [posts, setPosts] = useState<Post[]>([]); // Usamos la interfaz aquí
+  const [posts, setPosts] = useState<Post[]>([]); 
   const [loading, setLoading] = useState(true);
 
-  // 2. PEDIMOS LOS DATOS A LA BASE DE DATOS (API)
+  // 2. PEDIMOS LOS DATOS (Ya vienen ordenados por la API: Destacados primero)
   useEffect(() => {
     fetch('/api/posts/list')
       .then(res => res.json())
@@ -47,7 +48,6 @@ export default function BlogCarousel() {
     });
   };
 
-  // Si está cargando o no hay posts, no mostramos nada (o podrías poner un esqueleto de carga)
   if (loading) return null; 
   if (posts.length === 0) return null;
 
@@ -104,60 +104,85 @@ export default function BlogCarousel() {
             loop={posts.length > 3}
             className="!pb-12 w-full" 
             >
-            {/* 3. AQUÍ USAMOS LA VARIABLE 'post' YA TIPADA */}
-            {posts.map((post: Post) => (
-                <SwiperSlide key={post.id} className="h-auto">
-                <article className="group h-full flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-stone-100 relative top-0 hover:-top-2">
-                    
-                    <div className="relative h-64 overflow-hidden bg-stone-200">
-                    <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/20 transition-colors duration-500 z-10"></div>
-                    {post.image ? (
-                        <Image 
-                        src={post.image} 
-                        alt={post.title} 
-                        fill 
-                        className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        />
-                    ) : (
-                        <div className="w-full h-full flex items-center justify-center text-stone-400 font-serif italic">Sin Imagen</div>
-                    )}
-                    <span className="absolute top-4 left-4 z-20 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-teal-700 shadow-sm border border-white/50">
-                        {post.category}
-                    </span>
-                    </div>
+            {posts.map((post: Post) => {
+                
+                // LÓGICA DE LIMPIEZA DE ETIQUETAS (CRÍTICO)
+                // Convierte '["Ansiedad","Trauma"]' en simplemente "Ansiedad"
+                let displayTag = post.category;
+                try {
+                    const parsed = JSON.parse(post.category);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        displayTag = parsed[0]; 
+                    }
+                } catch (e) {
+                    // Si falla el parseo (es texto antiguo), se deja tal cual
+                }
 
-                    <div className="flex flex-col flex-1 p-6 md:p-8">
-                    <div className="flex items-center gap-4 text-xs text-stone-400 mb-4 font-medium">
-                        <div className="flex items-center gap-1">
-                        <Calendar size={14} />
-                        {formatDate(post.createdAt)}
+                return (
+                    <SwiperSlide key={post.id} className="h-auto">
+                    <article className={`group h-full flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border relative top-0 hover:-top-2 ${post.isFeatured ? 'border-amber-200 ring-1 ring-amber-100' : 'border-stone-100'}`}>
+                        
+                        <div className="relative h-64 overflow-hidden bg-stone-200">
+                        <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/20 transition-colors duration-500 z-10"></div>
+                        
+                        {/* IMAGEN */}
+                        {post.image ? (
+                            <Image 
+                            src={post.image} 
+                            alt={post.title} 
+                            fill 
+                            className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            />
+                        ) : (
+                            <div className="w-full h-full flex items-center justify-center text-stone-400 font-serif italic">Sin Imagen</div>
+                        )}
+
+                        {/* ETIQUETA DE CATEGORÍA */}
+                        <span className="absolute top-4 left-4 z-20 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-teal-700 shadow-sm border border-white/50">
+                            {displayTag}
+                        </span>
+
+                        {/* INDICADOR DE DESTACADO (Solo si es true) */}
+                        {post.isFeatured && (
+                             <span className="absolute top-4 right-4 z-20 bg-amber-400 text-white p-1.5 rounded-full shadow-md" title="Artículo Destacado">
+                                <Star size={12} fill="currentColor" />
+                             </span>
+                        )}
                         </div>
-                        <div className="flex items-center gap-1">
-                        <Clock size={14} />
-                        {post.readTime}
+
+                        <div className="flex flex-col flex-1 p-6 md:p-8">
+                        <div className="flex items-center gap-4 text-xs text-stone-400 mb-4 font-medium">
+                            <div className="flex items-center gap-1">
+                            <Calendar size={14} />
+                            {formatDate(post.createdAt)}
+                            </div>
+                            <div className="flex items-center gap-1">
+                            <Clock size={14} />
+                            {post.readTime}
+                            </div>
                         </div>
-                    </div>
 
-                    <h3 className="text-xl font-serif font-bold text-stone-800 mb-3 group-hover:text-teal-700 transition-colors line-clamp-2 leading-snug">
-                        <Link href={`/blog/${post.id}`} className="focus:outline-none">
-                            <span className="absolute inset-0 z-0"></span>
-                            {post.title}
-                        </Link>
-                    </h3>
+                        <h3 className="text-xl font-serif font-bold text-stone-800 mb-3 group-hover:text-teal-700 transition-colors line-clamp-2 leading-snug">
+                            <Link href={`/blog/${post.id}`} className="focus:outline-none">
+                                <span className="absolute inset-0 z-0"></span>
+                                {post.title}
+                            </Link>
+                        </h3>
 
-                    <p className="text-stone-500 text-sm leading-relaxed line-clamp-3 mb-6 flex-1">
-                        {post.excerpt}
-                    </p>
+                        <p className="text-stone-500 text-sm leading-relaxed line-clamp-3 mb-6 flex-1">
+                            {post.excerpt}
+                        </p>
 
-                    <div className="flex items-center text-teal-600 font-bold text-sm group/link z-10 relative pointer-events-none">
-                        Leer artículo
-                        <ArrowRight size={16} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
-                    </div>
-                    </div>
-                </article>
-                </SwiperSlide>
-            ))}
+                        <div className="flex items-center text-teal-600 font-bold text-sm group/link z-10 relative pointer-events-none">
+                            Leer artículo
+                            <ArrowRight size={16} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                        </div>
+                        </div>
+                    </article>
+                    </SwiperSlide>
+                );
+            })}
             </Swiper>
         </div>
 

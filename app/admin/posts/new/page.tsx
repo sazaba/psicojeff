@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Save, ArrowLeft, Loader2, UploadCloud, X } from "lucide-react";
+import { Save, ArrowLeft, Loader2, UploadCloud, X, Check, Star } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -15,38 +15,64 @@ import "react-quill-new/dist/quill.snow.css";
 // Editor dinámico
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false }) as any;
 
+// LISTA DE ETIQUETAS PREDEFINIDAS
+const AVAILABLE_TAGS = [
+  "Psicología",
+  "Psicoterapia",
+  "Ansiedad",
+  "Depresión",
+  "Estrés",
+  "Estres laboral",
+  "Trauma",
+  "SST",
+  "Riesgo psicosocial en el trabajo",
+  "Manizales"
+];
+
 export default function NewPostPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   
+  // ESTADO COMPLETO: Incluye tags (array) y isFeatured (booleano)
   const [formData, setFormData] = useState({
     title: "",
     excerpt: "",
-    content: "", // ReactQuill escribirá aquí
-    category: "",
+    content: "",
+    tags: [] as string[], 
     readTime: "",
-    image: "", 
+    image: "",
+    isFeatured: false 
   });
 
-  // Configuración de la barra de herramientas (IGUAL QUE EN EDITAR)
   const modules = {
     toolbar: [
       [{ 'header': [2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ 'align': [] }], // Alineación
+      [{ 'align': [] }],
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
       ['link', 'clean']
     ],
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Manejador del Editor
   const handleEditorChange = (value: string) => {
     setFormData(prev => ({ ...prev, content: value }));
+  };
+
+  // Manejador para activar/desactivar etiquetas (Múltiple selección)
+  const toggleTag = (tag: string) => {
+    setFormData(prev => {
+      const currentTags = prev.tags;
+      if (currentTags.includes(tag)) {
+        return { ...prev, tags: currentTags.filter(t => t !== tag) };
+      } else {
+        return { ...prev, tags: [...currentTags, tag] };
+      }
+    });
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +111,7 @@ export default function NewPostPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validación simple: Asegurar que haya contenido en el editor
+    // Validación de contenido
     if (!formData.content || formData.content === "<p><br></p>") {
         Swal.fire({
             icon: 'warning',
@@ -96,17 +122,34 @@ export default function NewPostPage() {
         return;
     }
 
+    // Validación de etiquetas
+    if (formData.tags.length === 0) {
+      Swal.fire({
+          icon: 'warning',
+          title: 'Sin etiquetas',
+          text: 'Selecciona al menos una etiqueta para el artículo.',
+          confirmButtonColor: '#0d9488'
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
+      // PREPARACIÓN DEL PAYLOAD
+      const payload = {
+        ...formData,
+        category: JSON.stringify(formData.tags) // Convertimos array a JSON string
+        // isFeatured ya va incluido en ...formData como booleano
+      };
+
       const res = await fetch("/api/posts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
-        // ALERTA DE ÉXITO (SWEET ALERT)
         await Swal.fire({
             icon: 'success',
             title: '¡Publicado!',
@@ -174,7 +217,7 @@ export default function NewPostPage() {
                 />
             </div>
 
-            {/* EDITOR WYSIWYG (Nuevo) */}
+            {/* EDITOR WYSIWYG */}
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm min-h-[600px] flex flex-col resize-y overflow-hidden">
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-4 border-b border-stone-100 pb-2">Contenido Principal</label>
                 <div className="flex-1 h-full flex flex-col">
@@ -192,6 +235,34 @@ export default function NewPostPage() {
 
         {/* COLUMNA DERECHA */}
         <div className="space-y-6">
+
+            {/* OPCIÓN DESTACADO (Feature Toggle) */}
+            <div 
+                onClick={() => setFormData(prev => ({ ...prev, isFeatured: !prev.isFeatured }))}
+                className={`p-4 rounded-xl border cursor-pointer transition-all flex items-center justify-between group ${
+                formData.isFeatured 
+                    ? "bg-amber-50 border-amber-200 shadow-sm" 
+                    : "bg-white border-stone-200 hover:border-stone-300"
+            }`}>
+                <div className="flex items-center gap-3">
+                    <div className={`p-2 rounded-full ${formData.isFeatured ? "bg-amber-100 text-amber-600" : "bg-stone-100 text-stone-400"}`}>
+                        <Star size={18} fill={formData.isFeatured ? "currentColor" : "none"} />
+                    </div>
+                    <div>
+                        <p className={`text-sm font-bold ${formData.isFeatured ? "text-amber-800" : "text-stone-600"}`}>
+                            Destacar Artículo
+                        </p>
+                        <p className="text-[10px] text-stone-400">
+                            Aparecerá primero en el inicio
+                        </p>
+                    </div>
+                </div>
+                {/* Switch visual */}
+                <div className={`w-10 h-5 rounded-full relative transition-colors ${formData.isFeatured ? "bg-amber-500" : "bg-stone-300"}`}>
+                    <div className={`absolute top-1 w-3 h-3 bg-white rounded-full shadow-sm transition-all duration-300 ${formData.isFeatured ? "left-6" : "left-1"}`} />
+                </div>
+            </div>
+
             <button
                 type="submit"
                 disabled={loading || uploadingImage }
@@ -201,26 +272,37 @@ export default function NewPostPage() {
                 Publicar
             </button>
 
-            {/* Categoría y Tiempo */}
+            {/* SELECCIÓN DE ETIQUETAS MULTIPLES */}
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-4">
                 <div>
-                    <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Categoría</label>
-                    <select
-                        name="category"
-                        className="w-full bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 text-stone-700 focus:outline-none focus:border-teal-500"
-                        value={formData.category}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="">Seleccionar...</option>
-                        <option value="Trauma">Trauma</option>
-                        <option value="Ansiedad">Ansiedad</option>
-                        <option value="Relaciones">Relaciones</option>
-                        <option value="Metodología">Metodología</option>
-                        <option value="Neurociencia">Neurociencia</option>
-                        <option value="Psicosomática">Psicosomática</option>
-                    </select>
+                    <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-3">
+                        Etiquetas ({formData.tags.length})
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                        {AVAILABLE_TAGS.map((tag) => {
+                            const isSelected = formData.tags.includes(tag);
+                            return (
+                                <button
+                                    key={tag}
+                                    type="button"
+                                    onClick={() => toggleTag(tag)}
+                                    className={`text-xs px-3 py-1.5 rounded-full border transition-all flex items-center gap-1.5 ${
+                                        isSelected 
+                                            ? "bg-teal-600 text-white border-teal-600 shadow-md" 
+                                            : "bg-stone-50 text-stone-600 border-stone-200 hover:border-teal-400"
+                                    }`}
+                                >
+                                    {isSelected && <Check size={12} />}
+                                    {tag}
+                                </button>
+                            );
+                        })}
+                    </div>
+                    {formData.tags.length === 0 && (
+                        <p className="text-[10px] text-red-400 mt-2">Selecciona al menos una etiqueta.</p>
+                    )}
                 </div>
+
                 <div>
                     <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Tiempo de Lectura</label>
                     <input
