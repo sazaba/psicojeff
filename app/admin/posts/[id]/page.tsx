@@ -7,12 +7,10 @@ import { Save, ArrowLeft, Loader2, UploadCloud, X, Check, Star, Trash2 } from "l
 import Link from "next/link";
 import Image from "next/image";
 
-// Importaciones Premium
 import dynamic from "next/dynamic";
 import Swal from "sweetalert2";
 import "react-quill-new/dist/quill.snow.css"; 
 
-// Editor dinámico
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false }) as any;
 
 const AVAILABLE_TAGS = [
@@ -51,8 +49,7 @@ export default function EditPostPage() {
     toolbar: [
       [{ 'header': [2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      // Habilitamos todas las opciones de alineación (Array vacío = todas)
-      [{ 'align': [] }], 
+      [{ 'align': [] }], // Habilita alineación: izquierda, centro, derecha, justificado
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
       [{ 'indent': '-1'}, { 'indent': '+1' }],
       ['link', 'clean']
@@ -345,9 +342,9 @@ export default function EditPostPage() {
         </div>
       </form>
 
-      {/* --- ESTILOS CRÍTICOS (CORREGIDOS) --- */}
+      {/* CSS PARA QUE EL EDITOR MUESTRE CORRECTAMENTE LA ALINEACIÓN */}
       <style jsx global>{`
-        /* 1. RESTAURAR VISIBILIDAD DE VIÑETAS (DOTS) */
+        /* 1. Resetear las listas para que se vean los puntos (dots) */
         .ql-editor ul {
             list-style-type: disc !important;
             padding-left: 1.5em !important;
@@ -357,25 +354,19 @@ export default function EditPostPage() {
             padding-left: 1.5em !important;
         }
 
-        /* 2. REGLAS ESPECÍFICAS DE ALINEACIÓN (SOLO SI TIENE LA CLASE) */
-        
-        /* Justificar SOLO si tiene la clase .ql-align-justify */
+        /* 2. REGLAS DE ALINEACIÓN DENTRO DEL EDITOR */
         .ql-editor .ql-align-justify {
             text-align: justify !important;
             text-justify: inter-word !important;
         }
-        
-        /* Centrar SOLO si tiene la clase .ql-align-center */
         .ql-editor .ql-align-center {
             text-align: center !important;
         }
-
-        /* Derecha SOLO si tiene la clase .ql-align-right */
         .ql-editor .ql-align-right {
             text-align: right !important;
         }
 
-        /* 3. SANGRÍAS (Indentation) */
+        /* 3. SANGRÍAS */
         .ql-editor .ql-indent-1 { padding-left: 3em !important; }
         .ql-editor .ql-indent-2 { padding-left: 6em !important; }
         .ql-editor li.ql-indent-1 { margin-left: 1.5em !important; }
