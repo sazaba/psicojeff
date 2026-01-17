@@ -2,11 +2,11 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Share2, Tag } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
-// No importamos estilos de Quill aquí para evitar conflictos.
-// Controlaremos todo manualmente.
+// NO importamos CSS de Quill para tener control total manual
+// import "react-quill-new/dist/quill.snow.css"; 
 
 type Params = Promise<{ id: string }>;
 
@@ -36,7 +36,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
   return (
     <article className="min-h-screen bg-white pb-24">
       
-      {/* --- HERO SECTION --- */}
+      {/* --- HERO SECTION (Diseño Original Restaurado) --- */}
       <div className="relative w-full h-[50vh] min-h-[400px] bg-stone-900">
         {post.image && (
             <Image 
@@ -49,14 +49,16 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         )}
         
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end pb-12 md:pb-20">
-            <div className="container mx-auto px-4 md:px-8 max-w-5xl">
+            <div className="container mx-auto px-4 md:px-6 max-w-4xl">
+                
                 <Link href="/blog" className="inline-flex items-center text-white/80 hover:text-white mb-8 transition-colors text-sm font-medium tracking-wide">
                     <ArrowLeft size={18} className="mr-2" />
                     VOLVER A LA BITÁCORA
                 </Link>
                 
                 <div className="flex flex-wrap items-center gap-3 mb-6">
-                    <span className="bg-teal-600 text-white px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider shadow-sm">
+                    <span className="bg-teal-600 text-white px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider shadow-sm flex items-center gap-1">
+                        <Tag size={12} />
                         {post.category}
                     </span>
                     <span className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/20 text-white px-3 py-1 rounded-md text-xs font-bold shadow-sm">
@@ -65,34 +67,33 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                     </span>
                 </div>
 
-                <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-white leading-tight drop-shadow-xl">
+                <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-white max-w-5xl leading-tight drop-shadow-xl">
                     {post.title}
                 </h1>
             </div>
         </div>
       </div>
 
-      {/* --- CONTENEDOR PRINCIPAL --- */}
-      {/* AUMENTÉ max-w-4xl a max-w-5xl para dar más aire horizontal, como pediste revisar el ancho */}
-      <div className="container mx-auto px-4 md:px-8 -mt-10 relative z-10 max-w-5xl">
-        <div className="bg-white rounded-t-3xl md:rounded-3xl shadow-xl p-8 md:p-16 border border-stone-100">
+      {/* --- CONTENIDO PRINCIPAL --- */}
+      <div className="container mx-auto px-4 md:px-6 -mt-10 relative z-10 max-w-4xl">
+        <div className="bg-white rounded-t-3xl md:rounded-3xl shadow-xl p-6 md:p-12 lg:p-16 w-full border border-stone-100">
             
             {post.excerpt && (
-                <div className="text-xl text-stone-600 font-serif italic mb-12 pb-8 border-b border-stone-200 leading-relaxed">
+                <div className="text-lg md:text-xl text-stone-600 font-serif italic mb-10 pb-10 border-b border-stone-200 leading-relaxed">
                     {post.excerpt}
                 </div>
             )}
             
-            {/* CONTENEDOR DEL TEXTO (Renderizado)
-                Usamos la clase 'blog-content' definida abajo.
-                Eliminé todas las clases de Quill (ql-editor, etc) para evitar estilos ocultos.
+            {/* CONTENEDOR DEL TEXTO 
+                Usamos la clase 'render-content' y lang="es" para ayudar al navegador
             */}
             <div 
-                className="blog-content w-full"
+                className="render-content w-full"
+                lang="es" 
                 dangerouslySetInnerHTML={{ __html: post.content }} 
             />
 
-            {/* Footer */}
+            {/* Footer del Artículo */}
             <div className="mt-20 pt-8 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-center gap-6">
                 <div className="flex items-center gap-2 text-stone-500 font-medium text-sm">
                     <Calendar size={18} className="text-teal-600"/>
@@ -107,31 +108,40 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         </div>
       </div>
 
-      {/* --- CSS CORRRECTIVO NUCLEAR --- */}
+      {/* --- CSS BLINDADO (LA SOLUCIÓN TÉCNICA) --- */}
       <style>{`
-        .blog-content {
-            /* Base */
+        .render-content {
             font-family: var(--font-sans, sans-serif);
-            font-size: 1.125rem; /* 18px */
+            font-size: 1.125rem;
             line-height: 1.8;
             color: #44403c;
             width: 100%;
         }
 
-        /* REGLA MAESTRA ANTICORTE
-           Aplicamos esto a TODO (*) dentro del contenido para sobreescribir cualquier 
-           estilo inline que venga del editor.
-        */
-        .blog-content, 
-        .blog-content * {
-            word-break: normal !important;      /* Prohibido romper palabras arbitrariamente */
-            overflow-wrap: break-word !important; /* Solo romper si la palabra es más larga que la línea completa */
-            white-space: normal !important;     /* Ignorar pre-wrap del editor */
-            hyphens: none !important;           /* Sin guiones automáticos */
+        /* 1. RESET DE RUPTURA DE PALABRAS */
+        /* Aplicamos a todo (*) para sobrescribir cualquier estilo heredado */
+        .render-content, .render-content * {
+            word-break: keep-all !important;      /* ESTO prohíbe romper palabras en medio (Webkit/Blink) */
+            overflow-wrap: break-word !important; /* Solo rompe si la palabra es más larga que el contenedor */
+            white-space: normal !important;       /* Fuerza el flujo natural del texto */
         }
 
-        /* Títulos */
-        .blog-content h1, .blog-content h2, .blog-content h3 {
+        /* 2. MANEJO DE JUSTIFICACIÓN */
+        /* Si Quill pone ql-align-justify, activamos guiones automáticos para ayudar al navegador */
+        .render-content .ql-align-justify {
+            text-align: justify;
+            text-justify: inter-word; 
+            hyphens: auto;           /* Si DEBE romper, pon un guión (bio-logía) */
+            -webkit-hyphens: auto;
+            -ms-hyphens: auto;
+        }
+
+        .render-content .ql-align-center { text-align: center; }
+        .render-content .ql-align-right { text-align: right; }
+        .render-content .ql-align-left { text-align: left; }
+
+        /* Estilos de elementos HTML */
+        .render-content h1, .render-content h2, .render-content h3 {
             font-family: var(--font-serif, serif);
             font-weight: 700;
             color: #1c1917;
@@ -139,51 +149,26 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             margin-bottom: 1.25rem;
             line-height: 1.3;
         }
-        .blog-content h2 { font-size: 1.8rem; }
-        .blog-content h3 { font-size: 1.5rem; }
+        .render-content h2 { font-size: 1.8rem; }
+        .render-content h3 { font-size: 1.5rem; }
 
-        /* Párrafos */
-        .blog-content p {
-            margin-bottom: 1.5rem;
-        }
+        .render-content p { margin-bottom: 1.5rem; }
 
-        /* MANEJO DE JUSTIFICACIÓN
-           Si el editor mandó texto justificado (ql-align-justify), 
-           esto asegura que se distribuya por espacios y NO rompiendo letras.
-        */
-        .blog-content .ql-align-justify {
-            text-align: justify;
-            text-justify: inter-word; 
-        }
-        .blog-content .ql-align-center { text-align: center; }
-        .blog-content .ql-align-right { text-align: right; }
+        .render-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; }
+        .render-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1.5rem; }
+        .render-content li { margin-bottom: 0.5rem; padding-left: 0.5rem; }
 
-        /* Listas */
-        .blog-content ul { 
-            list-style-type: disc; 
-            padding-left: 1.5rem; 
-            margin-bottom: 1.5rem; 
-        }
-        .blog-content ol { 
-            list-style-type: decimal; 
-            padding-left: 1.5rem; 
-            margin-bottom: 1.5rem; 
-        }
-        .blog-content li { 
-            margin-bottom: 0.5rem; 
-        }
-
-        /* Citas */
-        .blog-content blockquote {
+        .render-content blockquote {
             border-left: 4px solid #0d9488;
             background: #f5f5f4;
             padding: 1.5rem;
             margin: 2rem 0;
             font-style: italic;
         }
-
-        /* Imágenes */
-        .blog-content img {
+        
+        .render-content strong, .render-content b { font-weight: 800; color: #000; }
+        
+        .render-content img {
             max-width: 100%;
             height: auto;
             border-radius: 0.5rem;
