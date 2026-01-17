@@ -6,11 +6,7 @@ export default function Hero() {
   return (
     <section className="relative min-h-[90vh] flex items-center pt-32 md:pt-20 overflow-hidden w-full">
       
-      {/* OPTIMIZACIÓN 1: GPU ACCELERATION
-         Agregamos 'transform-gpu' y 'will-change-transform'.
-         Esto saca el cálculo del desenfoque de la CPU y lo pasa a la tarjeta gráfica.
-         Resultado: Scroll suave en iPhone sin tirones.
-      */}
+      {/* OPTIMIZACIÓN 1: GPU ACCELERATION */}
       <div className="absolute top-1/2 right-0 md:right-20 -translate-y-1/2 w-[80vw] md:w-[600px] h-[600px] bg-teal-50/40 rounded-full blur-[120px] -z-10 pointer-events-none transform-gpu will-change-transform" />
 
       <div className="container mx-auto px-6">
@@ -26,27 +22,26 @@ export default function Hero() {
                     <Image
                         src={Headerpsicojeff}
                         alt="Psicólogo Jefferson Bastidas - Terapia Online y Presencial"
-                        // Mantenemos tus clases de diseño intactas
+                        // Mantenemos tus clases de diseño intactas (Sombra y Mascara)
                         className="w-full h-auto object-contain drop-shadow-2xl z-10 [mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)] will-change-transform" 
                         
-                        // 1. PRIORITY: Correcto, esto es vital para el LCP.
+                        // 1. PRIORITY: Vital para el Hero
                         priority={true} 
 
                         placeholder="blur"
 
-                        // OPTIMIZACIÓN 2: CALIDAD
-                        // Bajamos a 80. La diferencia visual es nula en WebP, 
-                        // pero ahorramos KB valiosos para redes móviles 4G.
-                        quality={80}
+                        // --- MÁXIMA CALIDAD (FULL HD) ---
+                        // quality={100}: Sin compresión, nitidez total.
+                        quality={100}
 
-                        // OPTIMIZACIÓN 3: SIZES AJUSTADOS
-                        // 100vw en móvil asegura que se descargue la versión nítida para pantallas retina
-                        sizes="(max-width: 768px) 100vw, 500px"
+                        // sizes="100vw": Le dice al navegador "descarga la imagen gigante", 
+                        // ideal para pantallas Retina y 4K, aunque pese un poco más.
+                        sizes="100vw"
                     />
                 </div>
             </div>
 
-            {/* COLUMNA 2: TEXTO (Sin cambios estructurales, solo limpieza) */}
+            {/* COLUMNA 2: TEXTO */}
             <div className="text-center md:text-left z-10 relative">
                 
                 <div className="inline-block mb-8 mt-4 md:mt-0 px-5 py-2 rounded-full border border-teal-100 bg-white/50 backdrop-blur-sm">
@@ -74,7 +69,6 @@ export default function Hero() {
                         <span className="relative font-serif italic font-semibold text-teal-800 text-xl md:text-2xl tracking-wide">
                         Calma Vitalizada
                         </span>
-                        {/* SVG pequeño: no impacta rendimiento, se deja igual */}
                         <svg className="absolute -top-2 -right-3 w-5 h-5 text-teal-400 opacity-0 group-hover/highlight:opacity-100 transition-opacity duration-500" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M10 0L12.5 7.5L20 10L12.5 12.5L10 20L7.5 12.5L0 10L7.5 7.5L10 0Z" />
                         </svg>

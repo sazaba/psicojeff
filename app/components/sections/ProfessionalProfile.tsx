@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Award, BookOpen, BrainCircuit, HeartHandshake, Quote, CheckCircle2 } from "lucide-react";
+import { BookOpen, BrainCircuit, HeartHandshake, Quote } from "lucide-react";
 
 import profesionalpsicojeff from "@/app/assets/profesionalpsicojeff.webp"; 
 
@@ -43,14 +43,11 @@ export default function ProfessionalProfile() {
       
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
         
-        {/* --- COLUMNA 1: IMAGEN --- */}
+        {/* --- COLUMNA 1: IMAGEN FULL HD --- */}
         <div className="relative w-full max-w-md mx-auto lg:max-w-full">
             
-            {/* 1. ELIMINADO: El fondo gris oscuro decorativo */}
-            {/* 2. ELIMINADO: El borde verde giratorio (border-teal) */}
-
             <motion.div 
-                // 3. ELIMINADO: shadow-2xl y shadow-stone (la sombra gris)
+                // Eliminadas todas las sombras y bordes. Solo un contenedor limpio.
                 className="relative rounded-2xl overflow-hidden aspect-[4/5] group transform-gpu"
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -63,21 +60,18 @@ export default function ProfessionalProfile() {
                     fill
                     className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                     
-                    // --- CORRECCIÓN DE CALIDAD ---
-                    // sizes="50vw": Le dice al navegador que en escritorio la imagen ocupa la mitad de la pantalla.
-                    // Esto obliga a descargar la versión de alta resolución.
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    // --- CALIDAD MÁXIMA (FULL HD) ---
+                    // sizes="100vw": Fuerza al navegador a bajar la versión más grande posible (Retina/4K)
+                    // quality={100}: Desactiva la compresión de Next.js para máxima nitidez
+                    sizes="100vw"
+                    quality={100}
                     
-                    // quality={95}: Subimos la calidad casi al máximo para evitar pixelado
-                    quality={95}
-                    
+                    priority={false} // Mantenemos false para no bloquear el Hero, pero con sizes grande se verá perfecto al bajar
                     placeholder="blur"
-                    loading="lazy"
                 />
                 
-                {/* Degradado sutil solo para que el texto resalte si decides poner algo encima, 
-                    si quieres la foto totalmente limpia puedes quitar este div también */}
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 via-transparent to-transparent opacity-60" />
+                {/* Opcional: Degradado muy suave abajo para que la imagen no se corte bruscamente */}
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/20 via-transparent to-transparent opacity-40 pointer-events-none" />
             </motion.div>
           
         </div>
