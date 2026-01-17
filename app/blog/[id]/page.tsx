@@ -134,69 +134,47 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             white-space: normal !important; 
         }
 
-        /* --- 1. SOLUCIÓN VIÑETAS (CUSTOM BULLETS) --- */
-        /* Quitamos el estilo por defecto del navegador para evitar duplicados */
+        /* --- SOLUCIÓN DEFINITIVA VIÑETAS (USANDO ::MARKER) --- */
+        /* Esta es la forma moderna que evita viñetas dobles */
+
+        /* 1. Configurar el contenedor de la lista para que tenga espacio a la izquierda */
         .safe-content ul, .safe-content ol {
-            list-style: none !important; 
-            padding-left: 0 !important;
+            padding-left: 1.5rem !important; 
             margin-bottom: 2rem;
-            margin-left: 0.5rem;
+            list-style-position: outside !important; /* La viñeta queda fuera del bloque de texto */
         }
 
-        /* Creamos el espacio para nuestra propia viñeta */
+        /* 2. Asegurar que el navegador sepa qué tipo de lista es */
+        .safe-content ul { list-style-type: disc !important; }
+        .safe-content ol { list-style-type: decimal !important; }
+
+        /* 3. Colorear la viñeta nativa directamente. ¡Esto evita duplicados! */
+        .safe-content li::marker {
+            color: #0d9488; /* Tu color Teal */
+            font-size: 1.2em; /* Un poco más grandes para que destaquen */
+        }
+
+        /* 4. Estilar el ítem de lista y forzar JUSTIFICADO */
         .safe-content li {
-            position: relative;
-            padding-left: 1.5rem; /* Espacio a la izquierda para el punto */
             margin-bottom: 0.5rem;
+            padding-left: 0.5rem; /* Un pequeño respiro entre la viñeta y el texto */
             text-align: justify !important;
             text-justify: inter-word !important;
         }
 
-        /* DIBUJAMOS EL PUNTO NOSOTROS MISMOS (::before) */
-        .safe-content ul li::before {
-            content: "•";           /* El punto */
-            color: #0d9488;         /* Color Teal */
-            font-weight: bold;
-            font-size: 1.5rem;      /* Tamaño del punto */
-            position: absolute;
-            left: 0;
-            top: -0.2rem;           /* Ajuste fino de altura */
-            line-height: 1.5rem;
-        }
-
-        /* DIBUJAMOS LOS NÚMEROS PARA LISTAS ORDENADAS */
-        .safe-content ol {
-            counter-reset: list-counter; /* Iniciamos contador */
-        }
-        .safe-content ol li {
-            counter-increment: list-counter;
-        }
-        .safe-content ol li::before {
-            content: counter(list-counter) ".";
-            color: #0d9488;
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
-
-        /* --- 2. SOLUCIÓN PARA SANGRÍAS (INDENTACIÓN) --- */
-        /* Aplica tanto a Párrafos <p> como a Listas <li> */
-        
-        /* Nivel 1 */
-        .safe-content .ql-indent-1 { 
+        /* --- SOLUCIÓN PARA SANGRÍAS (INDENTACIÓN) --- */
+        /* Aplica tanto a Párrafos <p> como a Listas <li> con sangría */
+        .safe-content .ql-indent-1, .safe-content li.ql-indent-1 { 
             margin-left: 2rem !important; 
-            padding-left: 1rem !important;
-            border-left: 2px solid #e7e5e4; /* Opcional: una línea sutil gris para guiar el ojo */
         }
-        
-        /* Nivel 2 */
-        .safe-content .ql-indent-2 { 
+        .safe-content .ql-indent-2, .safe-content li.ql-indent-2 { 
             margin-left: 4rem !important; 
-            padding-left: 1rem !important;
-            border-left: 2px solid #e7e5e4;
+        }
+        .safe-content .ql-indent-3, .safe-content li.ql-indent-3 { 
+            margin-left: 6rem !important; 
         }
 
-        /* --- 3. ALINEACIÓN GENERAL --- */
+        /* --- ALINEACIÓN GENERAL --- */
         .safe-content .ql-align-justify {
             text-align: justify;
             text-justify: inter-word;
@@ -204,7 +182,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         .safe-content .ql-align-center { text-align: center; }
         .safe-content .ql-align-right { text-align: right; }
 
-        /* Tipografía */
+        /* Tipografía y otros elementos */
         .safe-content h1, .safe-content h2, .safe-content h3 {
             font-family: 'Playfair Display', serif;
             font-weight: 800;
