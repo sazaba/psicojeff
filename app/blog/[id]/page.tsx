@@ -39,7 +39,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
     // 2. Arreglar URLs sin protocolo (www -> https://www)
     .replace(/href=(["'])www\./g, 'href=$1https://www.')
     // 3. OBLIGATORIO: Forzar que los links abran en nueva pestaña
-    // Esto inyecta target="_blank" en todas las etiquetas <a ...>
     .replace(/<a /g, '<a target="_blank" rel="noopener noreferrer" ');
 
   let tags: string[] = [];
@@ -140,7 +139,19 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             word-break: normal !important;
             overflow-wrap: break-word !important;
             white-space: normal !important; 
-            text-align: left !important;
+            /* SE ELIMINÓ text-align: left !important PARA PERMITIR JUSTIFICACIÓN */
+        }
+
+        /* CLASES NECESARIAS PARA EL EDITOR QUILL */
+        .safe-content .ql-align-justify {
+            text-align: justify;
+            text-justify: inter-word;
+        }
+        .safe-content .ql-align-center {
+            text-align: center;
+        }
+        .safe-content .ql-align-right {
+            text-align: right;
         }
 
         .safe-content h1, .safe-content h2, .safe-content h3 {
