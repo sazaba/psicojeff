@@ -29,3 +29,10 @@ model User {
   password  String   // Aquí se guardará el hash encriptado
   createdAt DateTime @default(now())
 }
+
+
+model SiteConfig {
+  id          String   @id @default(cuid())
+  reviewCount Int      @default(88) // Valor inicial por defecto
+  updatedAt   DateTime @updatedAt
+}
