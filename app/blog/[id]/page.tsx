@@ -4,7 +4,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { prisma } from "@/lib/prisma";
-// Mantengo tu ruta de importación tal cual la enviaste
 import ShareButton from "@/app/components/ui/ShareButton"; 
 
 type Params = Promise<{ id: string }>;
@@ -32,15 +31,16 @@ export default async function BlogPostPage({ params }: { params: Params }) {
     dateStyle: 'long'
   }).format(post.createdAt);
 
-  // --- FIX CRÍTICO DE URLS Y LIMPIEZA ---
+  // --- LOGICA DE LIMPIEZA Y REPARACIÓN DE HTML ---
   const cleanContent = post.content
-    // 1. Limpiar espacios duros que rompen el diseño móvil
+    // 1. Arreglar espacios
     .replace(/&nbsp;/g, ' ')
     .replace(/\u00a0/g, ' ')
-    // 2. CORRECCIÓN DE URLS:
-    // Busca href="www.algo" y lo reemplaza por href="https://www.algo"
-    // Esto fuerza al navegador a salir de tu sitio e ir a la web externa.
-    .replace(/href=(["'])www\./g, 'href=$1https://www.');
+    // 2. Arreglar URLs sin protocolo (www -> https://www)
+    .replace(/href=(["'])www\./g, 'href=$1https://www.')
+    // 3. OBLIGATORIO: Forzar que los links abran en nueva pestaña
+    // Esto inyecta target="_blank" en todas las etiquetas <a ...>
+    .replace(/<a /g, '<a target="_blank" rel="noopener noreferrer" ');
 
   let tags: string[] = [];
   try {
@@ -99,8 +99,9 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       </div>
 
       {/* --- CONTENIDO PRINCIPAL --- */}
+      {/* z-10 asegura que esta tarjeta flote SOBRE el hero, pero bajo elementos modales */}
       <div className="container mx-auto px-4 md:px-8 -mt-12 relative z-10 max-w-5xl">
-        <div className="bg-white rounded-t-3xl md:rounded-3xl shadow-2xl p-8 md:p-16 border border-stone-100">
+        <div className="bg-white rounded-t-3xl md:rounded-3xl shadow-2xl p-8 md:p-16 border border-stone-100 relative">
             
             {post.excerpt && (
                 <div className="text-xl text-stone-600 font-serif italic mb-12 pb-8 border-b border-stone-100 leading-relaxed">
@@ -108,20 +109,20 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                 </div>
             )}
             
+            {/* Contenedor del HTML seguro */}
             <div 
-                className="safe-content"
+                className="safe-content relative z-20" 
                 dangerouslySetInnerHTML={{ __html: cleanContent }} 
             />
 
             {/* Footer del Artículo */}
-            <div className="mt-20 pt-10 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-center gap-6">
+            <div className="mt-20 pt-10 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-center gap-6 relative z-20">
                 <div className="flex items-center gap-2 text-stone-500 font-bold text-sm">
                     <Calendar size={18} className="text-teal-600"/>
                     <span>Publicado el {formattedDate}</span>
                 </div>
                 
                 <ShareButton />
-                
             </div>
         </div>
       </div>
@@ -166,14 +167,14 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         .safe-content ul li::marker { color: #0d9488; }
 
         .safe-content blockquote {
-            border-left: 4px solid #0d9488;
-            background: #fafaf9;
+            border-left: 4px solid #34d399; /* Verde pastel en borde */
+            background: #ecfdf5; /* Fondo muy suave verde */
             padding: 1.5rem 2rem;
             margin: 2.5rem 0;
             font-family: 'Playfair Display', serif;
             font-size: 1.4rem;
             font-style: italic;
-            color: #57534e;
+            color: #065f46;
             border-radius: 0 0.5rem 0.5rem 0;
         }
 
@@ -185,16 +186,23 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
+        /* --- ESTILOS DEL ENLACE VERDE PASTEL --- */
         .safe-content a {
-            color: #0d9488;
-            text-decoration: underline;
-            text-underline-offset: 3px;
-            font-weight: 700;
-            transition: color 0.2s;
+            color: #34d399 !important; /* Verde Pastel (Emerald-400) */
+            text-decoration: underline !important;
+            text-decoration-color: #34d399 !important;
+            text-underline-offset: 4px;
+            font-weight: 800;
+            cursor: pointer !important; /* Forzar cursor de mano */
+            position: relative;
+            z-index: 50; /* Forzar capa superior para asegurar el clic */
+            transition: all 0.2s ease;
         }
+        
         .safe-content a:hover {
-            color: #0f766e;
-            background-color: #ccfbf1;
+            color: #10b981 !important; /* Un poco más oscuro al pasar el mouse */
+            text-decoration-color: #10b981 !important;
+            background-color: #ecfdf5; /* Fondo sutil al hover */
         }
 
         .safe-content strong, .safe-content b {
