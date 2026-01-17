@@ -1,3 +1,4 @@
+import { prisma } from "@/lib/prisma"; // 1. Importamos Prisma
 import Navbar from "@/app/components/ui/Navbar";
 import Hero from "@/app/components/sections/Hero"; 
 import PainPoints from "@/app/components/sections/PainPoints"; 
@@ -11,7 +12,26 @@ import FAQ from "./components/sections/Faq";
 import Footer from "@/app/components/sections/Footer";
 import BlogCarousel from "./components/sections/BlogCarousel";
 
-export default function Home() {
+// 2. Importante para que el cambio de número se vea al instante
+export const dynamic = 'force-dynamic';
+
+// 3. Función auxiliar para obtener el dato de forma segura
+async function getReviewCount() {
+  try {
+    const config = await prisma.siteConfig.findFirst();
+    // Si existe configuración usa el número, si no, usa 88 por defecto
+    return config?.reviewCount ?? 88;
+  } catch (error) {
+    console.error("Error cargando reseñas:", error);
+    return 88; // Fallback en caso de error de conexión
+  }
+}
+
+// 4. Convertimos el componente en async
+export default async function Home() {
+  // 5. Obtenemos el dato antes de renderizar
+  const reviewCount = await getReviewCount();
+
   return (
     <div className="relative flex flex-col gap-0 scroll-smooth"> 
       <Navbar />
@@ -22,7 +42,7 @@ export default function Home() {
           <Hero />
         </section>
 
-        {/* ID: motivos (Antes Problemas) */}
+        {/* ID: motivos */}
         <section id="motivos">
           <PainPoints />
         </section>
@@ -36,12 +56,12 @@ export default function Home() {
           <ProfessionalProfile/>
         </section>
 
-        {/* ID: diferencial (Tu propuesta de valor) */}
+        {/* ID: diferencial */}
         <section id="diferencial">
           <ValueProposition/>
         </section>
 
-        {/* ID: proceso (Transformación) */}
+        {/* ID: proceso */}
         <section id="proceso">
           <Transformation/>
         </section>
@@ -52,21 +72,21 @@ export default function Home() {
         </section>
 
         <section id="testimonios">
-          <Testimonials/>
+          {/* 6. Pasamos el dato real al componente */}
+          <Testimonials dbReviewCount={reviewCount} />
         </section>
         
         <section id="faq">
           <FAQ/>
         </section>
 
-<section id="blog">
-  <BlogCarousel />
-</section>
+        <section id="blog">
+          <BlogCarousel />
+        </section>
 
       </main>
     
-
-      {/* ID: contacto (Para el botón del navbar y footer) */}
+      {/* ID: contacto */}
       <section id="contacto">
         <Footer />
       </section>

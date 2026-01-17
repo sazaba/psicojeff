@@ -58,13 +58,16 @@ export default function ReviewWidget({ initialCount }: ReviewWidgetProps) {
         <p className="text-stone-400 text-xs font-bold uppercase tracking-widest mb-2">Total Reseñas (Google)</p>
         
         <div className="flex items-center gap-3">
-          <input 
-            type="number" 
-            value={count}
-            onChange={(e) => setCount(Number(e.target.value))}
-            className="text-3xl font-serif font-bold text-stone-800 bg-stone-50 border border-transparent hover:border-stone-200 focus:border-teal-500 focus:ring-0 rounded-lg w-32 px-2 py-1 transition-all outline-none"
-          />
-          
+         <input 
+  type="number" 
+  value={count}
+  onChange={(e) => setCount(Number(e.target.value))}
+  // CLASES NUEVAS AGREGADAS AL FINAL:
+  // [appearance:textfield] -> Para Firefox
+  // [&::-webkit-outer-spin-button]:appearance-none -> Para Chrome/Safari
+  // [&::-webkit-inner-spin-button]:appearance-none -> Para Chrome/Safari
+  className="text-3xl font-serif font-bold text-stone-800 bg-stone-50 border border-transparent hover:border-stone-200 focus:border-teal-500 focus:ring-0 rounded-lg w-32 px-2 py-1 transition-all outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+/>
           <button
             onClick={handleSave}
             disabled={loading || count === initialCount}

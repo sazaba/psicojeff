@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Star, CheckCircle2, ArrowRight } from "lucide-react"; // Añadí ArrowRight para el botón
+import { Star, CheckCircle2, ArrowRight } from "lucide-react";
 import google from "@/app/assets/logo.svg";
 
 // --- TUS DATOS (Sin cambios) ---
@@ -60,24 +60,25 @@ const reviews = [
 
 const infiniteReviews = [...reviews, ...reviews];
 
-export default function Testimonials() {
+// 1. Definimos que este componente acepta una propiedad opcional
+interface TestimonialsProps {
+  dbReviewCount?: number;
+}
+
+// 2. Recibimos la propiedad y le ponemos 88 como valor por defecto si falla
+export default function Testimonials({ dbReviewCount = 88 }: TestimonialsProps) {
   return (
-    // CAMBIO 1: bg-transparent para ver el fondo global y bordes sutiles
     <section className="py-24 relative w-full overflow-hidden border-t border-white/20 bg-transparent">
       
-      {/* Luz ambiental sutil detrás del mockup (opcional, para resaltar el cristal) */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-white/10 blur-[100px] rounded-full pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-6 mb-20 flex flex-col items-center relative z-10">
         
-        {/* --- MOCKUP PREMIUM TIPO "WIDGET" --- */}
         <div className="relative group">
-            {/* Efecto de borde brillante (Glow) detrás */}
             <div className="absolute -inset-0.5 bg-gradient-to-r from-teal-500/20 to-blue-500/20 rounded-[32px] blur opacity-50 group-hover:opacity-75 transition duration-500"></div>
             
             <div className="relative bg-white/60 backdrop-blur-xl border border-white/60 p-8 md:p-10 rounded-[30px] shadow-[0_8px_32px_rgba(0,0,0,0.05)] flex flex-col items-center text-center max-w-md mx-auto">
                 
-                {/* Logo Google Flotante */}
                 <div className="mb-4 relative w-24 h-8">
                     <Image src={google} alt="Google Logo" fill className="object-contain" />
                 </div>
@@ -92,11 +93,11 @@ export default function Testimonials() {
                         ))}
                     </div>
                     <p className="text-stone-600 font-medium mt-1">
-                        Basado en <strong className="text-stone-900 underline decoration-stone-300 underline-offset-4">88 reseñas</strong> verificadas
+                        {/* 3. AQUI USAMOS EL DATO REAL DE LA BASE DE DATOS */}
+                        Basado en <strong className="text-stone-900 underline decoration-stone-300 underline-offset-4">{dbReviewCount} reseñas</strong> verificadas
                     </p>
                 </div>
 
-                {/* NUEVO BOTÓN INTEGRADO EN EL MOCKUP */}
                 <a 
                     href="https://share.google/5gs2judHeh0di1b4W" 
                     target="_blank"
@@ -110,12 +111,10 @@ export default function Testimonials() {
         </div>
       </div>
 
-      {/* --- CARRUSEL INFINITO --- */}
       <div className="w-full max-w-full overflow-hidden">
         <div 
             className="relative w-full overflow-hidden"
             style={{
-                // Máscara suave para que las tarjetas desaparezcan elegantemente
                 maskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
                 WebkitMaskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)"
             }}
@@ -133,10 +132,8 @@ export default function Testimonials() {
                 {infiniteReviews.map((review, index) => (
                     <div 
                         key={`${review.id}-${index}`} 
-                        // CAMBIO: Fondo semitransparente (glass) para las tarjetas también
                         className="w-[280px] sm:w-[320px] md:w-[400px] flex-shrink-0 bg-white/70 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-white/50 relative group hover:bg-white hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 flex flex-col"
                     >
-                        {/* Icono Google decorativo */}
                         <div className="absolute top-6 right-6 opacity-20 group-hover:opacity-100 transition-all duration-300 grayscale group-hover:grayscale-0">
                             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M23.5 12.28c0-.86-.07-1.7-.22-2.5H12v4.86h6.47c-.28 1.48-1.12 2.73-2.4 3.58v3h3.86c2.26-2.09 3.57-5.17 3.57-8.94z" fill="#4285F4"/>
