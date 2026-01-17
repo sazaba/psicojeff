@@ -2,10 +2,8 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Calendar, Clock, Tag, Share2, BookOpen } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Share2, Tag, User } from "lucide-react";
 import { prisma } from "@/lib/prisma";
-
-// NO importamos CSS de Quill. Vamos a estilizar "a mano" para control total.
 
 type Params = Promise<{ id: string }>;
 
@@ -29,84 +27,68 @@ export default async function BlogPostPage({ params }: { params: Params }) {
   if (!post) return notFound();
 
   const formattedDate = new Intl.DateTimeFormat('es-CO', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
+    dateStyle: 'long'
   }).format(post.createdAt);
 
+  // --- LA CURA: LIMPIEZA DE DATOS ---
+  // Reemplazamos todos los &nbsp; (espacios pegajosos) por espacios normales " ".
+  // También limpiamos el carácter unicode \u00a0 que a veces se cuela.
+  const cleanContent = post.content
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\u00a0/g, ' ');
+
   return (
-    <article className="min-h-screen bg-[#fffcf8] text-stone-900 font-sans selection:bg-teal-100 selection:text-teal-900">
+    <article className="min-h-screen bg-white text-stone-900 font-sans selection:bg-teal-100 selection:text-teal-900 pb-24">
       
-      {/* --- BARRA DE NAVEGACIÓN FLOTANTE --- */}
-      <nav className="sticky top-0 z-50 w-full bg-[#fffcf8]/90 backdrop-blur-sm border-b border-stone-100 py-4">
-        <div className="container mx-auto px-4 max-w-3xl flex justify-between items-center">
+      {/* --- HERO HEADER (Estilo Revista Amplio) --- */}
+      <div className="w-full bg-stone-50 border-b border-stone-100 pt-20 pb-16 md:pt-28 md:pb-20">
+        <div className="container mx-auto px-4 md:px-8 max-w-5xl text-center">
+            
             <Link 
               href="/blog" 
-              className="group flex items-center gap-2 text-stone-500 hover:text-stone-900 transition-colors text-sm font-bold uppercase tracking-widest"
+              className="inline-flex items-center text-stone-400 hover:text-teal-600 mb-10 transition-colors text-xs font-bold uppercase tracking-[0.2em]"
             >
-              <div className="p-2 rounded-full group-hover:bg-stone-100 transition-all">
-                  <ArrowLeft size={18} />
-              </div>
-              <span className="hidden sm:inline">Volver</span>
+              <ArrowLeft size={14} className="mr-2" />
+              Volver a la bitácora
             </Link>
 
-            <div className="flex items-center gap-3">
-                <button className="p-2 text-stone-400 hover:text-teal-600 transition-colors rounded-full hover:bg-teal-50" title="Compartir">
-                    <Share2 size={20} />
-                </button>
+            <div className="flex flex-wrap justify-center items-center gap-4 mb-8">
+                <span className="bg-teal-600 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">
+                    {post.category}
+                </span>
+                <span className="text-stone-400 text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+                    <Clock size={14} />
+                    {post.readTime || "Lectura rápida"}
+                </span>
             </div>
-        </div>
-      </nav>
 
-      {/* --- CABECERA EDITORIAL --- */}
-      <header className="container mx-auto px-4 max-w-3xl pt-12 pb-10 text-center">
-        
-        {/* Metadatos Superiores */}
-        <div className="flex flex-wrap justify-center items-center gap-4 mb-8 text-xs font-bold uppercase tracking-widest text-stone-400">
-            <span className="text-teal-600 bg-teal-50 px-3 py-1 rounded-full border border-teal-100">
-                {post.category}
-            </span>
-            <span>•</span>
-            <span>{formattedDate}</span>
-        </div>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-black text-stone-900 mb-8 leading-[1.1] tracking-tight text-balance">
+                {post.title}
+            </h1>
 
-        {/* Título Principal (Estilo Serif Grande) */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black text-stone-900 mb-8 leading-tight text-balance">
-            {post.title}
-        </h1>
+            {post.excerpt && (
+                <p className="text-xl md:text-2xl text-stone-500 font-serif italic max-w-3xl mx-auto leading-relaxed">
+                    {post.excerpt}
+                </p>
+            )}
 
-        {/* Resumen / Bajada (Lead) */}
-        {post.excerpt && (
-            <p className="text-xl md:text-2xl text-stone-500 font-serif italic leading-relaxed text-balance mb-8">
-                {post.excerpt}
-            </p>
-        )}
-
-        {/* Autor y Tiempo de Lectura */}
-        <div className="flex items-center justify-center gap-6 border-t border-b border-stone-100 py-6">
-            <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-stone-200 overflow-hidden relative">
-                    {/* Placeholder de avatar si no tienes foto de autor */}
-                    <div className="absolute inset-0 flex items-center justify-center text-stone-400 font-serif font-bold">J</div>
+            {/* Autor */}
+            <div className="mt-10 flex items-center justify-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-teal-500 to-stone-700 flex items-center justify-center text-white font-serif font-bold">
+                    JB
                 </div>
-                <div className="text-left">
-                    <p className="text-xs font-bold text-stone-900 uppercase tracking-wider">Jefferson B.</p>
-                    <p className="text-[10px] text-stone-400 font-medium">Psicólogo Clínico</p>
+                <div className="text-left leading-tight">
+                    <p className="text-sm font-bold text-stone-900">Jefferson Bastidas</p>
+                    <p className="text-xs text-stone-500">Psicólogo Clínico</p>
                 </div>
             </div>
-            <div className="h-8 w-px bg-stone-100"></div>
-            <div className="flex items-center gap-2 text-stone-400 text-sm font-medium">
-                <BookOpen size={16} />
-                <span>{post.readTime || "5 min lectura"}</span>
-            </div>
         </div>
+      </div>
 
-      </header>
-
-      {/* --- IMAGEN DESTACADA (WIDE) --- */}
+      {/* --- IMAGEN DESTACADA --- */}
       {post.image && (
-          <div className="container mx-auto px-4 max-w-5xl mb-16">
-            <div className="relative aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-2xl shadow-stone-200">
+          <div className="container mx-auto px-4 md:px-8 max-w-6xl -mt-12 mb-20 relative z-10">
+            <div className="relative aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-2xl">
                 <Image 
                     src={post.image} 
                     alt={post.title} 
@@ -115,146 +97,121 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                     priority
                 />
             </div>
-             <p className="text-center text-stone-400 text-xs mt-4 italic">Imagen con fines ilustrativos</p>
           </div>
       )}
 
-      {/* --- CUERPO DEL CONTENIDO (LIMPIO) --- */}
-      <main className="container mx-auto px-4 max-w-[720px] pb-24">
+      {/* --- CONTENIDO PRINCIPAL --- */}
+      {/* Aumenté el ancho a max-w-4xl (aprox 900px) como pediste para que no se sienta apretado */}
+      <main className="container mx-auto px-4 md:px-8 max-w-4xl">
         
-        {/* CLASE 'premium-content':
-            Aquí ocurre la magia. Hemos eliminado cualquier rastro de justificación forzada.
-        */}
+        {/* Renderizamos el contenido YA LIMPIO (cleanContent) */}
         <div 
-            className="premium-content"
-            dangerouslySetInnerHTML={{ __html: post.content }} 
+            className="prose-premium"
+            dangerouslySetInnerHTML={{ __html: cleanContent }} 
         />
 
-        {/* Final del Artículo */}
-        <div className="mt-16 pt-10 border-t-2 border-stone-100 text-center">
-            <h3 className="font-serif text-2xl font-bold text-stone-900 mb-4">¿Te ha servido esta reflexión?</h3>
-            <p className="text-stone-500 mb-8">La psicología es un camino de autodescubrimiento constante.</p>
-            <Link 
-                href="/blog" 
-                className="inline-block bg-stone-900 text-white px-8 py-4 rounded-full font-bold hover:bg-teal-600 transition-all shadow-lg hover:shadow-teal-200/50"
-            >
-                Leer más artículos
-            </Link>
+        {/* Footer del Post */}
+        <div className="mt-24 border-t border-stone-200 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p className="text-stone-400 text-sm font-medium flex items-center gap-2">
+                <Calendar size={16} /> Publicado el {formattedDate}
+            </p>
+            <div className="flex gap-4">
+                <button className="flex items-center gap-2 px-6 py-3 bg-stone-900 text-white rounded-full font-bold text-sm hover:bg-teal-600 transition-all shadow-lg hover:shadow-teal-200">
+                    <Share2 size={16} /> Compartir artículo
+                </button>
+            </div>
         </div>
 
       </main>
 
-      {/* --- ESTILOS CSS INYECTADOS (NO TOCAR) --- */}
+      {/* --- ESTILOS CSS REFACTORIZADOS --- */}
       <style>{`
-        /* Configuración Tipográfica Premium */
-        .premium-content {
-            font-family: 'Lato', ui-sans-serif, system-ui, -apple-system, sans-serif; /* Tu fuente Sans */
-            font-size: 1.25rem; /* 20px - Letra grande estilo Medium.com */
-            line-height: 1.9;   /* Mucho aire entre líneas */
-            color: #292524;     /* Stone-800: Negro suave, no puro */
-            
-            /* --- EL FIX DEFINITIVO ANTICORTE --- */
-            text-align: left;              /* Alineación izquierda: La más legible en pantallas */
-            word-break: normal;            /* Comportamiento estándar */
-            overflow-wrap: break-word;     /* Evita desbordamientos solo si es necesario */
-            hyphens: none;                 /* Sin guiones automáticos */
+        /* Configuración de Tipografía Premium */
+        .prose-premium {
+            font-family: 'Lato', system-ui, sans-serif;
+            font-size: 1.25rem; /* 20px */
+            line-height: 1.8;
+            color: #333;
+            width: 100%;
         }
 
-        /* Títulos dentro del post */
-        .premium-content h1, 
-        .premium-content h2, 
-        .premium-content h3 {
-            font-family: 'Playfair Display', Georgia, serif; /* Tu fuente Serif */
-            color: #1c1917;
-            font-weight: 800;
-            margin-top: 3.5rem;   /* Mucho espacio antes de un nuevo tema */
-            margin-bottom: 1.5rem;
-            line-height: 1.25;
-            letter-spacing: -0.02em; /* Kerning apretado para títulos elegantes */
+        /* SEGURIDAD ANTICORTE DE PALABRAS */
+        .prose-premium * {
+            word-break: normal !important;      /* Nunca romper palabras a la fuerza */
+            overflow-wrap: break-word !important; /* Solo si es inevitable */
+            white-space: normal !important;     /* Respetar espacios normales */
+            text-align: left !important;        /* Forzar izquierda para evitar ríos en justificado */
         }
-        
-        .premium-content h2 { font-size: 2rem; }
-        .premium-content h3 { font-size: 1.6rem; }
+
+        /* Encabezados */
+        .prose-premium h1, .prose-premium h2, .prose-premium h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            color: #1c1917;
+            margin-top: 3.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        .prose-premium h2 { font-size: 2.2rem; }
+        .prose-premium h3 { font-size: 1.75rem; }
 
         /* Párrafos */
-        .premium-content p {
-            margin-bottom: 2rem; /* Párrafos bien separados */
+        .prose-premium p {
+            margin-bottom: 2rem;
         }
 
-        /* Citas Destacadas (Blockquotes) */
-        .premium-content blockquote {
-            border-left: none; /* Quitamos el borde típico */
-            position: relative;
-            padding: 2rem 3rem;
+        /* Listas */
+        .prose-premium ul, .prose-premium ol {
+            margin-bottom: 2rem;
+            padding-left: 1.5rem;
+        }
+        .prose-premium li {
+            margin-bottom: 0.75rem;
+            padding-left: 0.5rem;
+        }
+        .prose-premium ul li::marker { color: #0d9488; }
+
+        /* Blockquotes / Citas */
+        .prose-premium blockquote {
+            border-left: 4px solid #0d9488;
+            background: #f0fdfa; /* Teal muy suave */
+            padding: 2rem;
             margin: 3rem 0;
             font-family: 'Playfair Display', serif;
             font-size: 1.5rem;
             font-style: italic;
-            color: #0d9488; /* Teal */
-            background: transparent;
-            text-align: center; /* Citas centradas y grandes */
-            line-height: 1.4;
-        }
-        
-        /* Decoración de comillas para el blockquote */
-        .premium-content blockquote::before {
-            content: "“";
-            display: block;
-            font-size: 4rem;
-            line-height: 1;
-            color: #ccfbf1; /* Teal muy claro */
-            margin-bottom: -2rem;
+            color: #115e59;
+            border-radius: 0 1rem 1rem 0;
         }
 
-        /* Listas */
-        .premium-content ul, .premium-content ol {
-            margin-bottom: 2rem;
-            padding-left: 1.5rem;
-        }
-        .premium-content li {
-            margin-bottom: 0.75rem;
-            padding-left: 0.5rem;
-            position: relative;
-        }
-        /* Bullet points personalizados */
-        .premium-content ul li::marker {
-            color: #0d9488;
-        }
-
-        /* Imágenes dentro del contenido */
-        .premium-content img {
+        /* Imágenes */
+        .prose-premium img {
             width: 100%;
             height: auto;
             border-radius: 1rem;
             margin: 3rem 0;
-            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1); /* Sombra suave elegante */
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.15);
         }
 
-        /* Enlaces */
-        .premium-content a {
+        /* Links */
+        .prose-premium a {
             color: #0d9488;
-            text-decoration: none;
-            border-bottom: 2px solid #99f6e4;
-            transition: all 0.2s;
             font-weight: 700;
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 4px;
+            transition: all 0.2s;
         }
-        .premium-content a:hover {
-            background-color: #ccfbf1;
+        .prose-premium a:hover {
             color: #0f766e;
+            background: #ccfbf1;
         }
 
         /* Negrillas */
-        .premium-content strong, .premium-content b {
-            font-weight: 700;
+        .prose-premium strong, .prose-premium b {
+            font-weight: 800;
             color: #000;
         }
-
-        /* SOBRESCRITURA DE ALINEACIONES DEL EDITOR */
-        /* Si el editor guardó 'justify', lo ignoramos y forzamos izquierda por diseño */
-        .premium-content .ql-align-justify { text-align: left !important; }
-        .premium-content .ql-align-center { text-align: center !important; }
-        .premium-content .ql-align-right { text-align: right !important; }
-
       `}</style>
     </article>
   );
