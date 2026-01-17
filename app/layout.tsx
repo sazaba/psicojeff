@@ -98,11 +98,11 @@ export default function RootLayout({
       >
         <Providers>
             
-            {/* FONDO DE LUCES PASTEL */}
-            <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden opacity-60">
-                  <div className="absolute top-[-10%] left-[-5%] w-[60vw] h-[60vw] rounded-full bg-[#ccfbf1] blur-[100px]"></div>
-                  <div className="absolute bottom-[-10%] right-[-5%] w-[60vw] h-[60vw] rounded-full bg-[#fce7f3] blur-[100px]"></div>
-            </div>
+           {/* FONDO DE LUCES PASTEL - Optimizado para GPU */}
+<div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden opacity-60">
+    <div className="absolute top-[-10%] left-[-5%] w-[60vw] h-[60vw] rounded-full bg-[#ccfbf1] blur-[100px] transform-gpu will-change-transform"></div>
+    <div className="absolute bottom-[-10%] right-[-5%] w-[60vw] h-[60vw] rounded-full bg-[#fce7f3] blur-[100px] transform-gpu will-change-transform"></div>
+</div>
             
             {children}
             

@@ -1,35 +1,46 @@
-import { prisma } from "@/lib/prisma"; // 1. Importamos Prisma
+import { prisma } from "@/lib/prisma";
 import Navbar from "@/app/components/ui/Navbar";
-import Hero from "@/app/components/sections/Hero"; 
-import PainPoints from "@/app/components/sections/PainPoints"; 
-import ProfessionalProfile from "@/app/components/sections/ProfessionalProfile"; 
-import ValueProposition from "@/app/components/sections/ValueProposition"; 
-import TargetAudience from "@/app/components/sections/TargetAudience";
-import Transformation from "./components/sections/Transformation";
-import Location from "./components/sections/Location";
-import Testimonials from "./components/sections/Testimonials";
-import FAQ from "./components/sections/Faq";
+import Hero from "@/app/components/sections/Hero"; // El Hero SE MANTIENE estático porque es lo primero que se ve
+import dynamic from "next/dynamic"; // Importamos dynamic
 import Footer from "@/app/components/sections/Footer";
-import BlogCarousel from "./components/sections/BlogCarousel";
 
-// 2. Importante para que el cambio de número se vea al instante
-export const dynamic = 'force-dynamic';
+// --- OPTIMIZACIÓN DE CARGA (LAZY LOADING) ---
+// Cargamos estos componentes solo cuando el navegador los necesita.
+// ssr: true ayuda al SEO, pero difiere la carga del JS pesado.
+// Para el mapa (Location), si usa window, usaremos ssr: false más adelante.
 
-// 3. Función auxiliar para obtener el dato de forma segura
+const PainPoints = dynamic(() => import("@/app/components/sections/PainPoints"));
+const ProfessionalProfile = dynamic(() => import("@/app/components/sections/ProfessionalProfile"));
+const ValueProposition = dynamic(() => import("@/app/components/sections/ValueProposition"));
+const TargetAudience = dynamic(() => import("@/app/components/sections/TargetAudience"));
+const Transformation = dynamic(() => import("./components/sections/Transformation"));
+
+const Testimonials = dynamic(() => import("./components/sections/Testimonials"));
+const FAQ = dynamic(() => import("./components/sections/Faq"));
+const BlogCarousel = dynamic(() => import("./components/sections/BlogCarousel"));
+
+// Location suele ser muy pesado (mapas). Le bajamos la prioridad de carga al máximo.
+const Location = dynamic(() => import("./components/sections/Location"), {
+  loading: () => <div className="h-96 bg-stone-50 animate-pulse" />, // Placeholder mientras carga
+});
+
+// --- OPTIMIZACIÓN DE SERVIDOR (ISR) ---
+// Reemplazamos 'force-dynamic'.
+// Esto genera la página estática y la actualiza cada 3600 segundos (1 hora).
+// Velocidad inmediata para el usuario, datos frescos cada hora.
+export const revalidate = 3600; 
+
 async function getReviewCount() {
   try {
     const config = await prisma.siteConfig.findFirst();
-    // Si existe configuración usa el número, si no, usa 88 por defecto
     return config?.reviewCount ?? 88;
   } catch (error) {
     console.error("Error cargando reseñas:", error);
-    return 88; // Fallback en caso de error de conexión
+    return 88;
   }
 }
 
-// 4. Convertimos el componente en async
 export default async function Home() {
-  // 5. Obtenemos el dato antes de renderizar
   const reviewCount = await getReviewCount();
 
   return (
@@ -37,12 +48,10 @@ export default async function Home() {
       <Navbar />
       
       <main className="flex-1">
-        {/* ID: inicio */}
         <section id="inicio">
           <Hero />
         </section>
 
-        {/* ID: motivos */}
         <section id="motivos">
           <PainPoints />
         </section>
@@ -51,28 +60,23 @@ export default async function Home() {
            <TargetAudience/>
         </section>
 
-        {/* ID: sobre-mi */}
         <section id="sobre-mi">
           <ProfessionalProfile/>
         </section>
 
-        {/* ID: diferencial */}
         <section id="diferencial">
           <ValueProposition/>
         </section>
 
-        {/* ID: proceso */}
         <section id="proceso">
           <Transformation/>
         </section>
 
-        {/* ID: ubicacion */}
         <section id="ubicacion">
           <Location/>
         </section>
 
         <section id="testimonios">
-          {/* 6. Pasamos el dato real al componente */}
           <Testimonials dbReviewCount={reviewCount} />
         </section>
         
@@ -86,7 +90,6 @@ export default async function Home() {
 
       </main>
     
-      {/* ID: contacto */}
       <section id="contacto">
         <Footer />
       </section>
