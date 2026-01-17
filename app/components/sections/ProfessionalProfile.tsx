@@ -5,10 +5,8 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Award, BookOpen, BrainCircuit, HeartHandshake, Quote, CheckCircle2 } from "lucide-react";
 
-// --- IMPORT DE LA IMAGEN ---
 import profesionalpsicojeff from "@/app/assets/profesionalpsicojeff.webp"; 
 
-// --- DATOS DEL PERFIL ---
 const credentials = [
   {
     icon: <BrainCircuit size={24} />,
@@ -33,56 +31,52 @@ const credentials = [
   }
 ];
 
-// --- ANIMACIÓN ---
-const floatAnimation = {
-  y: [-10, 10, -10],
-  transition: { 
-    duration: 6, 
-    repeat: Infinity, 
-    ease: "easeInOut" as const 
-  }
-};
-
 export default function ProfessionalProfile() {
   return (
-    <section id="sobre-mi" className="py-24 px-6 bg-white relative overflow-hidden">
+    <section 
+        id="sobre-mi" 
+        className="py-24 px-6 bg-white relative overflow-hidden"
+        // Ayuda al navegador a priorizar renderizado solo cuando es visible
+        style={{ contentVisibility: 'auto' }}
+    >
       
-      {/* Fondo Abstracto "Noise" muy sutil */}
       <div className="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] pointer-events-none" />
       
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
         
-        {/* --- COLUMNA 1: DISEÑO DE IMAGEN "DISRUPTIVO" --- */}
+        {/* --- COLUMNA 1: IMAGEN OPTIMIZADA --- */}
         <div className="relative w-full max-w-md mx-auto lg:max-w-full">
             
-            {/* 1. CAPA DE FONDO */}
             <div className="absolute top-10 -left-10 w-full h-full bg-stone-900 rounded-3xl -z-20 opacity-10 transform -rotate-3 scale-105" />
 
-            {/* 2. CAPA DE ACENTO */}
+            {/* Animación GPU-Friendly */}
             <motion.div 
                 animate={{ rotate: [3, 0, 3] }}
                 transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-6 -right-6 w-full h-full border-2 border-teal-500/30 rounded-3xl -z-10"
+                className="absolute -top-6 -right-6 w-full h-full border-2 border-teal-500/30 rounded-3xl -z-10 transform-gpu will-change-transform"
             />
 
-            {/* 3. CONTENEDOR PRINCIPAL DE LA FOTO */}
             <motion.div 
-                className="relative rounded-2xl overflow-hidden shadow-2xl shadow-stone-900/20 aspect-[4/5] group"
+                className="relative rounded-2xl overflow-hidden shadow-2xl shadow-stone-900/20 aspect-[4/5] group transform-gpu"
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: "0px 0px -100px 0px" }} // Carga un poco antes de llegar
                 transition={{ duration: 0.8 }}
             >
-                {/* LA IMAGEN */}
                 <Image 
                     src={profesionalpsicojeff} 
-                    alt="Psicólogo Jefferson Bastidas"
+                    alt="Psicólogo Jefferson Bastidas - Perfil Profesional"
                     fill
                     className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                    priority
+                    
+                    // --- OPTIMIZACIÓN CRÍTICA ---
+                    // 1. Quitamos priority (dejamos que el Hero cargue primero)
+                    // 2. Definimos tamaños exactos para ahorrar datos en móvil
+                    sizes="(max-width: 768px) 90vw, (max-width: 1200px) 50vw, 500px"
+                    placeholder="blur"
+                    loading="lazy"
                 />
                 
-                {/* Overlay Gradiente */}
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-transparent to-transparent opacity-60" />
                 <div className="absolute inset-0 border border-white/20 rounded-2xl pointer-events-none" />
             </motion.div>
@@ -90,10 +84,9 @@ export default function ProfessionalProfile() {
         </div>
 
 
-        {/* --- COLUMNA 2: NARRATIVA Y CREDENCIALES --- */}
+        {/* --- COLUMNA 2 --- */}
         <div className="mt-12 lg:mt-0">
             
-            {/* Encabezado */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -111,7 +104,6 @@ export default function ProfessionalProfile() {
                 </h3>
             </motion.div>
 
-            {/* Texto Principal */}
             <motion.div 
                 className="prose prose-stone text-stone-600 mb-10 leading-relaxed text-sm md:text-base"
                 initial={{ opacity: 0 }}
@@ -127,18 +119,16 @@ export default function ProfessionalProfile() {
                 </p>
             </motion.div>
 
-            {/* Grid de Credenciales Interactivas */}
             <div className="flex flex-col gap-3">
                 {credentials.map((cred, index) => (
                     <motion.div
                         key={index}
-                        className={`p-4 rounded-xl border ${cred.color} bg-white relative overflow-hidden group hover:shadow-md transition-all duration-300`}
+                        className={`p-4 rounded-xl border ${cred.color} bg-white relative overflow-hidden group hover:shadow-md transition-all duration-300 transform-gpu`}
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.3 + (index * 0.1) }}
                     >
-                        {/* Efecto Hover Barra Lateral */}
                         <div className="absolute left-0 top-0 bottom-0 w-1 bg-current opacity-20 group-hover:w-2 transition-all duration-300" />
                         
                         <div className="flex gap-4 items-start pl-2">
@@ -161,7 +151,6 @@ export default function ProfessionalProfile() {
                 ))}
             </div>
 
-            {/* Cita Final */}
             <motion.div 
                 className="mt-10 relative bg-stone-50 p-6 rounded-2xl border border-stone-100"
                 initial={{ opacity: 0, scale: 0.98 }}
