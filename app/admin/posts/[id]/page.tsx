@@ -51,6 +51,7 @@ export default function EditPostPage() {
     toolbar: [
       [{ 'header': [2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      // Habilitamos todas las opciones de alineación (Array vacío = todas)
       [{ 'align': [] }], 
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
       [{ 'indent': '-1'}, { 'indent': '+1' }],
@@ -344,7 +345,7 @@ export default function EditPostPage() {
         </div>
       </form>
 
-      {/* --- ESTILOS CRÍTICOS (LA SOLUCIÓN VISUAL) --- */}
+      {/* --- ESTILOS CRÍTICOS (CORREGIDOS) --- */}
       <style jsx global>{`
         /* 1. RESTAURAR VISIBILIDAD DE VIÑETAS (DOTS) */
         .ql-editor ul {
@@ -356,21 +357,29 @@ export default function EditPostPage() {
             padding-left: 1.5em !important;
         }
 
-        /* 2. FORZAR JUSTIFICACIÓN EN TODOS LOS LI DEL EDITOR */
-        /* Esto hace que se vea justificado aunque la clase falte en el HTML */
-        .ql-editor li {
+        /* 2. REGLAS ESPECÍFICAS DE ALINEACIÓN (SOLO SI TIENE LA CLASE) */
+        
+        /* Justificar SOLO si tiene la clase .ql-align-justify */
+        .ql-editor .ql-align-justify {
             text-align: justify !important;
             text-justify: inter-word !important;
         }
-
-        /* 3. MANTENER CLASES DE QUILL SI EXISTEN */
-        .ql-editor .ql-align-justify {
-            text-align: justify !important;
-        }
         
-        /* 4. SANGRÍAS (Indentation) */
-        .ql-editor .ql-indent-1 { margin-left: 1.5em !important; }
-        .ql-editor .ql-indent-2 { margin-left: 3em !important; }
+        /* Centrar SOLO si tiene la clase .ql-align-center */
+        .ql-editor .ql-align-center {
+            text-align: center !important;
+        }
+
+        /* Derecha SOLO si tiene la clase .ql-align-right */
+        .ql-editor .ql-align-right {
+            text-align: right !important;
+        }
+
+        /* 3. SANGRÍAS (Indentation) */
+        .ql-editor .ql-indent-1 { padding-left: 3em !important; }
+        .ql-editor .ql-indent-2 { padding-left: 6em !important; }
+        .ql-editor li.ql-indent-1 { margin-left: 1.5em !important; }
+        .ql-editor li.ql-indent-2 { margin-left: 3em !important; }
       `}</style>
     </div>
   );
