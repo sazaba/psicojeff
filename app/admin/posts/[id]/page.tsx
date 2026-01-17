@@ -47,19 +47,18 @@ export default function EditPostPage() {
     isFeatured: false 
   });
 
-  // CONFIGURACIÓN DEL EDITOR
   const modules = {
     toolbar: [
       [{ 'header': [2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ 'align': [] }], // Esto habilita las clases ql-align-*
+      // Habilitamos todas las opciones de alineación
+      [{ 'align': [] }], 
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'indent': '-1'}, { 'indent': '+1' }], // Esto habilita ql-indent-*
+      [{ 'indent': '-1'}, { 'indent': '+1' }],
       ['link', 'clean']
     ],
   };
 
-  // 1. CARGAR DATOS
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -148,16 +147,12 @@ export default function EditPostPage() {
     }
   };
 
-  // 2. ACTUALIZAR (PUT)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Validación básica
     if (!formData.content || formData.content === "<p><br></p>") {
         Swal.fire({ icon: 'warning', title: 'Falta contenido', text: 'El contenido no puede estar vacío.' });
-        return;
-    }
-    if (formData.tags.length === 0) {
-        Swal.fire({ icon: 'warning', title: 'Sin etiquetas', text: 'Selecciona al menos una etiqueta.' });
         return;
     }
 
@@ -194,7 +189,6 @@ export default function EditPostPage() {
     }
   };
 
-  // 3. ELIMINAR (DELETE)
   const handleDelete = async () => {
     const result = await Swal.fire({
         title: '¿Estás seguro?',
@@ -273,13 +267,16 @@ export default function EditPostPage() {
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm min-h-[600px] flex flex-col resize-y overflow-hidden">
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-4 border-b border-stone-100 pb-2">Contenido Principal</label>
                 <div className="flex-1 h-full flex flex-col">
-                    <ReactQuill 
-                        theme="snow" 
-                        value={formData.content} 
-                        onChange={handleEditorChange}
-                        modules={modules}
-                        className="h-full flex-1 mb-12" 
-                    />
+                    {/* El editor necesita clases CSS específicas para mostrar listas correctamente */}
+                    <div className="quill-wrapper h-full flex flex-col flex-1">
+                        <ReactQuill 
+                            theme="snow" 
+                            value={formData.content} 
+                            onChange={handleEditorChange}
+                            modules={modules}
+                            className="h-full flex-1 mb-12" 
+                        />
+                    </div>
                 </div>
             </div>
         </div>
@@ -287,7 +284,6 @@ export default function EditPostPage() {
         {/* COLUMNA DERECHA (CONFIGURACIÓN) */}
         <div className="space-y-6">
             
-            {/* OPCIÓN DESTACADO */}
             <div 
                 onClick={() => setFormData(prev => ({ ...prev, isFeatured: !prev.isFeatured }))}
                 className={`p-4 rounded-xl border cursor-pointer transition-all flex items-center justify-between group ${
@@ -410,31 +406,34 @@ export default function EditPostPage() {
         </div>
       </form>
 
-      {/* ESTILOS CRÍTICOS PARA EL EDITOR */}
+      {/* --- ESTILOS CRÍTICOS PARA EL EDITOR --- */}
+      {/* Esto soluciona que las listas no se justifiquen y que no se vean los puntos */}
       <style jsx global>{`
-        /* 1. RESTAURAR PUNTOS Y NÚMEROS (Tailwind los quita) */
-        .ql-editor ul {
-            list-style-type: disc !important;
+        /* 1. RESTAURAR ESTILOS DE LISTAS (Tailwind los borra) */
+        .ql-editor ol, .ql-editor ul {
             padding-left: 1.5em !important;
         }
         .ql-editor ol {
             list-style-type: decimal !important;
-            padding-left: 1.5em !important;
         }
-        
-        /* 2. FORZAR LA JUSTIFICACIÓN EN PARRAFOS Y LISTAS */
+        .ql-editor ul {
+            list-style-type: disc !important;
+        }
+
+        /* 2. FORZAR LA JUSTIFICACIÓN EN TODOS LOS NIVELES */
         .ql-editor .ql-align-justify {
             text-align: justify !important;
             text-justify: inter-word !important;
         }
+        
+        /* 3. ASEGURAR QUE LAS LISTAS TOMEN EL ESTILO */
+        .ql-editor li.ql-align-justify {
+            text-align: justify !important;
+        }
 
-        /* 3. SOPORTE PARA SANGRÍA (Indentation) */
-        /* Quill usa clases ql-indent-1, ql-indent-2, etc. */
+        /* 4. SANGRÍAS (Indentation) */
         .ql-editor .ql-indent-1 { padding-left: 3em !important; }
         .ql-editor .ql-indent-2 { padding-left: 6em !important; }
-        .ql-editor .ql-indent-3 { padding-left: 9em !important; }
-        
-        /* Ajuste de sangría en listas anidadas */
         .ql-editor li.ql-indent-1 { margin-left: 1.5em !important; }
         .ql-editor li.ql-indent-2 { margin-left: 3em !important; }
       `}</style>
