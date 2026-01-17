@@ -15,7 +15,6 @@ import "react-quill-new/dist/quill.snow.css";
 // Editor dinámico
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false }) as any;
 
-// LISTA DE ETIQUETAS (Debe ser la misma que en NewPost)
 const AVAILABLE_TAGS = [
   "Psicología",
   "Psicoterapia",
@@ -38,7 +37,6 @@ export default function EditPostPage() {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [deleting, setDeleting] = useState(false);
   
-  // ESTADO ALINEADO CON NEW POST
   const [formData, setFormData] = useState({
     title: "",
     excerpt: "",
@@ -49,19 +47,19 @@ export default function EditPostPage() {
     isFeatured: false 
   });
 
-  // CONFIGURACIÓN DEL EDITOR (Alineada con NewPost)
+  // CONFIGURACIÓN DEL EDITOR
   const modules = {
     toolbar: [
       [{ 'header': [2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ 'align': [] }],
+      [{ 'align': [] }], // Esto habilita las clases ql-align-*
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'indent': '-1'}, { 'indent': '+1' }], // <--- AGREGADO: Botones de Sangría
+      [{ 'indent': '-1'}, { 'indent': '+1' }], // Esto habilita ql-indent-*
       ['link', 'clean']
     ],
   };
 
-  // 1. CARGAR DATOS DEL ARTÍCULO
+  // 1. CARGAR DATOS
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -69,14 +67,11 @@ export default function EditPostPage() {
         if (!res.ok) throw new Error("Error al cargar");
         const data = await res.json();
         
-        // CRÍTICO: Parsear la categoría JSON a Array
         let parsedTags: string[] = [];
         try {
-            // Si viene como string JSON '["Tag1"]'
             if (data.category.startsWith("[")) {
                 parsedTags = JSON.parse(data.category);
             } else {
-                // Si es un dato viejo plano "Tag1"
                 parsedTags = [data.category]; 
             }
         } catch (e) {
@@ -87,7 +82,7 @@ export default function EditPostPage() {
             title: data.title || "",
             excerpt: data.excerpt || "",
             content: data.content || "",
-            tags: Array.isArray(parsedTags) ? parsedTags : [], // Aseguramos que sea array
+            tags: Array.isArray(parsedTags) ? parsedTags : [], 
             readTime: data.readTime || "",
             image: data.image || "",
             isFeatured: data.isFeatured || false
@@ -116,7 +111,6 @@ export default function EditPostPage() {
     setFormData(prev => ({ ...prev, content: value }));
   };
 
-  // Lógica de etiquetas (Igual que en NewPost)
   const toggleTag = (tag: string) => {
     setFormData(prev => {
       const currentTags = prev.tags;
@@ -172,7 +166,7 @@ export default function EditPostPage() {
     try {
       const payload = {
         ...formData,
-        category: JSON.stringify(formData.tags) // Convertimos Array a JSON string
+        category: JSON.stringify(formData.tags) 
       };
 
       const res = await fetch(`/api/posts/${params.id}`, {
@@ -328,7 +322,7 @@ export default function EditPostPage() {
                 Guardar Cambios
             </button>
 
-            {/* SELECCIÓN DE ETIQUETAS MULTIPLES */}
+            {/* ETIQUETAS */}
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-4">
                 <div>
                     <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-3">
@@ -399,7 +393,6 @@ export default function EditPostPage() {
                 </div>
             </div>
 
-            {/* ZONA DE PELIGRO: BORRAR */}
             <div className="bg-red-50 p-6 rounded-2xl border border-red-100">
                 <h3 className="text-red-800 font-bold text-sm mb-2">Zona de Peligro</h3>
                 <p className="text-red-600 text-xs mb-4">Esta acción no se puede deshacer.</p>
@@ -417,18 +410,33 @@ export default function EditPostPage() {
         </div>
       </form>
 
-      {/* Estilos locales para forzar la visualización correcta en el editor */}
+      {/* ESTILOS CRÍTICOS PARA EL EDITOR */}
       <style jsx global>{`
-        /* Asegura que lo que ves en el editor es lo que obtienes */
-        .ql-editor .ql-align-justify {
-            text-align: justify;
-            text-justify: inter-word;
+        /* 1. RESTAURAR PUNTOS Y NÚMEROS (Tailwind los quita) */
+        .ql-editor ul {
+            list-style-type: disc !important;
+            padding-left: 1.5em !important;
+        }
+        .ql-editor ol {
+            list-style-type: decimal !important;
+            padding-left: 1.5em !important;
         }
         
-        /* Asegura que los elementos de lista (bullets/números) se justifiquen */
-        .ql-editor li.ql-align-justify {
-            text-align: justify;
+        /* 2. FORZAR LA JUSTIFICACIÓN EN PARRAFOS Y LISTAS */
+        .ql-editor .ql-align-justify {
+            text-align: justify !important;
+            text-justify: inter-word !important;
         }
+
+        /* 3. SOPORTE PARA SANGRÍA (Indentation) */
+        /* Quill usa clases ql-indent-1, ql-indent-2, etc. */
+        .ql-editor .ql-indent-1 { padding-left: 3em !important; }
+        .ql-editor .ql-indent-2 { padding-left: 6em !important; }
+        .ql-editor .ql-indent-3 { padding-left: 9em !important; }
+        
+        /* Ajuste de sangría en listas anidadas */
+        .ql-editor li.ql-indent-1 { margin-left: 1.5em !important; }
+        .ql-editor li.ql-indent-2 { margin-left: 3em !important; }
       `}</style>
     </div>
   );
