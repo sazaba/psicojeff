@@ -2,11 +2,10 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Calendar, User, Tag } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
-// Mantenemos la importación SOLO para que las clases internas (como colores o indentaciones) existan,
-// pero anularemos su estructura estructural en el CSS de abajo.
+// Mantenemos estilos base de Quill
 import "react-quill-new/dist/quill.snow.css"; 
 
 type Params = Promise<{ id: string }>;
@@ -35,175 +34,141 @@ export default async function BlogPostPage({ params }: { params: Params }) {
   }).format(post.createdAt);
 
   return (
-    <article className="min-h-screen bg-[#fafaf9] text-stone-800">
+    <article className="min-h-screen bg-white pb-24">
       
-      {/* --- HEADER / HERO --- */}
-      <header className="relative w-full bg-stone-900 pt-32 pb-20 px-4 md:px-8">
-        {/* Imagen de Fondo Oscurecida */}
+      {/* --- HERO SECTION RESTAURADO --- */}
+      <div className="relative w-full h-[50vh] min-h-[400px] bg-stone-900">
         {post.image && (
-          <>
-             <Image 
-              src={post.image} 
-              alt={post.title} 
-              fill 
-              className="object-cover opacity-30 mix-blend-overlay"
-              priority
+            <Image 
+            src={post.image} 
+            alt={post.title} 
+            fill 
+            className="object-cover opacity-50"
+            priority
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-stone-900/50 to-[#fafaf9]" />
-          </>
         )}
+        
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end pb-12 md:pb-20">
+            <div className="container mx-auto px-4 md:px-6 max-w-4xl">
+                
+                <Link href="/blog" className="inline-flex items-center text-white/80 hover:text-white mb-8 transition-colors text-sm font-medium tracking-wide">
+                    <ArrowLeft size={18} className="mr-2" />
+                    VOLVER A LA BITÁCORA
+                </Link>
+                
+                <div className="flex flex-wrap items-center gap-3 mb-6">
+                    <span className="bg-teal-600 text-white px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider shadow-sm">
+                        {post.category}
+                    </span>
+                    <span className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/20 text-white px-3 py-1 rounded-md text-xs font-bold shadow-sm">
+                        <Clock size={14} className="text-teal-400" /> 
+                        {post.readTime || "Lectura rápida"}
+                    </span>
+                </div>
 
-        <div className="relative z-10 max-w-3xl mx-auto text-center">
-            {/* Botón Volver */}
-            <Link 
-                href="/blog" 
-                className="inline-flex items-center text-teal-500 hover:text-teal-400 mb-8 font-bold text-sm tracking-widest uppercase transition-colors"
-            >
-                <ArrowLeft size={16} className="mr-2" />
-                Volver
-            </Link>
+                <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-white max-w-5xl leading-tight drop-shadow-xl">
+                    {post.title}
+                </h1>
+            </div>
+        </div>
+      </div>
 
-            {/* Metadatos */}
-            <div className="flex flex-wrap justify-center gap-4 mb-6 text-sm font-medium text-stone-400">
-                <span className="flex items-center gap-1">
-                    <Tag size={14} className="text-teal-500"/>
-                    {post.category}
-                </span>
-                <span className="w-1 h-1 rounded-full bg-stone-600 self-center"></span>
-                <span className="flex items-center gap-1">
-                    <Calendar size={14} className="text-teal-500"/>
-                    {formattedDate}
-                </span>
-                <span className="w-1 h-1 rounded-full bg-stone-600 self-center"></span>
-                <span className="text-stone-300">
-                    {post.readTime || "Lectura rápida"}
-                </span>
+      {/* --- CONTENIDO PRINCIPAL --- */}
+      <div className="container mx-auto px-4 md:px-6 -mt-10 relative z-10 max-w-4xl">
+        <div className="bg-white rounded-t-3xl md:rounded-3xl shadow-xl p-6 md:p-12 lg:p-16 w-full border border-stone-100">
+            
+            {post.excerpt && (
+                <div className="text-lg md:text-xl text-stone-600 font-serif italic mb-10 pb-10 border-b border-stone-200 leading-relaxed">
+                    {post.excerpt}
+                </div>
+            )}
+            
+            {/* CONTENEDOR DEL TEXTO 
+                Usamos la clase 'safe-render' definida abajo en <style>
+            */}
+            <div className="ql-snow">
+                <div 
+                    className="ql-editor !h-auto !p-0 !overflow-visible safe-render"
+                    dangerouslySetInnerHTML={{ __html: post.content }} 
+                />
             </div>
 
-            {/* Título Principal */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-stone-900 mb-6 leading-tight">
-                {post.title}
-            </h1>
-            
-            {/* Excerpt / Subtítulo */}
-            {post.excerpt && (
-                <p className="text-lg md:text-xl text-stone-600 font-serif italic leading-relaxed max-w-2xl mx-auto">
-                    {post.excerpt}
-                </p>
-            )}
+            {/* Footer del Artículo */}
+            <div className="mt-20 pt-8 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-center gap-6">
+                <div className="flex items-center gap-2 text-stone-500 font-medium text-sm">
+                    <Calendar size={18} className="text-teal-600"/>
+                    <span>Publicado el {formattedDate}</span>
+                </div>
+                
+                <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3 bg-stone-100 hover:bg-stone-800 text-stone-600 hover:text-white rounded-full transition-all font-bold text-sm tracking-wide">
+                    <Share2 size={18} />
+                    Compartir artículo
+                </button>
+            </div>
         </div>
-      </header>
+      </div>
 
-      {/* --- CUERPO DEL ARTÍCULO --- */}
-      <main className="container mx-auto px-4 md:px-6 pb-24 max-w-3xl">
-        
-        {/* Renderizado de contenido HTML */}
-        <div className="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-stone-100">
-            {/* AQUÍ ESTÁ LA MAGIA: 
-               Usamos una clase propia 'article-body' en lugar de ql-editor 
-               para tener control total de los cortes de línea.
-            */}
-            <div 
-                className="article-body"
-                dangerouslySetInnerHTML={{ __html: post.content }} 
-            />
-        </div>
-
-        {/* Footer del Post */}
-        <div className="mt-12 flex justify-center">
-             <Link href="/blog" className="text-stone-400 hover:text-teal-600 transition-colors text-sm font-bold flex items-center gap-2">
-                <ArrowLeft size={16}/> Leer otros artículos
-             </Link>
-        </div>
-
-      </main>
-
-      {/* --- ESTILOS CRÍTICOS (Scoped) --- */}
+      {/* --- CSS CORRRECTIVO --- */}
       <style>{`
-        /* Configuración del contenedor de texto */
-        .article-body {
-            font-family: var(--font-sans, sans-serif); /* Usa tu fuente global */
-            font-size: 1.125rem; /* 18px */
+        /* Configuración segura para renderizar texto */
+        .safe-render {
+            font-family: var(--font-sans, sans-serif);
+            font-size: 1.125rem;
             line-height: 1.8;
             color: #44403c;
             
-            /* REGLAS ANTI-CORTE (Vitales) */
-            word-wrap: break-word;      /* Soporte legacy */
-            overflow-wrap: break-word;  /* Estándar moderno: solo rompe si la palabra es eterna */
-            word-break: normal;         /* IMPORTANTE: Prohibe romper palabras normales (biología) */
-            white-space: normal;        /* IMPORTANTE: Ignora los saltos de línea extraños del editor */
-            hyphens: none;              /* Evita guiones automáticos al final de línea */
+            /* REGLA DE ORO ANTICORTE: */
+            word-break: normal !important;   /* Prohibe cortar palabras arbitrariamente */
+            overflow-wrap: break-word;       /* Solo corta si la palabra es más larga que la pantalla */
+            white-space: normal !important;  /* Evita que saltos de línea extraños rompan el flujo */
         }
 
-        /* Títulos dentro del post */
-        .article-body h1, .article-body h2, .article-body h3 {
+        /* Títulos */
+        .safe-render h1, .safe-render h2, .safe-render h3 {
             font-family: var(--font-serif, serif);
             font-weight: 700;
             color: #1c1917;
             margin-top: 2.5rem;
-            margin-bottom: 1rem;
-            line-height: 1.2;
+            margin-bottom: 1.25rem;
+            line-height: 1.3;
         }
-        .article-body h2 { font-size: 1.8rem; border-bottom: 2px solid #f5f5f4; pb-2; }
-        .article-body h3 { font-size: 1.5rem; }
+        .safe-render h2 { font-size: 1.8rem; }
+        .safe-render h3 { font-size: 1.5rem; }
 
         /* Párrafos */
-        .article-body p {
+        .safe-render p {
             margin-bottom: 1.5rem;
         }
+
+        /* CORRECCIÓN DE JUSTIFICACIÓN (Vital para tus imágenes) */
+        /* Si el texto está justificado, usa inter-word para expandir espacios, NO romper letras */
+        .safe-render .ql-align-justify {
+            text-align: justify;
+            text-justify: inter-word; 
+        }
+        .safe-render .ql-align-center { text-align: center; }
+        .safe-render .ql-align-right { text-align: right; }
+
+        /* Listas y Citas */
+        .safe-render ul, .safe-render ol { padding-left: 1.5rem; margin-bottom: 1.5rem; }
+        .safe-render li { margin-bottom: 0.5rem; padding-left: 0.5rem; }
         
-        /* Solución para 'Enter' vacíos (br) */
-        .article-body p:empty { display: none; } /* Oculta párrafos vacíos accidentales */
-        .article-body p:has(br):empty { height: 1.5rem; display: block; } /* Respeta saltos intencionales */
-
-        /* Listas */
-        .article-body ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; }
-        .article-body ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1.5rem; }
-        .article-body li { margin-bottom: 0.5rem; padding-left: 0.5rem; }
-
-        /* Citas (Blockquotes) */
-        .article-body blockquote {
-            border-left: 4px solid #14b8a6; /* teal-500 */
-            background: #f0fdfa; /* teal-50 */
+        .safe-render blockquote {
+            border-left: 4px solid #0d9488;
+            background: #f5f5f4;
             padding: 1.5rem;
             margin: 2rem 0;
             font-style: italic;
             border-radius: 0 0.5rem 0.5rem 0;
-            color: #0f766e;
         }
 
-        /* Imágenes */
-        .article-body img {
+        /* Imágenes responsivas */
+        .safe-render img {
             max-width: 100%;
             height: auto;
             border-radius: 0.75rem;
             margin: 2rem auto;
             display: block;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        /* MANEJO MANUAL DE CLASES DE QUILL (Sin usar su CSS corrupto) */
-        
-        /* Alineación Justificada: El culpable habitual */
-        .article-body .ql-align-justify {
-            text-align: justify;
-            text-justify: inter-word; /* Mejora la distribución */
-        }
-        
-        .article-body .ql-align-center { text-align: center; }
-        .article-body .ql-align-right { text-align: right; }
-        
-        /* Tamaños de fuente de Quill */
-        .article-body .ql-size-small { font-size: 0.875em; }
-        .article-body .ql-size-large { font-size: 1.25em; }
-        .article-body .ql-size-huge { font-size: 1.5em; }
-        
-        /* Videos */
-        .article-body iframe {
-            width: 100%;
-            border-radius: 0.5rem;
-            aspect-ratio: 16 / 9;
-            margin: 2rem 0;
         }
       `}</style>
     </article>
