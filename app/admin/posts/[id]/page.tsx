@@ -51,7 +51,6 @@ export default function EditPostPage() {
     toolbar: [
       [{ 'header': [2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      // Habilitamos todas las opciones de alineación
       [{ 'align': [] }], 
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
       [{ 'indent': '-1'}, { 'indent': '+1' }],
@@ -149,13 +148,10 @@ export default function EditPostPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validación básica
     if (!formData.content || formData.content === "<p><br></p>") {
         Swal.fire({ icon: 'warning', title: 'Falta contenido', text: 'El contenido no puede estar vacío.' });
         return;
     }
-
     setLoading(true);
 
     try {
@@ -251,9 +247,8 @@ export default function EditPostPage() {
                     required
                 />
             </div>
-
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
-                <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Resumen (Texto plano)</label>
+                <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Resumen</label>
                 <textarea
                     name="excerpt"
                     rows={3}
@@ -263,121 +258,72 @@ export default function EditPostPage() {
                     required
                 />
             </div>
-
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm min-h-[600px] flex flex-col resize-y overflow-hidden">
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-4 border-b border-stone-100 pb-2">Contenido Principal</label>
                 <div className="flex-1 h-full flex flex-col">
-                    {/* El editor necesita clases CSS específicas para mostrar listas correctamente */}
-                    <div className="quill-wrapper h-full flex flex-col flex-1">
-                        <ReactQuill 
-                            theme="snow" 
-                            value={formData.content} 
-                            onChange={handleEditorChange}
-                            modules={modules}
-                            className="h-full flex-1 mb-12" 
-                        />
-                    </div>
+                    <ReactQuill 
+                        theme="snow" 
+                        value={formData.content} 
+                        onChange={handleEditorChange}
+                        modules={modules}
+                        className="h-full flex-1 mb-12" 
+                    />
                 </div>
             </div>
         </div>
 
-        {/* COLUMNA DERECHA (CONFIGURACIÓN) */}
+        {/* COLUMNA DERECHA */}
         <div className="space-y-6">
-            
             <div 
                 onClick={() => setFormData(prev => ({ ...prev, isFeatured: !prev.isFeatured }))}
                 className={`p-4 rounded-xl border cursor-pointer transition-all flex items-center justify-between group ${
-                formData.isFeatured 
-                    ? "bg-amber-50 border-amber-200 shadow-sm" 
-                    : "bg-white border-stone-200 hover:border-stone-300"
+                formData.isFeatured ? "bg-amber-50 border-amber-200 shadow-sm" : "bg-white border-stone-200 hover:border-stone-300"
             }`}>
                 <div className="flex items-center gap-3">
                     <div className={`p-2 rounded-full ${formData.isFeatured ? "bg-amber-100 text-amber-600" : "bg-stone-100 text-stone-400"}`}>
                         <Star size={18} fill={formData.isFeatured ? "currentColor" : "none"} />
                     </div>
                     <div>
-                        <p className={`text-sm font-bold ${formData.isFeatured ? "text-amber-800" : "text-stone-600"}`}>
-                            Destacar Artículo
-                        </p>
-                        <p className="text-[10px] text-stone-400">
-                            Aparecerá primero en el inicio
-                        </p>
+                        <p className={`text-sm font-bold ${formData.isFeatured ? "text-amber-800" : "text-stone-600"}`}>Destacar Artículo</p>
+                        <p className="text-[10px] text-stone-400">Aparecerá primero en el inicio</p>
                     </div>
                 </div>
                 <div className={`w-10 h-5 rounded-full relative transition-colors ${formData.isFeatured ? "bg-amber-500" : "bg-stone-300"}`}>
                     <div className={`absolute top-1 w-3 h-3 bg-white rounded-full shadow-sm transition-all duration-300 ${formData.isFeatured ? "left-6" : "left-1"}`} />
                 </div>
             </div>
-
-            <button
-                type="submit"
-                disabled={loading || uploadingImage || deleting}
-                className="w-full bg-stone-900 hover:bg-teal-600 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-            >
+            <button type="submit" disabled={loading || uploadingImage || deleting} className="w-full bg-stone-900 hover:bg-teal-600 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50">
                 {loading ? <Loader2 className="animate-spin" /> : <Save size={20} />}
                 Guardar Cambios
             </button>
-
-            {/* ETIQUETAS */}
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-4">
                 <div>
-                    <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-3">
-                        Etiquetas ({formData.tags.length})
-                    </label>
+                    <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-3">Etiquetas ({formData.tags.length})</label>
                     <div className="flex flex-wrap gap-2">
                         {AVAILABLE_TAGS.map((tag) => {
                             const isSelected = formData.tags.includes(tag);
                             return (
-                                <button
-                                    key={tag}
-                                    type="button"
-                                    onClick={() => toggleTag(tag)}
-                                    className={`text-xs px-3 py-1.5 rounded-full border transition-all flex items-center gap-1.5 ${
-                                        isSelected 
-                                            ? "bg-teal-600 text-white border-teal-600 shadow-md" 
-                                            : "bg-stone-50 text-stone-600 border-stone-200 hover:border-teal-400"
-                                    }`}
-                                >
-                                    {isSelected && <Check size={12} />}
-                                    {tag}
+                                <button key={tag} type="button" onClick={() => toggleTag(tag)} className={`text-xs px-3 py-1.5 rounded-full border transition-all flex items-center gap-1.5 ${isSelected ? "bg-teal-600 text-white border-teal-600 shadow-md" : "bg-stone-50 text-stone-600 border-stone-200 hover:border-teal-400"}`}>
+                                    {isSelected && <Check size={12} />} {tag}
                                 </button>
                             );
                         })}
                     </div>
                 </div>
-
                 <div>
                     <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Tiempo de Lectura</label>
-                    <input
-                        type="text"
-                        name="readTime"
-                        className="w-full bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 text-stone-700 focus:outline-none focus:border-teal-500"
-                        value={formData.readTime}
-                        onChange={handleChange}
-                        required
-                    />
+                    <input type="text" name="readTime" className="w-full bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 text-stone-700 focus:outline-none focus:border-teal-500" value={formData.readTime} onChange={handleChange} required />
                 </div>
             </div>
-
-            {/* IMAGEN */}
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-4">Imagen Destacada</label>
                 <div className="relative w-full aspect-video bg-stone-50 rounded-lg overflow-hidden border border-stone-200 border-dashed flex flex-col items-center justify-center group mb-4">
                     {uploadingImage ? (
-                        <div className="flex flex-col items-center text-teal-600 animate-pulse">
-                            <Loader2 className="animate-spin mb-2" />
-                            <span className="text-xs font-bold">Subiendo...</span>
-                        </div>
+                        <div className="flex flex-col items-center text-teal-600 animate-pulse"><Loader2 className="animate-spin mb-2" /><span className="text-xs font-bold">Subiendo...</span></div>
                     ) : formData.image ? (
                         <>
                             <Image src={formData.image} alt="Preview" fill className="object-cover" />
-                            <button 
-                                type="button"
-                                onClick={() => setFormData({ ...formData, image: "" })}
-                                className="absolute top-2 right-2 bg-white/90 p-1.5 rounded-full text-red-500 shadow-sm hover:bg-white"
-                            >
-                                <X size={16} />
-                            </button>
+                            <button type="button" onClick={() => setFormData({ ...formData, image: "" })} className="absolute top-2 right-2 bg-white/90 p-1.5 rounded-full text-red-500 shadow-sm hover:bg-white"><X size={16} /></button>
                         </>
                     ) : (
                         <>
@@ -388,54 +334,43 @@ export default function EditPostPage() {
                     )}
                 </div>
             </div>
-
             <div className="bg-red-50 p-6 rounded-2xl border border-red-100">
                 <h3 className="text-red-800 font-bold text-sm mb-2">Zona de Peligro</h3>
                 <p className="text-red-600 text-xs mb-4">Esta acción no se puede deshacer.</p>
-                <button
-                    type="button"
-                    onClick={handleDelete}
-                    disabled={loading || deleting}
-                    className="w-full bg-white border border-red-200 text-red-600 hover:bg-red-600 hover:text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm disabled:opacity-50"
-                >
-                    {deleting ? <Loader2 className="animate-spin" size={16}/> : <Trash2 size={16} />}
-                    Eliminar Artículo
+                <button type="button" onClick={handleDelete} disabled={loading || deleting} className="w-full bg-white border border-red-200 text-red-600 hover:bg-red-600 hover:text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm disabled:opacity-50">
+                    {deleting ? <Loader2 className="animate-spin" size={16}/> : <Trash2 size={16} />} Eliminar Artículo
                 </button>
             </div>
-
         </div>
       </form>
 
-      {/* --- ESTILOS CRÍTICOS PARA EL EDITOR --- */}
-      {/* Esto soluciona que las listas no se justifiquen y que no se vean los puntos */}
+      {/* --- ESTILOS CRÍTICOS (LA SOLUCIÓN VISUAL) --- */}
       <style jsx global>{`
-        /* 1. RESTAURAR ESTILOS DE LISTAS (Tailwind los borra) */
-        .ql-editor ol, .ql-editor ul {
+        /* 1. RESTAURAR VISIBILIDAD DE VIÑETAS (DOTS) */
+        .ql-editor ul {
+            list-style-type: disc !important;
             padding-left: 1.5em !important;
         }
         .ql-editor ol {
             list-style-type: decimal !important;
-        }
-        .ql-editor ul {
-            list-style-type: disc !important;
+            padding-left: 1.5em !important;
         }
 
-        /* 2. FORZAR LA JUSTIFICACIÓN EN TODOS LOS NIVELES */
-        .ql-editor .ql-align-justify {
+        /* 2. FORZAR JUSTIFICACIÓN EN TODOS LOS LI DEL EDITOR */
+        /* Esto hace que se vea justificado aunque la clase falte en el HTML */
+        .ql-editor li {
             text-align: justify !important;
             text-justify: inter-word !important;
         }
-        
-        /* 3. ASEGURAR QUE LAS LISTAS TOMEN EL ESTILO */
-        .ql-editor li.ql-align-justify {
+
+        /* 3. MANTENER CLASES DE QUILL SI EXISTEN */
+        .ql-editor .ql-align-justify {
             text-align: justify !important;
         }
-
+        
         /* 4. SANGRÍAS (Indentation) */
-        .ql-editor .ql-indent-1 { padding-left: 3em !important; }
-        .ql-editor .ql-indent-2 { padding-left: 6em !important; }
-        .ql-editor li.ql-indent-1 { margin-left: 1.5em !important; }
-        .ql-editor li.ql-indent-2 { margin-left: 3em !important; }
+        .ql-editor .ql-indent-1 { margin-left: 1.5em !important; }
+        .ql-editor .ql-indent-2 { margin-left: 3em !important; }
       `}</style>
     </div>
   );
