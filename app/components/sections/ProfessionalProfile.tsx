@@ -13,7 +13,6 @@ const credentials = [
     title: "Evidencia Científica",
     institution: "Universidad Javeriana",
     text: "Diplomado en Psicología Clínica Basada en la Evidencia. Métodos con eficacia probada.",
-    // CORRECCIÓN: Eliminadas las clases de border-color
     color: "bg-teal-50 text-teal-800"
   },
   {
@@ -21,7 +20,6 @@ const credentials = [
     title: "Visión Holística",
     institution: "Universidad del Rosario",
     text: "Diplomado en Terapias Complementarias. Abordo tu sanación desde la totalidad del ser.",
-    // CORRECCIÓN: Eliminadas las clases de border-color
     color: "bg-stone-50 text-stone-700"
   },
   {
@@ -29,7 +27,6 @@ const credentials = [
     title: "Metodología PBE",
     institution: "ACT & DBT",
     text: "Terapia de Aceptación y Compromiso + Dialéctico Conductual. Respaldadas por meta-análisis.",
-    // CORRECCIÓN: Eliminadas las clases de border-color
     color: "bg-blue-50 text-blue-800"
   }
 ];
@@ -39,7 +36,6 @@ export default function ProfessionalProfile() {
     <section 
         id="sobre-mi" 
         className="py-24 px-6 bg-white relative overflow-hidden"
-        // Ayuda al navegador a priorizar renderizado solo cuando es visible
         style={{ contentVisibility: 'auto' }}
     >
       
@@ -47,23 +43,18 @@ export default function ProfessionalProfile() {
       
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
         
-        {/* --- COLUMNA 1: IMAGEN OPTIMIZADA --- */}
+        {/* --- COLUMNA 1: IMAGEN --- */}
         <div className="relative w-full max-w-md mx-auto lg:max-w-full">
             
-            <div className="absolute top-10 -left-10 w-full h-full bg-stone-900 rounded-3xl -z-20 opacity-10 transform -rotate-3 scale-105" />
-
-            {/* Animación GPU-Friendly */}
-            <motion.div 
-                animate={{ rotate: [3, 0, 3] }}
-                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-6 -right-6 w-full h-full border-2 border-teal-500/30 rounded-3xl -z-10 transform-gpu will-change-transform"
-            />
+            {/* 1. ELIMINADO: El fondo gris oscuro decorativo */}
+            {/* 2. ELIMINADO: El borde verde giratorio (border-teal) */}
 
             <motion.div 
-                className="relative rounded-2xl overflow-hidden shadow-2xl shadow-stone-900/20 aspect-[4/5] group transform-gpu"
+                // 3. ELIMINADO: shadow-2xl y shadow-stone (la sombra gris)
+                className="relative rounded-2xl overflow-hidden aspect-[4/5] group transform-gpu"
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: "0px 0px -100px 0px" }} // Carga un poco antes de llegar
+                viewport={{ once: true, margin: "0px 0px -100px 0px" }}
                 transition={{ duration: 0.8 }}
             >
                 <Image 
@@ -72,16 +63,21 @@ export default function ProfessionalProfile() {
                     fill
                     className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                     
-                    // --- OPTIMIZACIÓN CRÍTICA (CORREGIDA) ---
-                    // 1. Quitamos priority (dejamos que el Hero cargue primero)
-                    // 2. CORRECCIÓN: Aumentado el tamaño final a 800px para escritorio nítido
-                    sizes="(max-width: 768px) 90vw, (max-width: 1200px) 50vw, 800px"
+                    // --- CORRECCIÓN DE CALIDAD ---
+                    // sizes="50vw": Le dice al navegador que en escritorio la imagen ocupa la mitad de la pantalla.
+                    // Esto obliga a descargar la versión de alta resolución.
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    
+                    // quality={95}: Subimos la calidad casi al máximo para evitar pixelado
+                    quality={95}
+                    
                     placeholder="blur"
                     loading="lazy"
                 />
                 
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-transparent to-transparent opacity-60" />
-                <div className="absolute inset-0 border border-white/20 rounded-2xl pointer-events-none" />
+                {/* Degradado sutil solo para que el texto resalte si decides poner algo encima, 
+                    si quieres la foto totalmente limpia puedes quitar este div también */}
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 via-transparent to-transparent opacity-60" />
             </motion.div>
           
         </div>
@@ -126,7 +122,6 @@ export default function ProfessionalProfile() {
                 {credentials.map((cred, index) => (
                     <motion.div
                         key={index}
-                        // CORRECCIÓN: Eliminada la clase 'border' aquí
                         className={`p-4 rounded-xl ${cred.color} bg-white relative overflow-hidden group hover:shadow-md transition-all duration-300 transform-gpu`}
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -142,7 +137,6 @@ export default function ProfessionalProfile() {
                             <div>
                                 <h4 className="font-bold text-stone-800 text-sm flex flex-wrap items-center gap-2">
                                     {cred.title}
-                                    {/* CORRECCIÓN: Eliminado 'border border-stone-100' del badge de la institución */}
                                     <span className="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded bg-white font-semibold text-stone-400">
                                         {cred.institution}
                                     </span>
