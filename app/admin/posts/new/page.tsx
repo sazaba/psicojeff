@@ -34,7 +34,7 @@ export default function NewPostPage() {
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   
-  // ESTADO COMPLETO: Incluye tags (array) y isFeatured (booleano)
+  // ESTADO COMPLETO
   const [formData, setFormData] = useState({
     title: "",
     excerpt: "",
@@ -45,16 +45,20 @@ export default function NewPostPage() {
     isFeatured: false 
   });
 
-  // CONFIGURACIÓN DEL EDITOR
+  // CONFIGURACIÓN DEL EDITOR (MODIFICADA)
   const modules = {
     toolbar: [
       [{ 'header': [2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
       [{ 'align': [] }],
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'indent': '-1'}, { 'indent': '+1' }], // <--- AGREGADO: Botones de Sangría
+      [{ 'indent': '-1'}, { 'indent': '+1' }], 
       ['link', 'clean']
     ],
+    // AGREGADO: Evita viñetas dobles al pegar desde Word/Gemini
+    clipboard: {
+      matchVisual: false,
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -65,7 +69,7 @@ export default function NewPostPage() {
     setFormData(prev => ({ ...prev, content: value }));
   };
 
-  // Manejador para activar/desactivar etiquetas (Múltiple selección)
+  // Manejador para activar/desactivar etiquetas
   const toggleTag = (tag: string) => {
     setFormData(prev => {
       const currentTags = prev.tags;
@@ -138,11 +142,9 @@ export default function NewPostPage() {
     setLoading(true);
 
     try {
-      // PREPARACIÓN DEL PAYLOAD
       const payload = {
         ...formData,
-        category: JSON.stringify(formData.tags) // Convertimos array a JSON string
-        // isFeatured ya va incluido en ...formData como booleano
+        category: JSON.stringify(formData.tags) 
       };
 
       const res = await fetch("/api/posts", {
@@ -367,15 +369,12 @@ export default function NewPostPage() {
         </div>
       </form>
       
-      {/* Estilos locales para forzar la visualización correcta en el editor */}
+      {/* Estilos locales */}
       <style jsx global>{`
-        /* Asegura que lo que ves en el editor es lo que obtienes */
         .ql-editor .ql-align-justify {
             text-align: justify;
             text-justify: inter-word;
         }
-        
-        /* Asegura que los elementos de lista (bullets/números) se justifiquen */
         .ql-editor li.ql-align-justify {
             text-align: justify;
         }
