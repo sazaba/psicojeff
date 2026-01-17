@@ -332,13 +332,7 @@ export default function EditPostPage() {
                     )}
                 </div>
             </div>
-            <div className="bg-red-50 p-6 rounded-2xl border border-red-100">
-                <h3 className="text-red-800 font-bold text-sm mb-2">Zona de Peligro</h3>
-                <p className="text-red-600 text-xs mb-4">Esta acción no se puede deshacer.</p>
-                <button type="button" onClick={handleDelete} disabled={loading || deleting} className="w-full bg-white border border-red-200 text-red-600 hover:bg-red-600 hover:text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm disabled:opacity-50">
-                    {deleting ? <Loader2 className="animate-spin" size={16}/> : <Trash2 size={16} />} Eliminar Artículo
-                </button>
-            </div>
+           
         </div>
       </form>
 
