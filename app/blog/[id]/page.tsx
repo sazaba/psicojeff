@@ -7,7 +7,7 @@ import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import ShareButton from "@/app/components/ui/ShareButton"; 
 
-// OBLIGATORIO: Fuerza a cargar siempre el dato fresco (sin caché vieja)
+// 1. FORZAR RECARGA DE DATOS REALES (Sin caché vieja)
 export const dynamic = "force-dynamic";
 
 type Params = Promise<{ id: string }>;
@@ -35,7 +35,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
     dateStyle: 'long'
   }).format(post.createdAt);
 
-  // Limpieza del HTML
   const cleanContent = post.content
     .replace(/&nbsp;/g, ' ')
     .replace(/\u00a0/g, ' ')
@@ -120,7 +119,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       </div>
 
       <style>{`
-        /* Configuración base de texto */
+        /* Configuración base */
         .safe-content {
             font-family: 'Lato', system-ui, sans-serif;
             font-size: 1.125rem;
@@ -135,20 +134,21 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             white-space: normal !important; 
         }
 
-        /* =========================================================
-           1. CORRECCIÓN DE INDENTACIÓN (Clases ql-indent)
-           ========================================================= */
+        /* ----------------------------------------------------
+           1. ARREGLO DE SANGRÍAS (INDENTATION)
+           ---------------------------------------------------- */
         .safe-content .ql-indent-1 { padding-left: 3rem !important; }
         .safe-content .ql-indent-2 { padding-left: 6rem !important; }
         .safe-content .ql-indent-3 { padding-left: 9rem !important; }
 
-        /* =========================================================
-           2. LIMPIEZA TOTAL DE LISTAS
-           ========================================================= */
+        /* ----------------------------------------------------
+           2. LIMPIEZA TOTAL DE LISTAS (Reset)
+           ---------------------------------------------------- */
         .safe-content ul, 
         .safe-content ol,
         .safe-content li {
-            list-style: none !important; /* Matamos los estilos del navegador */
+            list-style: none !important;
+            list-style-type: none !important;
             margin: 0;
             padding: 0;
         }
@@ -166,19 +166,20 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             text-align: justify !important;
         }
 
-        /* Aumentamos padding si está indentado */
+        /* Aumentamos padding si está indentado para que no se monte */
         .safe-content li.ql-indent-1 { padding-left: 5rem !important; }
+        .safe-content li.ql-indent-2 { padding-left: 8rem !important; }
 
-        /* =========================================================
-           3. LISTAS NUMÉRICAS (SOLUCIÓN AL BUG)
-           ========================================================= */
+        /* ----------------------------------------------------
+           3. LISTAS NUMÉRICAS (SOLUCIÓN AL DOBLE NÚMERO)
+           ---------------------------------------------------- */
         
-        /* Reiniciamos el contador en cada nueva lista */
+        /* Reiniciamos contador en cada nueva lista */
         .safe-content ol {
             counter-reset: list-counter;
         }
 
-        /* Incrementamos el contador en cada item */
+        /* Incrementamos contador */
         .safe-content ol > li {
             counter-increment: list-counter;
         }
@@ -190,30 +191,44 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             left: 0;
             top: 0;
             width: 1.5rem;
-            text-align: right; /* Alineado a la derecha */
+            text-align: right;
             color: #0d9488;
             font-weight: 800;
             font-size: 1rem;
         }
 
-        /* --- EL TRUCO DE MAGIA --- */
+        /* === EL TRUCO MAGICO PARA ELIMINAR EL 1. FANTASMA === */
         /* Si un LI contiene otra lista (es solo un envoltorio de indentación),
            le quitamos el número y evitamos que cuente. */
         
         .safe-content li:has(> ol),
         .safe-content li:has(> ul) {
-            padding-left: 0 !important; /* Quitamos padding extra */
+            padding-left: 0 !important;
         }
 
         .safe-content li:has(> ol)::before,
         .safe-content li:has(> ul)::before {
-            content: none !important; /* BORRAMOS EL "1." FANTASMA */
-            counter-increment: none !important; /* No contamos este item vacío */
+            content: none !important; /* BORRAMOS EL NÚMERO */
+            counter-increment: none !important; /* NO CONTAMOS */
         }
 
-        /* =========================================================
+        /* Resetear el contador para sub-listas para que empiecen de 1 */
+        .safe-content ol li ol {
+            counter-reset: sub-list-counter;
+        }
+        
+        /* Aquí forzamos que las sublistas también usen números (1. 2. 3.) */
+        .safe-content ol li ol > li {
+            counter-increment: sub-list-counter;
+        }
+        
+        .safe-content ol li ol > li::before {
+            content: counter(sub-list-counter) "."; /* Usamos números, no letras */
+        }
+
+        /* ----------------------------------------------------
            4. LISTAS DE PUNTOS (UL)
-           ========================================================= */
+           ---------------------------------------------------- */
         .safe-content ul > li::before {
             content: '•';
             position: absolute;
@@ -225,12 +240,18 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             font-weight: bold;
         }
 
-        /* =========================================================
+        /* Puntos vacíos para subniveles */
+        .safe-content li.ql-indent-1::before {
+            content: '◦' !important; 
+            font-weight: 900;
+        }
+
+        /* ----------------------------------------------------
            5. ESTILOS GENERALES
-           ========================================================= */
+           ---------------------------------------------------- */
         .safe-content p { 
             margin-bottom: 1.5rem;
-            min-height: 1.5rem;
+            min-height: 1.5rem; /* Evita colapso en párrafos vacíos */
             text-align: justify !important;
         }
 

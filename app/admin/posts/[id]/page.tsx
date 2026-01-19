@@ -36,14 +36,14 @@ export default function EditPostPage() {
     isFeatured: false 
   });
 
-  // CONFIGURACIÓN DEL EDITOR (IMPORTANTE: useMemo para evitar re-renderizados)
+  // CONFIGURACIÓN DEL EDITOR (useMemo para rendimiento y evitar bugs de foco)
   const modules = useMemo(() => ({
     toolbar: [
       [{ 'header': [2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
       [{ 'align': [] }],
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'indent': '-1'}, { 'indent': '+1' }],
+      [{ 'indent': '-1'}, { 'indent': '+1' }], // Botones de sangría
       ['link', 'clean']
     ],
     clipboard: {
@@ -52,6 +52,7 @@ export default function EditPostPage() {
         [1, (node: any, delta: any) => {
           delta.ops = delta.ops.map((op: any) => {
             if (!op.attributes) return op;
+            // Limpieza de estilos copiados de otros lados (Word, otras webs)
             const allowedAttributes = ['bold', 'italic', 'underline', 'strike', 'header', 'list', 'indent', 'link', 'align', 'blockquote'];
             const newAttributes: any = {};
             allowedAttributes.forEach(attr => {
@@ -70,7 +71,6 @@ export default function EditPostPage() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        // Manejo seguro del ID (puede ser string o array)
         const id = Array.isArray(params.id) ? params.id[0] : params.id;
         const res = await fetch(`/api/posts/${id}`);
         
@@ -180,7 +180,6 @@ export default function EditPostPage() {
         body: JSON.stringify(payload),
       });
 
-      // LEEMOS LA RESPUESTA JSON PARA VER EL ERROR REAL
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
         throw new Error(errorData.error || `Error ${res.status}: ${res.statusText}`);
@@ -370,9 +369,13 @@ export default function EditPostPage() {
         </div>
       </form>
 
+      {/* ESTILOS PARA QUE EL EDITOR MUESTRE INDENTACIÓN MIENTRAS ESCRIBES */}
       <style jsx global>{`
         .ql-editor .ql-align-justify { text-align: justify; text-justify: inter-word; }
         .ql-editor li.ql-align-justify { text-align: justify; }
+        .ql-editor .ql-indent-1 { padding-left: 3em; }
+        .ql-editor .ql-indent-2 { padding-left: 6em; }
+        .ql-editor .ql-indent-3 { padding-left: 9em; }
       `}</style>
     </div>
   );
