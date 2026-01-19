@@ -1,4 +1,3 @@
-// app/admin/posts/[id]/page.tsx
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
@@ -36,14 +35,13 @@ export default function EditPostPage() {
     isFeatured: false 
   });
 
-  // CONFIGURACIÓN DEL EDITOR (useMemo para rendimiento y evitar bugs de foco)
   const modules = useMemo(() => ({
     toolbar: [
       [{ 'header': [2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
       [{ 'align': [] }],
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'indent': '-1'}, { 'indent': '+1' }], // Botones de sangría
+      [{ 'indent': '-1'}, { 'indent': '+1' }],
       ['link', 'clean']
     ],
     clipboard: {
@@ -52,7 +50,6 @@ export default function EditPostPage() {
         [1, (node: any, delta: any) => {
           delta.ops = delta.ops.map((op: any) => {
             if (!op.attributes) return op;
-            // Limpieza de estilos copiados de otros lados (Word, otras webs)
             const allowedAttributes = ['bold', 'italic', 'underline', 'strike', 'header', 'list', 'indent', 'link', 'align', 'blockquote'];
             const newAttributes: any = {};
             allowedAttributes.forEach(attr => {
@@ -253,8 +250,6 @@ export default function EditPostPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {/* COLUMNA IZQUIERDA (CONTENIDO) */}
         <div className="lg:col-span-2 space-y-6">
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Título</label>
@@ -292,7 +287,6 @@ export default function EditPostPage() {
             </div>
         </div>
 
-        {/* COLUMNA DERECHA */}
         <div className="space-y-6">
             <div 
                 onClick={() => setFormData(prev => ({ ...prev, isFeatured: !prev.isFeatured }))}
@@ -369,13 +363,26 @@ export default function EditPostPage() {
         </div>
       </form>
 
-      {/* ESTILOS PARA QUE EL EDITOR MUESTRE INDENTACIÓN MIENTRAS ESCRIBES */}
+      {/* ESTILOS GLOBALES DEL EDITOR PARA FORZAR NÚMEROS Y ALINEACIÓN */}
       <style jsx global>{`
+        /* Alineación de texto */
         .ql-editor .ql-align-justify { text-align: justify; text-justify: inter-word; }
         .ql-editor li.ql-align-justify { text-align: justify; }
+        
+        /* Visualización de sangrías en el editor */
         .ql-editor .ql-indent-1 { padding-left: 3em; }
         .ql-editor .ql-indent-2 { padding-left: 6em; }
         .ql-editor .ql-indent-3 { padding-left: 9em; }
+
+        /* --- FORZAR LISTAS NUMÉRICAS SIEMPRE (Ignorar letras por defecto) --- */
+        .ql-editor ol li {
+            list-style-type: decimal !important;
+        }
+        .ql-editor ol li.ql-indent-1,
+        .ql-editor ol li.ql-indent-2,
+        .ql-editor ol li.ql-indent-3 {
+            list-style-type: decimal !important;
+        }
       `}</style>
     </div>
   );

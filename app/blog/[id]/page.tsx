@@ -7,7 +7,6 @@ import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import ShareButton from "@/app/components/ui/ShareButton"; 
 
-// 1. FORZAR RECARGA DE DATOS REALES (Sin caché vieja)
 export const dynamic = "force-dynamic";
 
 type Params = Promise<{ id: string }>;
@@ -135,14 +134,23 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         }
 
         /* ----------------------------------------------------
-           1. ARREGLO DE SANGRÍAS (INDENTATION)
+           1. ARREGLO DE ESPACIADOS Y PÁRRAFOS
+           ---------------------------------------------------- */
+        .safe-content p { 
+            margin-bottom: 0.8rem; /* Reducido para evitar doble espacio */
+            min-height: 1.2rem; /* Evita colapso total en lineas vacías */
+            text-align: justify !important;
+        }
+
+        /* ----------------------------------------------------
+           2. ARREGLO DE SANGRÍAS (INDENTATION)
            ---------------------------------------------------- */
         .safe-content .ql-indent-1 { padding-left: 3rem !important; }
         .safe-content .ql-indent-2 { padding-left: 6rem !important; }
         .safe-content .ql-indent-3 { padding-left: 9rem !important; }
 
         /* ----------------------------------------------------
-           2. LIMPIEZA TOTAL DE LISTAS (Reset)
+           3. LIMPIEZA TOTAL DE LISTAS (Reset)
            ---------------------------------------------------- */
         .safe-content ul, 
         .safe-content ol,
@@ -154,15 +162,15 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         }
 
         .safe-content ul, .safe-content ol {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             margin-top: 0.5rem;
         }
 
         /* Estilo base de cada item */
         .safe-content li {
             position: relative; 
-            margin-bottom: 0.5rem;
-            padding-left: 2rem !important; /* Espacio para el número/punto */
+            margin-bottom: 0.4rem;
+            padding-left: 2rem !important;
             text-align: justify !important;
         }
 
@@ -171,20 +179,17 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         .safe-content li.ql-indent-2 { padding-left: 8rem !important; }
 
         /* ----------------------------------------------------
-           3. LISTAS NUMÉRICAS (SOLUCIÓN AL DOBLE NÚMERO)
+           4. LISTAS NUMÉRICAS (ARREGLO DEL 1. FANTASMA)
            ---------------------------------------------------- */
         
-        /* Reiniciamos contador en cada nueva lista */
         .safe-content ol {
             counter-reset: list-counter;
         }
 
-        /* Incrementamos contador */
         .safe-content ol > li {
             counter-increment: list-counter;
         }
 
-        /* Dibujamos el número "1." "2." */
         .safe-content ol > li::before {
             content: counter(list-counter) ".";
             position: absolute;
@@ -197,37 +202,38 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             font-size: 1rem;
         }
 
-        /* === EL TRUCO MAGICO PARA ELIMINAR EL 1. FANTASMA === */
-        /* Si un LI contiene otra lista (es solo un envoltorio de indentación),
-           le quitamos el número y evitamos que cuente. */
+        /* === EL TRUCO DE MAGIA (Corrección) === */
+        /* Si el LI tiene una lista dentro, le quitamos todo el estilo visual
+           para que actúe solo como contenedor invisible */
         
         .safe-content li:has(> ol),
         .safe-content li:has(> ul) {
             padding-left: 0 !important;
+            margin-bottom: 0 !important;
         }
 
         .safe-content li:has(> ol)::before,
         .safe-content li:has(> ul)::before {
-            content: none !important; /* BORRAMOS EL NÚMERO */
-            counter-increment: none !important; /* NO CONTAMOS */
+            content: none !important; /* ADIÓS AL NÚMERO FANTASMA */
+            counter-increment: none !important; 
         }
 
-        /* Resetear el contador para sub-listas para que empiecen de 1 */
+        /* Sub-listas: También usamos NÚMEROS (1. 2. 3.) no letras */
         .safe-content ol li ol {
             counter-reset: sub-list-counter;
         }
         
-        /* Aquí forzamos que las sublistas también usen números (1. 2. 3.) */
         .safe-content ol li ol > li {
             counter-increment: sub-list-counter;
         }
         
+        /* Forzamos que sea decimal (número) */
         .safe-content ol li ol > li::before {
-            content: counter(sub-list-counter) "."; /* Usamos números, no letras */
+            content: counter(sub-list-counter, decimal) "."; 
         }
 
         /* ----------------------------------------------------
-           4. LISTAS DE PUNTOS (UL)
+           5. LISTAS DE PUNTOS (UL)
            ---------------------------------------------------- */
         .safe-content ul > li::before {
             content: '•';
@@ -240,34 +246,29 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             font-weight: bold;
         }
 
-        /* Puntos vacíos para subniveles */
         .safe-content li.ql-indent-1::before {
             content: '◦' !important; 
             font-weight: 900;
         }
 
         /* ----------------------------------------------------
-           5. ESTILOS GENERALES
+           6. ESTILOS GENERALES
            ---------------------------------------------------- */
-        .safe-content p { 
-            margin-bottom: 1.5rem;
-            min-height: 1.5rem; /* Evita colapso en párrafos vacíos */
-            text-align: justify !important;
-        }
-
         .safe-content h1, .safe-content h2, .safe-content h3 {
             font-family: 'Playfair Display', serif;
             font-weight: 800;
             color: #1c1917;
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
+            margin-top: 2rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.25;
+            text-align: left !important;
         }
         
         .safe-content blockquote {
             border-left: 4px solid #34d399;
             background: #ecfdf5;
-            padding: 1.5rem 2rem;
-            margin: 2rem 0;
+            padding: 1rem 2rem;
+            margin: 1.5rem 0;
             font-style: italic;
             color: #065f46;
         }
