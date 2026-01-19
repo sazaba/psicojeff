@@ -1,3 +1,4 @@
+// app/admin/posts/[id]/page.tsx
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
@@ -363,28 +364,14 @@ export default function EditPostPage() {
         </div>
       </form>
 
-      {/* ESTILOS PARA ARREGLAR VISUALIZACIÓN EN EL EDITOR */}
+      {/* ESTILOS MÍNIMOS PARA EL EDITOR (Solo alineación y sangrías básicas) */}
       <style jsx global>{`
-        /* Alineación */
         .ql-editor .ql-align-justify { text-align: justify; text-justify: inter-word; }
         .ql-editor li.ql-align-justify { text-align: justify; }
-        
-        /* Indentación */
         .ql-editor .ql-indent-1 { padding-left: 3em; }
         .ql-editor .ql-indent-2 { padding-left: 6em; }
         .ql-editor .ql-indent-3 { padding-left: 9em; }
-
-        /* --- CORRECCIÓN DE LISTAS EN EL EDITOR --- */
-        /* 1. Forzar números siempre (ignorar letras por defecto) */
-        .ql-editor ol li { list-style-type: decimal !important; }
-        .ql-editor ol li.ql-indent-1 { list-style-type: decimal !important; }
-        .ql-editor ol li.ql-indent-2 { list-style-type: decimal !important; }
-
-        /* 2. Ocultar marcadores en elementos que solo contienen sublistas */
-        /* Esto elimina el "1. a." y deja solo "a." (que forzamos a ser "1.") */
-        .ql-editor li:has(> ol) {
-            list-style-type: none !important;
-        }
+        /* Dejamos que Quill maneje sus viñetas nativas para evitar duplicados en el editor */
       `}</style>
     </div>
   );
