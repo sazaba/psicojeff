@@ -1,3 +1,4 @@
+// app/blog/[id]/page.tsx
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -5,6 +6,10 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import ShareButton from "@/app/components/ui/ShareButton"; 
+
+// 1. ESTO SOLUCIONA QUE "NO RENDERIZA EL CONTENIDO ACTUALIZADO"
+// Obliga a buscar los datos frescos en la base de datos cada vez que entras.
+export const dynamic = "force-dynamic";
 
 type Params = Promise<{ id: string }>;
 
@@ -136,74 +141,71 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             white-space: normal !important; 
         }
 
-        /* =========================================
-           1. ARREGLO DE SANGRÍAS (INDENTATION)
-           React Quill usa estas clases .ql-indent-x
-           ========================================= */
-        .safe-content .ql-indent-1 { padding-left: 3em !important; }
-        .safe-content .ql-indent-2 { padding-left: 6em !important; }
-        .safe-content .ql-indent-3 { padding-left: 9em !important; }
-        .safe-content .ql-indent-4 { padding-left: 12em !important; }
-        .safe-content .ql-indent-5 { padding-left: 15em !important; }
-        
-        /* Asegurar que las listas indentadas también respeten esto */
-        .safe-content li.ql-indent-1 { padding-left: 4.5em !important; } /* 3em indent + 1.5em bullet space */
-        .safe-content li.ql-indent-2 { padding-left: 7.5em !important; }
+        /* ----------------------------------------------------
+           SOLUCIÓN A LA SANGRÍA (INDENTATION)
+           Esto arregla que el texto aparezca pegado a la izquierda
+           cuando usas indentación en el editor
+        ---------------------------------------------------- */
+        .safe-content .ql-indent-1 { padding-left: 3rem !important; }
+        .safe-content .ql-indent-2 { padding-left: 6rem !important; }
+        .safe-content .ql-indent-3 { padding-left: 9rem !important; }
+        .safe-content .ql-indent-4 { padding-left: 12rem !important; }
 
-        /* =========================================
-           2. ARREGLO DE LISTAS (VIÑETAS DOBLES)
-           ========================================= */
+        /* ----------------------------------------------------
+           SOLUCIÓN A LAS LISTAS (VIÑETAS DOBLES)
+           ---------------------------------------------------- */
         
-        /* ELIMINAR ESTILOS POR DEFECTO DEL NAVEGADOR (Crucial) */
+        /* 1. Matamos totalmente el estilo del navegador para que no salga el punto negro */
         .safe-content ul, 
         .safe-content ol,
         .safe-content li {
-            list-style-type: none !important; /* Adiós viñeta negra */
             list-style: none !important;
-            margin-block-start: 0;
-            margin-block-end: 0;
+            margin: 0;
+            padding: 0;
         }
 
         .safe-content ul, .safe-content ol {
-            padding-left: 0 !important;
-            margin-bottom: 2rem;
-            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            margin-top: 0.5rem;
         }
 
-        /* Configuración del item de lista */
+        /* 2. Definimos cómo se ve cada item de la lista */
         .safe-content li {
             position: relative; 
             margin-bottom: 0.5rem;
-            padding-left: 2rem !important; /* Espacio reservado para nuestro marcador */
+            padding-left: 2rem !important; /* Espacio para el icono personalizado */
             text-align: justify !important;
-            text-justify: inter-word !important;
         }
 
-        /* --- LISTAS DESORDENADAS (Puntos) --- */
+        /* Si el item tiene indentación, sumamos el padding */
+        .safe-content li.ql-indent-1 { padding-left: 5rem !important; }
+        .safe-content li.ql-indent-2 { padding-left: 8rem !important; }
+
+        /* 3. LISTAS DE PUNTOS (UL) - Personalizados */
         .safe-content ul > li::before {
             content: '•';
             position: absolute;
             left: 0.5rem; 
-            top: -0.2rem; /* Pequeño ajuste vertical */
-            color: #0d9488; /* Teal 600 */
-            font-size: 1.8em; 
+            top: 0;
+            color: #0d9488; /* Tu color Teal */
+            font-size: 1.5em; 
             line-height: 1.8rem;
             font-weight: bold;
         }
-
-        /* Manejo de listas anidadas (Puntos vacíos para nivel 2) */
+        
+        /* Círculo vacío para sub-listas de puntos */
         .safe-content li.ql-indent-1::before {
-            content: '◦' !important; /* Círculo vacío para subniveles */
+            content: '◦' !important;
             font-weight: 900;
         }
 
-        /* --- LISTAS ORDENADAS (Números) --- */
+        /* 4. LISTAS NUMÉRICAS (OL) - Personalizadas */
         .safe-content ol {
-            counter-reset: list-counter; /* Inicializa contador */
+            counter-reset: list-counter; /* Iniciamos contador */
         }
         
         .safe-content ol > li {
-            counter-increment: list-counter; /* Incrementa */
+            counter-increment: list-counter; /* Aumentamos contador */
         }
 
         .safe-content ol > li::before {
@@ -215,36 +217,19 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             font-weight: 800;
             width: 1.5rem; 
             text-align: right; 
-            font-size: 1em;
+            font-size: 1rem;
         }
-        
-        /* Reinicio de contador para listas anidadas */
-        .safe-content ol li ol {
-            counter-reset: list-counter-nested;
-        }
-        .safe-content ol li ol li {
-            counter-increment: list-counter-nested;
-        }
-        /* Ajuste para letras si quisieras (opcional), por ahora mantiene números */
 
-
-        /* =========================================
-           3. ESTILOS GENERALES
-           ========================================= */
-
-        /* Párrafos */
+        /* --- ESTILOS GENERALES --- */
         .safe-content p { 
             margin-bottom: 1.5rem;
             text-align: justify !important;
-            text-justify: inter-word !important;
         }
 
-        /* Alineación */
         .safe-content .ql-align-center { text-align: center !important; }
         .safe-content .ql-align-right { text-align: right !important; }
         .safe-content .ql-align-justify { text-align: justify !important; }
 
-        /* Títulos */
         .safe-content h1, .safe-content h2, .safe-content h3 {
             font-family: 'Playfair Display', serif;
             font-weight: 800;
@@ -257,7 +242,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         .safe-content h2 { font-size: 2rem; }
         .safe-content h3 { font-size: 1.5rem; }
 
-        /* Citas */
         .safe-content blockquote {
             border-left: 4px solid #34d399;
             background: #ecfdf5;
@@ -270,7 +254,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             border-radius: 0 0.5rem 0.5rem 0;
         }
 
-        /* Imágenes */
         .safe-content img {
             max-width: 100%;
             height: auto;
@@ -279,7 +262,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
-        /* Enlaces */
         .safe-content a {
             color: #34d399 !important;
             text-decoration: underline !important;
@@ -287,9 +269,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             text-underline-offset: 4px;
             font-weight: 800;
             cursor: pointer !important;
-            position: relative;
-            z-index: 50;
-            transition: all 0.2s ease;
         }
         
         .safe-content a:hover {
