@@ -363,25 +363,27 @@ export default function EditPostPage() {
         </div>
       </form>
 
-      {/* ESTILOS GLOBALES DEL EDITOR PARA FORZAR NÚMEROS Y ALINEACIÓN */}
+      {/* ESTILOS PARA ARREGLAR VISUALIZACIÓN EN EL EDITOR */}
       <style jsx global>{`
-        /* Alineación de texto */
+        /* Alineación */
         .ql-editor .ql-align-justify { text-align: justify; text-justify: inter-word; }
         .ql-editor li.ql-align-justify { text-align: justify; }
         
-        /* Visualización de sangrías en el editor */
+        /* Indentación */
         .ql-editor .ql-indent-1 { padding-left: 3em; }
         .ql-editor .ql-indent-2 { padding-left: 6em; }
         .ql-editor .ql-indent-3 { padding-left: 9em; }
 
-        /* --- FORZAR LISTAS NUMÉRICAS SIEMPRE (Ignorar letras por defecto) --- */
-        .ql-editor ol li {
-            list-style-type: decimal !important;
-        }
-        .ql-editor ol li.ql-indent-1,
-        .ql-editor ol li.ql-indent-2,
-        .ql-editor ol li.ql-indent-3 {
-            list-style-type: decimal !important;
+        /* --- CORRECCIÓN DE LISTAS EN EL EDITOR --- */
+        /* 1. Forzar números siempre (ignorar letras por defecto) */
+        .ql-editor ol li { list-style-type: decimal !important; }
+        .ql-editor ol li.ql-indent-1 { list-style-type: decimal !important; }
+        .ql-editor ol li.ql-indent-2 { list-style-type: decimal !important; }
+
+        /* 2. Ocultar marcadores en elementos que solo contienen sublistas */
+        /* Esto elimina el "1. a." y deja solo "a." (que forzamos a ser "1.") */
+        .ql-editor li:has(> ol) {
+            list-style-type: none !important;
         }
       `}</style>
     </div>
