@@ -1,8 +1,19 @@
-import Link from 'next/link';
+'use client';
+
+import { MouseEvent } from 'react';
 import Image from 'next/image';
 import Headerpsicojeff from '@/app/assets/Headerpsicojeff.webp'; 
 
 export default function Hero() {
+
+  const handleScrollToEnfoque = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault(); // Evita que se añada #proceso a la URL
+    const element = document.getElementById('proceso');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="relative min-h-[90vh] flex items-center pt-32 md:pt-20 overflow-hidden w-full">
       
@@ -22,20 +33,10 @@ export default function Hero() {
                     <Image
                         src={Headerpsicojeff}
                         alt="Psicólogo Jefferson Bastidas - Terapia Online y Presencial"
-                        // Mantenemos tus clases de diseño intactas (Sombra y Mascara)
                         className="w-full h-auto object-contain drop-shadow-2xl z-10 [mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)] will-change-transform" 
-                        
-                        // 1. PRIORITY: Vital para el Hero
                         priority={true} 
-
                         placeholder="blur"
-
-                        // --- MÁXIMA CALIDAD (FULL HD) ---
-                        // quality={100}: Sin compresión, nitidez total.
                         quality={100}
-
-                        // sizes="100vw": Le dice al navegador "descarga la imagen gigante", 
-                        // ideal para pantallas Retina y 4K, aunque pese un poco más.
                         sizes="100vw"
                     />
                 </div>
@@ -86,12 +87,13 @@ export default function Hero() {
                         Solicitar Información
                     </a>
                     
-                    <Link 
+                    <a 
                         href="#proceso" 
-                        className="px-8 py-4 rounded-full border border-stone-300 hover:border-teal-400 bg-transparent text-stone-600 hover:text-teal-700 font-medium transition-all w-full sm:w-auto text-center"
+                        onClick={handleScrollToEnfoque} 
+                        className="cursor-pointer px-8 py-4 rounded-full border border-stone-300 hover:border-teal-400 bg-transparent text-stone-600 hover:text-teal-700 font-medium transition-all w-full sm:w-auto text-center"
                     >
                         Conocer mi enfoque
-                    </Link>
+                    </a>
                 </div>
             </div>
 
