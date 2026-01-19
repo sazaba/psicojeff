@@ -1,3 +1,4 @@
+// app/blog/[id]/page.tsx
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,7 +7,7 @@ import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import ShareButton from "@/app/components/ui/ShareButton"; 
 
-// OBLIGATORIO: Fuerza a Next.js a no usar caché antigua
+// OBLIGATORIO: Fuerza a cargar siempre el dato fresco (sin caché vieja)
 export const dynamic = "force-dynamic";
 
 type Params = Promise<{ id: string }>;
@@ -55,7 +56,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
   return (
     <article className="min-h-screen bg-white pb-24 font-sans text-stone-900">
       
-      {/* --- HERO SECTION --- */}
+      {/* HERO SECTION */}
       <div className="relative w-full h-[55vh] min-h-[450px] bg-stone-900">
         {post.image && (
             <Image 
@@ -93,7 +94,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         </div>
       </div>
 
-      {/* --- CONTENIDO PRINCIPAL --- */}
+      {/* CONTENIDO PRINCIPAL */}
       <div className="container mx-auto px-4 md:px-8 -mt-12 relative z-10 max-w-5xl">
         <div className="bg-white rounded-t-3xl md:rounded-3xl shadow-2xl p-8 md:p-16 border border-stone-100 relative">
             
@@ -119,7 +120,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       </div>
 
       <style>{`
-        /* Configuración base */
+        /* Configuración base de texto */
         .safe-content {
             font-family: 'Lato', system-ui, sans-serif;
             font-size: 1.125rem;
@@ -134,98 +135,102 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             white-space: normal !important; 
         }
 
-        /* --- 1. SOLUCIÓN A LA DOBLE NUMERACIÓN --- */
-        /* Eliminamos el estilo por defecto de TODAS las listas y sus items */
+        /* =========================================================
+           1. CORRECCIÓN DE INDENTACIÓN (Clases ql-indent)
+           ========================================================= */
+        .safe-content .ql-indent-1 { padding-left: 3rem !important; }
+        .safe-content .ql-indent-2 { padding-left: 6rem !important; }
+        .safe-content .ql-indent-3 { padding-left: 9rem !important; }
+
+        /* =========================================================
+           2. LIMPIEZA TOTAL DE LISTAS
+           ========================================================= */
         .safe-content ul, 
         .safe-content ol,
         .safe-content li {
-            list-style: none !important;
-            list-style-type: none !important;
+            list-style: none !important; /* Matamos los estilos del navegador */
             margin: 0;
             padding: 0;
         }
 
-        /* --- 2. CONFIGURACIÓN DE ESPACIADOS Y SANGRÍAS --- */
-        
-        /* Margen vertical entre listas */
         .safe-content ul, .safe-content ol {
             margin-bottom: 1.5rem;
+            margin-top: 0.5rem;
         }
 
-        /* Configuración de cada ITEM de lista */
+        /* Estilo base de cada item */
         .safe-content li {
             position: relative; 
             margin-bottom: 0.5rem;
-            padding-left: 2.5rem !important; /* Espacio base para el icono/número */
+            padding-left: 2rem !important; /* Espacio para el número/punto */
             text-align: justify !important;
         }
 
-        /* INDENTACIÓN (Niveles anidados) 
-           Se suma al padding-left base (2.5rem) */
-        .safe-content .ql-indent-1 { padding-left: 5.5rem !important; } /* 2.5 + 3 */
-        .safe-content .ql-indent-2 { padding-left: 8.5rem !important; } /* 2.5 + 6 */
-        .safe-content .ql-indent-3 { padding-left: 11.5rem !important; }
+        /* Aumentamos padding si está indentado */
+        .safe-content li.ql-indent-1 { padding-left: 5rem !important; }
 
-        /* --- 3. ESTILOS VISUALES DE VIÑETAS --- */
-
-        /* PUNTOS (UL) */
-        .safe-content ul > li::before {
-            content: '•';
-            position: absolute;
-            left: 1rem; /* Posición dentro del padding */
-            top: 0;
-            color: #0d9488;
-            font-size: 1.5em;
-            line-height: 1.8rem;
-            font-weight: bold;
-        }
+        /* =========================================================
+           3. LISTAS NUMÉRICAS (SOLUCIÓN AL BUG)
+           ========================================================= */
         
-        /* Subniveles de puntos (Círculo vacío) */
-        .safe-content li.ql-indent-1::before {
-            content: '◦' !important;
-            font-weight: 900;
-        }
-
-        /* NÚMEROS (OL) */
+        /* Reiniciamos el contador en cada nueva lista */
         .safe-content ol {
             counter-reset: list-counter;
         }
-        
+
+        /* Incrementamos el contador en cada item */
         .safe-content ol > li {
             counter-increment: list-counter;
         }
 
+        /* Dibujamos el número "1." "2." */
         .safe-content ol > li::before {
             content: counter(list-counter) ".";
             position: absolute;
-            left: 0.5rem; /* Ajustado para que no se salga */
+            left: 0;
             top: 0;
             width: 1.5rem;
-            text-align: right; /* Alineado a la derecha junto al texto */
+            text-align: right; /* Alineado a la derecha */
             color: #0d9488;
             font-weight: 800;
             font-size: 1rem;
         }
 
-        /* NÚMEROS ANIDADOS (a. b. c.) 
-           Esto arregla que salga 1. 2. 3. en subniveles */
-        .safe-content ol li ol {
-            counter-reset: sub-list-counter;
-            margin-top: 0.2rem;
-        }
-        .safe-content ol li ol > li {
-            counter-increment: sub-list-counter;
-        }
-        .safe-content ol li ol > li::before {
-            content: counter(sub-list-counter, lower-alpha) "."; /* a. b. c. */
+        /* --- EL TRUCO DE MAGIA --- */
+        /* Si un LI contiene otra lista (es solo un envoltorio de indentación),
+           le quitamos el número y evitamos que cuente. */
+        
+        .safe-content li:has(> ol),
+        .safe-content li:has(> ul) {
+            padding-left: 0 !important; /* Quitamos padding extra */
         }
 
-        /* --- 4. TIPOGRAFÍA Y ESPACIADOS GENERALES --- */
-        
-        /* Párrafos: Evita huecos gigantes pero respeta saltos de línea */
+        .safe-content li:has(> ol)::before,
+        .safe-content li:has(> ul)::before {
+            content: none !important; /* BORRAMOS EL "1." FANTASMA */
+            counter-increment: none !important; /* No contamos este item vacío */
+        }
+
+        /* =========================================================
+           4. LISTAS DE PUNTOS (UL)
+           ========================================================= */
+        .safe-content ul > li::before {
+            content: '•';
+            position: absolute;
+            left: 0.5rem; 
+            top: 0;
+            color: #0d9488;
+            font-size: 1.5em; 
+            line-height: 1.8rem;
+            font-weight: bold;
+        }
+
+        /* =========================================================
+           5. ESTILOS GENERALES
+           ========================================================= */
         .safe-content p { 
             margin-bottom: 1.5rem;
-            min-height: 1.5rem; /* Para que <p><br></p> ocupe espacio visual */
+            min-height: 1.5rem;
             text-align: justify !important;
         }
 
@@ -235,23 +240,15 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             color: #1c1917;
             margin-top: 2.5rem;
             margin-bottom: 1rem;
-            line-height: 1.25;
-            text-align: left !important;
         }
         
-        .safe-content h2 { font-size: 2rem; }
-        .safe-content h3 { font-size: 1.5rem; }
-
         .safe-content blockquote {
             border-left: 4px solid #34d399;
             background: #ecfdf5;
             padding: 1.5rem 2rem;
-            margin: 2.5rem 0;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
+            margin: 2rem 0;
             font-style: italic;
             color: #065f46;
-            border-radius: 0 0.5rem 0.5rem 0;
         }
 
         .safe-content img {
@@ -259,7 +256,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             height: auto;
             border-radius: 0.75rem;
             margin: 2rem 0;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
         .safe-content a {
@@ -268,17 +264,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             font-weight: 800;
         }
         
-        .safe-content a:hover {
-            color: #0f766e !important;
-            background-color: #f0fdfa;
-        }
-
-        .safe-content strong, .safe-content b {
-            font-weight: 800;
-            color: #1c1917;
-        }
-
-        /* Alineaciones de Quill */
+        /* Alineaciones */
         .safe-content .ql-align-center { text-align: center !important; }
         .safe-content .ql-align-right { text-align: right !important; }
         .safe-content .ql-align-justify { text-align: justify !important; }
