@@ -97,7 +97,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         <div className="bg-white rounded-t-3xl md:rounded-3xl shadow-2xl p-8 md:p-16 border border-stone-100 relative">
             
             {post.excerpt && (
-                <div className="text-xl text-stone-600 font-serif italic mb-12 pb-8 border-b border-stone-100 leading-relaxed">
+                <div className="text-xl text-stone-600 font-serif italic mb-10 pb-6 border-b border-stone-100 leading-relaxed">
                     {post.excerpt}
                 </div>
             )}
@@ -107,7 +107,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                 dangerouslySetInnerHTML={{ __html: cleanContent }} 
             />
 
-            <div className="mt-20 pt-10 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-center gap-6 relative z-20">
+            <div className="mt-16 pt-8 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-center gap-6 relative z-20">
                 <div className="flex items-center gap-2 text-stone-500 font-bold text-sm">
                     <Calendar size={18} className="text-teal-600"/>
                     <span>Publicado el {formattedDate}</span>
@@ -122,7 +122,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         .safe-content {
             font-family: 'Lato', system-ui, sans-serif;
             font-size: 1.125rem;
-            line-height: 1.8;
+            line-height: 1.6; /* Interlineado más compacto */
             color: #44403c;
             width: 100%;
         }
@@ -134,159 +134,110 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         }
 
         /* ----------------------------------------------------
-           1. ARREGLO DE ESPACIADOS Y PÁRRAFOS
+           1. AJUSTE DE ESPACIADOS (Solución al "espacio gigante")
            ---------------------------------------------------- */
         .safe-content p { 
-            margin-bottom: 0.8rem; /* Reducido para evitar doble espacio */
-            min-height: 1.2rem; /* Evita colapso total en lineas vacías */
+            margin-bottom: 0.6rem !important; /* Espacio reducido entre párrafos */
+            min-height: 1.2rem; /* Altura mínima para líneas vacías */
             text-align: justify !important;
         }
 
+        /* Reducir espacio vertical de las listas */
+        .safe-content ul, .safe-content ol {
+            margin-bottom: 0.8rem;
+            margin-top: 0.4rem;
+        }
+
         /* ----------------------------------------------------
-           2. ARREGLO DE SANGRÍAS (INDENTATION)
+           2. INDENTACIÓN
            ---------------------------------------------------- */
         .safe-content .ql-indent-1 { padding-left: 3rem !important; }
         .safe-content .ql-indent-2 { padding-left: 6rem !important; }
         .safe-content .ql-indent-3 { padding-left: 9rem !important; }
 
         /* ----------------------------------------------------
-           3. LIMPIEZA TOTAL DE LISTAS (Reset)
+           3. LISTAS (Reset completo para evitar duplicados)
            ---------------------------------------------------- */
         .safe-content ul, 
         .safe-content ol,
         .safe-content li {
             list-style: none !important;
-            list-style-type: none !important;
             margin: 0;
             padding: 0;
         }
 
-        .safe-content ul, .safe-content ol {
-            margin-bottom: 1rem;
-            margin-top: 0.5rem;
-        }
-
-        /* Estilo base de cada item */
         .safe-content li {
             position: relative; 
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.25rem; /* Items más juntos */
             padding-left: 2rem !important;
             text-align: justify !important;
         }
 
-        /* Aumentamos padding si está indentado para que no se monte */
         .safe-content li.ql-indent-1 { padding-left: 5rem !important; }
         .safe-content li.ql-indent-2 { padding-left: 8rem !important; }
 
         /* ----------------------------------------------------
-           4. LISTAS NUMÉRICAS (ARREGLO DEL 1. FANTASMA)
+           4. LISTAS NUMÉRICAS (Lógica de contadores)
            ---------------------------------------------------- */
+        .safe-content ol { counter-reset: list-counter; }
+        .safe-content ol > li { counter-increment: list-counter; }
         
-        .safe-content ol {
-            counter-reset: list-counter;
-        }
-
-        .safe-content ol > li {
-            counter-increment: list-counter;
-        }
-
         .safe-content ol > li::before {
             content: counter(list-counter) ".";
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 1.5rem;
-            text-align: right;
-            color: #0d9488;
-            font-weight: 800;
-            font-size: 1rem;
+            position: absolute; left: 0; top: 0; width: 1.5rem; text-align: right;
+            color: #0d9488; font-weight: 800; font-size: 1rem;
         }
 
-        /* === EL TRUCO DE MAGIA (Corrección) === */
-        /* Si el LI tiene una lista dentro, le quitamos todo el estilo visual
-           para que actúe solo como contenedor invisible */
-        
-        .safe-content li:has(> ol),
-        .safe-content li:has(> ul) {
-            padding-left: 0 !important;
-            margin-bottom: 0 !important;
-        }
-
-        .safe-content li:has(> ol)::before,
-        .safe-content li:has(> ul)::before {
-            content: none !important; /* ADIÓS AL NÚMERO FANTASMA */
-            counter-increment: none !important; 
-        }
-
-        /* Sub-listas: También usamos NÚMEROS (1. 2. 3.) no letras */
-        .safe-content ol li ol {
-            counter-reset: sub-list-counter;
-        }
-        
-        .safe-content ol li ol > li {
-            counter-increment: sub-list-counter;
-        }
-        
-        /* Forzamos que sea decimal (número) */
+        /* Sub-listas: Forzar números (1. 2. 3.) */
+        .safe-content ol li ol { counter-reset: sub-list-counter; }
+        .safe-content ol li ol > li { counter-increment: sub-list-counter; }
         .safe-content ol li ol > li::before {
             content: counter(sub-list-counter, decimal) "."; 
         }
 
+        /* Ocultar marcador en items "padre" (Fix visual) */
+        .safe-content li:has(> ol), .safe-content li:has(> ul) {
+            padding-left: 0 !important; margin-bottom: 0 !important;
+        }
+        .safe-content li:has(> ol)::before, .safe-content li:has(> ul)::before {
+            content: none !important; counter-increment: none !important; 
+        }
+
         /* ----------------------------------------------------
-           5. LISTAS DE PUNTOS (UL)
+           5. LISTAS DE PUNTOS
            ---------------------------------------------------- */
         .safe-content ul > li::before {
             content: '•';
-            position: absolute;
-            left: 0.5rem; 
-            top: 0;
-            color: #0d9488;
-            font-size: 1.5em; 
-            line-height: 1.8rem;
-            font-weight: bold;
+            position: absolute; left: 0.5rem; top: 0;
+            color: #0d9488; font-size: 1.5em; line-height: 1.6rem; font-weight: bold;
         }
-
-        .safe-content li.ql-indent-1::before {
-            content: '◦' !important; 
-            font-weight: 900;
-        }
+        .safe-content li.ql-indent-1::before { content: '◦' !important; font-weight: 900; }
 
         /* ----------------------------------------------------
            6. ESTILOS GENERALES
            ---------------------------------------------------- */
         .safe-content h1, .safe-content h2, .safe-content h3 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 800;
-            color: #1c1917;
-            margin-top: 2rem;
-            margin-bottom: 0.8rem;
-            line-height: 1.25;
-            text-align: left !important;
+            font-family: 'Playfair Display', serif; font-weight: 800; color: #1c1917;
+            margin-top: 2rem; margin-bottom: 0.5rem; line-height: 1.2; text-align: left !important;
         }
         
         .safe-content blockquote {
-            border-left: 4px solid #34d399;
-            background: #ecfdf5;
-            padding: 1rem 2rem;
-            margin: 1.5rem 0;
-            font-style: italic;
-            color: #065f46;
+            border-left: 4px solid #34d399; background: #ecfdf5;
+            padding: 0.8rem 1.5rem; margin: 1.5rem 0; font-style: italic; color: #065f46;
         }
 
         .safe-content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 0.75rem;
-            margin: 2rem 0;
+            max-width: 100%; height: auto; border-radius: 0.75rem; margin: 1.5rem 0;
         }
 
         .safe-content a {
-            color: #0d9488 !important;
-            text-decoration: underline !important;
-            font-weight: 800;
+            color: #0d9488 !important; text-decoration: underline !important; font-weight: 800;
         }
         
-        /* Alineaciones */
+        .safe-content strong, .safe-content b {
+            font-weight: 800; color: #1c1917;
+        }
+
         .safe-content .ql-align-center { text-align: center !important; }
         .safe-content .ql-align-right { text-align: right !important; }
         .safe-content .ql-align-justify { text-align: justify !important; }
