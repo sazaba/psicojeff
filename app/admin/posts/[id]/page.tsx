@@ -1,16 +1,18 @@
 // app/admin/posts/[id]/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react"; // IMPORTANTE: Agregamos useMemo
 import { useRouter, useParams } from "next/navigation";
 import { Save, ArrowLeft, Loader2, UploadCloud, X, Check, Star, Trash2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
+// Importaciones Premium
 import dynamic from "next/dynamic";
 import Swal from "sweetalert2";
 import "react-quill-new/dist/quill.snow.css"; 
 
+// Editor dinámico
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false }) as any;
 
 const AVAILABLE_TAGS = [
@@ -45,17 +47,40 @@ export default function EditPostPage() {
     isFeatured: false 
   });
 
-  const modules = {
+  // 1. CORRECCIÓN CRÍTICA: Usamos useMemo igual que en la página "New"
+  // Esto evita que el editor pierda el foco al escribir
+  const modules = useMemo(() => ({
     toolbar: [
       [{ 'header': [2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ 'align': [] }], // Habilita alineación: izquierda, centro, derecha, justificado
+      [{ 'align': [] }],
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
       [{ 'indent': '-1'}, { 'indent': '+1' }],
       ['link', 'clean']
     ],
-  };
+    clipboard: {
+      matchVisual: false,
+      matchers: [
+        [1, (node: any, delta: any) => {
+          delta.ops = delta.ops.map((op: any) => {
+            if (!op.attributes) return op;
+            // Lista blanca de atributos permitidos (igual que en New)
+            const allowedAttributes = ['bold', 'italic', 'underline', 'strike', 'header', 'list', 'indent', 'link', 'align', 'blockquote'];
+            const newAttributes: any = {};
+            allowedAttributes.forEach(attr => {
+              if (op.attributes[attr]) {
+                newAttributes[attr] = op.attributes[attr];
+              }
+            });
+            return { insert: op.insert, attributes: newAttributes };
+          });
+          return delta;
+        }]
+      ]
+    }
+  }), []);
 
+  // Cargar datos del post existente
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -65,9 +90,9 @@ export default function EditPostPage() {
         
         let parsedTags: string[] = [];
         try {
-            if (data.category.startsWith("[")) {
+            if (data.category && data.category.startsWith("[")) {
                 parsedTags = JSON.parse(data.category);
-            } else {
+            } else if (data.category) {
                 parsedTags = [data.category]; 
             }
         } catch (e) {
@@ -263,7 +288,7 @@ export default function EditPostPage() {
                         theme="snow" 
                         value={formData.content} 
                         onChange={handleEditorChange}
-                        modules={modules}
+                        modules={modules} // AHORA USA LA CONFIGURACIÓN MEMORIZADA
                         className="h-full flex-1 mb-12" 
                     />
                 </div>
@@ -290,10 +315,23 @@ export default function EditPostPage() {
                     <div className={`absolute top-1 w-3 h-3 bg-white rounded-full shadow-sm transition-all duration-300 ${formData.isFeatured ? "left-6" : "left-1"}`} />
                 </div>
             </div>
+
             <button type="submit" disabled={loading || uploadingImage || deleting} className="w-full bg-stone-900 hover:bg-teal-600 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50">
                 {loading ? <Loader2 className="animate-spin" /> : <Save size={20} />}
                 Guardar Cambios
             </button>
+            
+            {/* BOTÓN EXTRA PARA ELIMINAR (SOLO EN EDITAR) */}
+            <button 
+                type="button" 
+                onClick={handleDelete}
+                disabled={loading || uploadingImage || deleting} 
+                className="w-full bg-white border border-red-200 text-red-500 hover:bg-red-50 font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+            >
+                {deleting ? <Loader2 className="animate-spin" /> : <Trash2 size={18} />}
+                Eliminar Artículo
+            </button>
+
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-4">
                 <div>
                     <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-3">Etiquetas ({formData.tags.length})</label>
@@ -332,39 +370,12 @@ export default function EditPostPage() {
                     )}
                 </div>
             </div>
-           
         </div>
       </form>
 
-      {/* CSS PARA QUE EL EDITOR MUESTRE CORRECTAMENTE LA ALINEACIÓN */}
       <style jsx global>{`
-        /* 1. Resetear las listas para que se vean los puntos (dots) */
-        .ql-editor ul {
-            list-style-type: disc !important;
-            padding-left: 1.5em !important;
-        }
-        .ql-editor ol {
-            list-style-type: decimal !important;
-            padding-left: 1.5em !important;
-        }
-
-        /* 2. REGLAS DE ALINEACIÓN DENTRO DEL EDITOR */
-        .ql-editor .ql-align-justify {
-            text-align: justify !important;
-            text-justify: inter-word !important;
-        }
-        .ql-editor .ql-align-center {
-            text-align: center !important;
-        }
-        .ql-editor .ql-align-right {
-            text-align: right !important;
-        }
-
-        /* 3. SANGRÍAS */
-        .ql-editor .ql-indent-1 { padding-left: 3em !important; }
-        .ql-editor .ql-indent-2 { padding-left: 6em !important; }
-        .ql-editor li.ql-indent-1 { margin-left: 1.5em !important; }
-        .ql-editor li.ql-indent-2 { margin-left: 3em !important; }
+        .ql-editor .ql-align-justify { text-align: justify; text-justify: inter-word; }
+        .ql-editor li.ql-align-justify { text-align: justify; }
       `}</style>
     </div>
   );
