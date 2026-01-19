@@ -31,7 +31,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
     dateStyle: 'long'
   }).format(post.createdAt);
 
-  // Limpieza y formateo del contenido HTML
   const cleanContent = post.content
     .replace(/&nbsp;/g, ' ')
     .replace(/\u00a0/g, ' ')
@@ -104,6 +103,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                 </div>
             )}
             
+            {/* AQUÍ SE RENDERIZA EL HTML */}
             <div 
                 className="safe-content relative z-20" 
                 dangerouslySetInnerHTML={{ __html: cleanContent }} 
@@ -121,6 +121,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       </div>
 
       <style>{`
+        /* Configuración base */
         .safe-content {
             font-family: 'Lato', system-ui, sans-serif;
             font-size: 1.125rem;
@@ -135,16 +136,41 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             white-space: normal !important; 
         }
 
-        /* --- SOLUCIÓN DEFINITIVA A VIÑETAS DUPLICADAS --- */
+        /* =========================================
+           1. ARREGLO DE SANGRÍAS (INDENTATION)
+           React Quill usa estas clases .ql-indent-x
+           ========================================= */
+        .safe-content .ql-indent-1 { padding-left: 3em !important; }
+        .safe-content .ql-indent-2 { padding-left: 6em !important; }
+        .safe-content .ql-indent-3 { padding-left: 9em !important; }
+        .safe-content .ql-indent-4 { padding-left: 12em !important; }
+        .safe-content .ql-indent-5 { padding-left: 15em !important; }
         
-        /* 1. Reset TOTAL de listas: Elimina la viñeta del navegador */
+        /* Asegurar que las listas indentadas también respeten esto */
+        .safe-content li.ql-indent-1 { padding-left: 4.5em !important; } /* 3em indent + 1.5em bullet space */
+        .safe-content li.ql-indent-2 { padding-left: 7.5em !important; }
+
+        /* =========================================
+           2. ARREGLO DE LISTAS (VIÑETAS DOBLES)
+           ========================================= */
+        
+        /* ELIMINAR ESTILOS POR DEFECTO DEL NAVEGADOR (Crucial) */
+        .safe-content ul, 
+        .safe-content ol,
+        .safe-content li {
+            list-style-type: none !important; /* Adiós viñeta negra */
+            list-style: none !important;
+            margin-block-start: 0;
+            margin-block-end: 0;
+        }
+
         .safe-content ul, .safe-content ol {
             padding-left: 0 !important;
             margin-bottom: 2rem;
-            list-style: none !important; 
+            margin-top: 1rem;
         }
 
-        /* 2. Configuración del item de lista (base) */
+        /* Configuración del item de lista */
         .safe-content li {
             position: relative; 
             margin-bottom: 0.5rem;
@@ -153,53 +179,72 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             text-justify: inter-word !important;
         }
 
-        /* 3. Marcador personalizado para UL (Punto Teal) */
+        /* --- LISTAS DESORDENADAS (Puntos) --- */
         .safe-content ul > li::before {
             content: '•';
             position: absolute;
-            left: 0.5rem; /* Ajuste fino de posición */
-            top: 0;
-            color: #0d9488; 
-            font-size: 1.5em; 
+            left: 0.5rem; 
+            top: -0.2rem; /* Pequeño ajuste vertical */
+            color: #0d9488; /* Teal 600 */
+            font-size: 1.8em; 
             line-height: 1.8rem;
             font-weight: bold;
         }
 
-        /* 4. Marcador personalizado para OL (Números) usando contadores CSS */
+        /* Manejo de listas anidadas (Puntos vacíos para nivel 2) */
+        .safe-content li.ql-indent-1::before {
+            content: '◦' !important; /* Círculo vacío para subniveles */
+            font-weight: 900;
+        }
+
+        /* --- LISTAS ORDENADAS (Números) --- */
         .safe-content ol {
-            counter-reset: item; 
+            counter-reset: list-counter; /* Inicializa contador */
         }
         
+        .safe-content ol > li {
+            counter-increment: list-counter; /* Incrementa */
+        }
+
         .safe-content ol > li::before {
-            content: counter(item) "."; 
-            counter-increment: item;
+            content: counter(list-counter) "."; 
             position: absolute;
             left: 0;
             top: 0;
             color: #0d9488;
             font-weight: 800;
             width: 1.5rem; 
-            text-align: right; /* Alinea los números a la derecha (ej: 9. y 10.) */
+            text-align: right; 
+            font-size: 1em;
         }
+        
+        /* Reinicio de contador para listas anidadas */
+        .safe-content ol li ol {
+            counter-reset: list-counter-nested;
+        }
+        .safe-content ol li ol li {
+            counter-increment: list-counter-nested;
+        }
+        /* Ajuste para letras si quisieras (opcional), por ahora mantiene números */
 
-        /* --- SANGRÍAS (ReactQuill Indents) --- */
-        /* Ajustamos el margen izquierdo para respetar los niveles de indentación */
-        .safe-content .ql-indent-1 { margin-left: 2rem !important; }
-        .safe-content .ql-indent-2 { margin-left: 4rem !important; }
-        .safe-content .ql-indent-3 { margin-left: 6rem !important; }
 
-        /* --- PÁRRAFOS --- */
+        /* =========================================
+           3. ESTILOS GENERALES
+           ========================================= */
+
+        /* Párrafos */
         .safe-content p { 
             margin-bottom: 1.5rem;
             text-align: justify !important;
             text-justify: inter-word !important;
         }
 
-        /* Alineación Específica */
+        /* Alineación */
         .safe-content .ql-align-center { text-align: center !important; }
         .safe-content .ql-align-right { text-align: right !important; }
+        .safe-content .ql-align-justify { text-align: justify !important; }
 
-        /* Tipografía de Títulos */
+        /* Títulos */
         .safe-content h1, .safe-content h2, .safe-content h3 {
             font-family: 'Playfair Display', serif;
             font-weight: 800;
@@ -212,7 +257,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         .safe-content h2 { font-size: 2rem; }
         .safe-content h3 { font-size: 1.5rem; }
 
-        /* Citas (Blockquotes) */
+        /* Citas */
         .safe-content blockquote {
             border-left: 4px solid #34d399;
             background: #ecfdf5;
@@ -225,7 +270,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             border-radius: 0 0.5rem 0.5rem 0;
         }
 
-        /* Imágenes dentro del contenido */
+        /* Imágenes */
         .safe-content img {
             max-width: 100%;
             height: auto;
@@ -234,7 +279,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
-        /* Enlaces dentro del contenido */
+        /* Enlaces */
         .safe-content a {
             color: #34d399 !important;
             text-decoration: underline !important;
