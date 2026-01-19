@@ -1,31 +1,20 @@
 // app/admin/posts/[id]/page.tsx
 "use client";
 
-import { useEffect, useState, useMemo } from "react"; // IMPORTANTE: Agregamos useMemo
+import { useEffect, useState, useMemo } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Save, ArrowLeft, Loader2, UploadCloud, X, Check, Star, Trash2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-
-// Importaciones Premium
 import dynamic from "next/dynamic";
 import Swal from "sweetalert2";
 import "react-quill-new/dist/quill.snow.css"; 
 
-// Editor dinámico
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false }) as any;
 
 const AVAILABLE_TAGS = [
-  "Psicología",
-  "Psicoterapia",
-  "Ansiedad",
-  "Depresión",
-  "Estrés",
-  "Estres laboral",
-  "Trauma",
-  "SST",
-  "Riesgo psicosocial en el trabajo",
-  "Manizales"
+  "Psicología", "Psicoterapia", "Ansiedad", "Depresión", "Estrés",
+  "Estres laboral", "Trauma", "SST", "Riesgo psicosocial en el trabajo", "Manizales"
 ];
 
 export default function EditPostPage() {
@@ -47,8 +36,7 @@ export default function EditPostPage() {
     isFeatured: false 
   });
 
-  // 1. CORRECCIÓN CRÍTICA: Usamos useMemo igual que en la página "New"
-  // Esto evita que el editor pierda el foco al escribir
+  // CONFIGURACIÓN DEL EDITOR (IMPORTANTE: useMemo para evitar re-renderizados)
   const modules = useMemo(() => ({
     toolbar: [
       [{ 'header': [2, 3, false] }],
@@ -64,7 +52,6 @@ export default function EditPostPage() {
         [1, (node: any, delta: any) => {
           delta.ops = delta.ops.map((op: any) => {
             if (!op.attributes) return op;
-            // Lista blanca de atributos permitidos (igual que en New)
             const allowedAttributes = ['bold', 'italic', 'underline', 'strike', 'header', 'list', 'indent', 'link', 'align', 'blockquote'];
             const newAttributes: any = {};
             allowedAttributes.forEach(attr => {
@@ -80,11 +67,13 @@ export default function EditPostPage() {
     }
   }), []);
 
-  // Cargar datos del post existente
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const res = await fetch(`/api/posts/${params.id}`);
+        // Manejo seguro del ID (puede ser string o array)
+        const id = Array.isArray(params.id) ? params.id[0] : params.id;
+        const res = await fetch(`/api/posts/${id}`);
+        
         if (!res.ok) throw new Error("Error al cargar");
         const data = await res.json();
         
@@ -183,26 +172,36 @@ export default function EditPostPage() {
         category: JSON.stringify(formData.tags) 
       };
 
-      const res = await fetch(`/api/posts/${params.id}`, {
+      const id = Array.isArray(params.id) ? params.id[0] : params.id;
+      
+      const res = await fetch(`/api/posts/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
-      if (res.ok) {
-        await Swal.fire({
+      // LEEMOS LA RESPUESTA JSON PARA VER EL ERROR REAL
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || `Error ${res.status}: ${res.statusText}`);
+      }
+
+      await Swal.fire({
             icon: 'success',
             title: '¡Actualizado!',
             text: 'El artículo se guardó correctamente.',
             confirmButtonColor: '#0d9488',
-        });
-        router.push("/admin/posts");
-        router.refresh();
-      } else {
-        throw new Error("Error en la respuesta");
-      }
-    } catch (error) {
-      Swal.fire({ icon: 'error', title: 'Oops...', text: 'No se pudo guardar los cambios.' });
+      });
+      router.push("/admin/posts");
+      router.refresh();
+
+    } catch (error: any) {
+      console.error(error);
+      Swal.fire({ 
+        icon: 'error', 
+        title: 'Error al guardar', 
+        text: error.message || 'No se pudo contactar con el servidor.' 
+      });
     } finally {
       setLoading(false);
     }
@@ -223,17 +222,16 @@ export default function EditPostPage() {
     if (result.isConfirmed) {
         setDeleting(true);
         try {
-            const res = await fetch(`/api/posts/${params.id}`, {
+            const id = Array.isArray(params.id) ? params.id[0] : params.id;
+            const res = await fetch(`/api/posts/${id}`, {
                 method: "DELETE",
             });
 
-            if (res.ok) {
-                await Swal.fire('Eliminado', 'El artículo ha sido eliminado.', 'success');
-                router.push("/admin/posts");
-                router.refresh();
-            } else {
-                throw new Error("Error al eliminar");
-            }
+            if (!res.ok) throw new Error("Error al eliminar");
+
+            await Swal.fire('Eliminado', 'El artículo ha sido eliminado.', 'success');
+            router.push("/admin/posts");
+            router.refresh();
         } catch (error) {
             Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo eliminar el artículo.' });
             setDeleting(false);
@@ -288,7 +286,7 @@ export default function EditPostPage() {
                         theme="snow" 
                         value={formData.content} 
                         onChange={handleEditorChange}
-                        modules={modules} // AHORA USA LA CONFIGURACIÓN MEMORIZADA
+                        modules={modules}
                         className="h-full flex-1 mb-12" 
                     />
                 </div>
@@ -321,7 +319,6 @@ export default function EditPostPage() {
                 Guardar Cambios
             </button>
             
-            {/* BOTÓN EXTRA PARA ELIMINAR (SOLO EN EDITAR) */}
             <button 
                 type="button" 
                 onClick={handleDelete}
