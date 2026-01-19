@@ -31,6 +31,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
     dateStyle: 'long'
   }).format(post.createdAt);
 
+  // Limpieza y formateo del contenido HTML
   const cleanContent = post.content
     .replace(/&nbsp;/g, ' ')
     .replace(/\u00a0/g, ' ')
@@ -134,46 +135,71 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             white-space: normal !important; 
         }
 
-        /* --- SOLUCIÓN VIÑETAS (::MARKER) --- */
+        /* --- SOLUCIÓN DEFINITIVA A VIÑETAS DUPLICADAS --- */
+        
+        /* 1. Reset TOTAL de listas: Elimina la viñeta del navegador */
         .safe-content ul, .safe-content ol {
-            padding-left: 1.5rem !important; 
+            padding-left: 0 !important;
             margin-bottom: 2rem;
-            list-style-position: outside !important;
-        }
-        .safe-content ul { list-style-type: disc !important; }
-        .safe-content ol { list-style-type: decimal !important; }
-
-        .safe-content li::marker {
-            color: #0d9488;
-            font-size: 1.2em;
+            list-style: none !important; 
         }
 
-        /* --- FUERZA LA JUSTIFICACIÓN EN LISTAS --- */
+        /* 2. Configuración del item de lista (base) */
         .safe-content li {
+            position: relative; 
             margin-bottom: 0.5rem;
-            padding-left: 0.5rem;
-            text-align: justify !important;      /* <--- Forzado */
+            padding-left: 2rem !important; /* Espacio reservado para nuestro marcador */
+            text-align: justify !important;
             text-justify: inter-word !important;
         }
 
-        /* --- SOLUCIÓN SANGRÍAS --- */
-        .safe-content .ql-indent-1, .safe-content li.ql-indent-1 { margin-left: 2rem !important; }
-        .safe-content .ql-indent-2, .safe-content li.ql-indent-2 { margin-left: 4rem !important; }
-        .safe-content .ql-indent-3, .safe-content li.ql-indent-3 { margin-left: 6rem !important; }
+        /* 3. Marcador personalizado para UL (Punto Teal) */
+        .safe-content ul > li::before {
+            content: '•';
+            position: absolute;
+            left: 0.5rem; /* Ajuste fino de posición */
+            top: 0;
+            color: #0d9488; 
+            font-size: 1.5em; 
+            line-height: 1.8rem;
+            font-weight: bold;
+        }
 
-        /* --- FUERZA LA JUSTIFICACIÓN EN PÁRRAFOS TAMBIÉN --- */
-        /* AGREGADO: Esto asegura que el texto normal siempre se justifique */
+        /* 4. Marcador personalizado para OL (Números) usando contadores CSS */
+        .safe-content ol {
+            counter-reset: item; 
+        }
+        
+        .safe-content ol > li::before {
+            content: counter(item) "."; 
+            counter-increment: item;
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #0d9488;
+            font-weight: 800;
+            width: 1.5rem; 
+            text-align: right; /* Alinea los números a la derecha (ej: 9. y 10.) */
+        }
+
+        /* --- SANGRÍAS (ReactQuill Indents) --- */
+        /* Ajustamos el margen izquierdo para respetar los niveles de indentación */
+        .safe-content .ql-indent-1 { margin-left: 2rem !important; }
+        .safe-content .ql-indent-2 { margin-left: 4rem !important; }
+        .safe-content .ql-indent-3 { margin-left: 6rem !important; }
+
+        /* --- PÁRRAFOS --- */
         .safe-content p { 
             margin-bottom: 1.5rem;
-            text-align: justify !important;      /* <--- Forzado */
+            text-align: justify !important;
             text-justify: inter-word !important;
         }
 
-        /* Alineación Específica (Por si quieres centrar algo explícitamente) */
+        /* Alineación Específica */
         .safe-content .ql-align-center { text-align: center !important; }
         .safe-content .ql-align-right { text-align: right !important; }
 
-        /* Tipografía */
+        /* Tipografía de Títulos */
         .safe-content h1, .safe-content h2, .safe-content h3 {
             font-family: 'Playfair Display', serif;
             font-weight: 800;
@@ -181,12 +207,12 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             margin-top: 3rem;
             margin-bottom: 1.5rem;
             line-height: 1.25;
-            text-align: left !important; /* Los títulos se ven mejor a la izquierda */
+            text-align: left !important;
         }
         .safe-content h2 { font-size: 2rem; }
         .safe-content h3 { font-size: 1.5rem; }
 
-        /* Blockquotes */
+        /* Citas (Blockquotes) */
         .safe-content blockquote {
             border-left: 4px solid #34d399;
             background: #ecfdf5;
@@ -199,6 +225,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             border-radius: 0 0.5rem 0.5rem 0;
         }
 
+        /* Imágenes dentro del contenido */
         .safe-content img {
             max-width: 100%;
             height: auto;
@@ -207,6 +234,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
+        /* Enlaces dentro del contenido */
         .safe-content a {
             color: #34d399 !important;
             text-decoration: underline !important;
