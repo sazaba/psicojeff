@@ -13,19 +13,20 @@ const LOCATIONS = [
     landmark: "Corazón de la ciudad",
     schedule: "Mañanas: hasta las 2:00 p.m.",
     description: "Ideal si te mueves por el centro histórico o administrativo. Un espacio diseñado para hacer una pausa productiva en tu día.",
-    // RECUERDA: Cambiar por los links reales de 'Embed map' de Google
+    // Placeholder original (recuerda actualizar este también si lo necesitas)
     mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.241376843383!2d-75.5186789!3d5.0686909!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e476ff4f1ad8bb3%3A0x67a810626356331c!2sCra.%2022%20%2324-24%2C%20Manizales%2C%20Caldas!5e0!3m2!1ses!2sco!4v1705461111111!5m2!1ses!2sco", 
     color: "from-teal-600 to-teal-800"
   },
   {
     id: "santander",
     name: "Sede Av. Santander",
-    address: "Av. Santander #55a 35",
+    // 1. CAMBIO REALIZADO: Dirección actualizada
+    address: "Av. Santander # 55A-21",
     landmark: "Edificio Cristóbal Colón",
     schedule: "Tarde Noche: hasta las 8:00 p.m.",
     description: "Perfecta para cerrar tu jornada laboral o de estudio. Ubicación estratégica con fácil acceso y ambiente tranquilo.",
-    // RECUERDA: Cambiar por los links reales de 'Embed map' de Google
-    mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.123456789!2d-75.5000000!3d5.0700000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMDQnMjEuNiJOIDc1wrAyOSczOC40Ilc!5e0!3m2!1ses!2sco!4v1705462222222!5m2!1ses!2sco",
+    // 2. CAMBIO REALIZADO: Link de mapa apuntando a la dirección exacta en Manizales
+    mapSrc: "https://maps.google.com/maps?q=Av.+Santander+%23+55A-21,+Manizales&z=17&output=embed",
     color: "from-indigo-600 to-indigo-800"
   }
 ];
@@ -33,7 +34,7 @@ const LOCATIONS = [
 export default function Location() {
   const [activeTab, setActiveTab] = useState("centro");
   const [shouldLoadMap, setShouldLoadMap] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef(null);
   
   const activeLocation = LOCATIONS.find((l) => l.id === activeTab) || LOCATIONS[0];
 
