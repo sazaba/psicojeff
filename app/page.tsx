@@ -1,38 +1,36 @@
 import { prisma } from "@/lib/prisma";
 import Navbar from "@/app/components/ui/Navbar";
-import Hero from "@/app/components/sections/Hero"; // El Hero SE MANTIENE estático porque es lo primero que se ve
-import dynamic from "next/dynamic"; // Importamos dynamic
+import Hero from "@/app/components/sections/Hero"; 
 import Footer from "@/app/components/sections/Footer";
+import dynamic from "next/dynamic"; 
 
 // --- OPTIMIZACIÓN DE CARGA (LAZY LOADING) ---
-// Cargamos estos componentes solo cuando el navegador los necesita.
-// ssr: true ayuda al SEO, pero difiere la carga del JS pesado.
-// Para el mapa (Location), si usa window, usaremos ssr: false más adelante.
-
 const PainPoints = dynamic(() => import("@/app/components/sections/PainPoints"));
 const ProfessionalProfile = dynamic(() => import("@/app/components/sections/ProfessionalProfile"));
 const ValueProposition = dynamic(() => import("@/app/components/sections/ValueProposition"));
 const TargetAudience = dynamic(() => import("@/app/components/sections/TargetAudience"));
-const Transformation = dynamic(() => import("./components/sections/Transformation"));
+const Transformation = dynamic(() => import("@/app/components/sections/Transformation"));
 
-const Testimonials = dynamic(() => import("./components/sections/Testimonials"));
-const FAQ = dynamic(() => import("./components/sections/Faq"));
-const BlogCarousel = dynamic(() => import("./components/sections/BlogCarousel"));
+const Testimonials = dynamic(() => import("@/app/components/sections/Testimonials"));
+const FAQ = dynamic(() => import("@/app/components/sections/Faq"));
+const BlogCarousel = dynamic(() => import("@/app/components/sections/BlogCarousel"));
 
-// Location suele ser muy pesado (mapas). Le bajamos la prioridad de carga al máximo.
-const Location = dynamic(() => import("./components/sections/Location"), {
-  loading: () => <div className="h-96 bg-stone-50 animate-pulse" />, // Placeholder mientras carga
+// Location con carga diferida visual (placeholder)
+const Location = dynamic(() => import("@/app/components/sections/Location"), {
+  loading: () => <div className="h-96 w-full bg-stone-50 animate-pulse rounded-3xl" />, 
+  ssr: false // El mapa suele depender del navegador (window), ssr: false evita errores de hidratación
 });
 
 // --- OPTIMIZACIÓN DE SERVIDOR (ISR) ---
-// Reemplazamos 'force-dynamic'.
-// Esto genera la página estática y la actualiza cada 3600 segundos (1 hora).
-// Velocidad inmediata para el usuario, datos frescos cada hora.
-export const revalidate = 3600; 
+// La página se regenera cada 1 hora (3600 segundos).
+// Si cambias el número en el admin, tardará máximo 1 hora en verse aquí.
+// Esto hace que la página vuele de rápida.
+export const revalidate = 0; 
 
 async function getReviewCount() {
   try {
     const config = await prisma.siteConfig.findFirst();
+    // Si la base de datos devuelve null, usamos 88 por defecto
     return config?.reviewCount ?? 88;
   } catch (error) {
     console.error("Error cargando reseñas:", error);
@@ -41,6 +39,7 @@ async function getReviewCount() {
 }
 
 export default async function Home() {
+  // Obtenemos el dato antes de renderizar
   const reviewCount = await getReviewCount();
 
   return (
@@ -77,6 +76,7 @@ export default async function Home() {
         </section>
 
         <section id="testimonios">
+          {/* AQUI PASAMOS EL DATO REAL AL COMPONENTE */}
           <Testimonials dbReviewCount={reviewCount} />
         </section>
         
