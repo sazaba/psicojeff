@@ -15,22 +15,19 @@ const Testimonials = dynamic(() => import("@/app/components/sections/Testimonial
 const FAQ = dynamic(() => import("@/app/components/sections/Faq"));
 const BlogCarousel = dynamic(() => import("@/app/components/sections/BlogCarousel"));
 
-// Location con carga diferida visual (placeholder)
+// CORRECCIÓN AQUÍ: Quitamos 'ssr: false'
 const Location = dynamic(() => import("@/app/components/sections/Location"), {
-  loading: () => <div className="h-96 w-full bg-stone-50 animate-pulse rounded-3xl" />, 
-  ssr: false // El mapa suele depender del navegador (window), ssr: false evita errores de hidratación
+  loading: () => <div className="h-96 w-full bg-stone-50 animate-pulse rounded-3xl" />
+  // Ya no ponemos ssr: false, porque Location.tsx ya es "use client" internamente
 });
 
-// --- OPTIMIZACIÓN DE SERVIDOR (ISR) ---
-// La página se regenera cada 1 hora (3600 segundos).
-// Si cambias el número en el admin, tardará máximo 1 hora en verse aquí.
-// Esto hace que la página vuele de rápida.
+// --- OPTIMIZACIÓN DE SERVIDOR (SSR) ---
+// Dejamos esto en 0 para que veas el cambio del contador de reseñas INMEDIATAMENTE
 export const revalidate = 0; 
 
 async function getReviewCount() {
   try {
     const config = await prisma.siteConfig.findFirst();
-    // Si la base de datos devuelve null, usamos 88 por defecto
     return config?.reviewCount ?? 88;
   } catch (error) {
     console.error("Error cargando reseñas:", error);
@@ -39,7 +36,6 @@ async function getReviewCount() {
 }
 
 export default async function Home() {
-  // Obtenemos el dato antes de renderizar
   const reviewCount = await getReviewCount();
 
   return (
@@ -76,7 +72,6 @@ export default async function Home() {
         </section>
 
         <section id="testimonios">
-          {/* AQUI PASAMOS EL DATO REAL AL COMPONENTE */}
           <Testimonials dbReviewCount={reviewCount} />
         </section>
         
