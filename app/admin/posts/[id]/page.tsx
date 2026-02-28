@@ -1,9 +1,8 @@
-// app/admin/posts/[id]/page.tsx
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { Save, ArrowLeft, Loader2, UploadCloud, X, Check, Star, Trash2 } from "lucide-react";
+import { Save, ArrowLeft, Loader2, UploadCloud, X, Check, Star, Trash2, Link as LinkIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
@@ -28,6 +27,7 @@ export default function EditPostPage() {
   
   const [formData, setFormData] = useState({
     title: "",
+    slug: "", // <-- AÑADIDO
     excerpt: "",
     content: "", 
     tags: [] as string[], 
@@ -88,6 +88,7 @@ export default function EditPostPage() {
 
         setFormData({
             title: data.title || "",
+            slug: data.slug || "", // <-- CARGAMOS EL SLUG DESDE LA BD
             excerpt: data.excerpt || "",
             content: data.content || "",
             tags: Array.isArray(parsedTags) ? parsedTags : [], 
@@ -263,6 +264,24 @@ export default function EditPostPage() {
                     required
                 />
             </div>
+
+            {/* --- NUEVO CAMPO SLUG --- */}
+            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
+                <div className="flex items-center gap-2 mb-2">
+                  <LinkIcon size={14} className="text-stone-400" />
+                  <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider">URL del Artículo (Slug)</label>
+                </div>
+                <input
+                    type="text"
+                    name="slug"
+                    placeholder="ej: como-superar-la-ansiedad"
+                    className="w-full text-sm font-mono text-teal-700 placeholder:text-stone-300 border-none focus:ring-0 p-0"
+                    value={formData.slug}
+                    onChange={handleChange}
+                />
+                <p className="text-[10px] text-stone-400 mt-2">Use minúsculas y guiones. Ej: terapia-de-aceptacion</p>
+            </div>
+
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Resumen</label>
                 <textarea
@@ -364,14 +383,12 @@ export default function EditPostPage() {
         </div>
       </form>
 
-      {/* ESTILOS MÍNIMOS PARA EL EDITOR (Solo alineación y sangrías básicas) */}
       <style jsx global>{`
         .ql-editor .ql-align-justify { text-align: justify; text-justify: inter-word; }
         .ql-editor li.ql-align-justify { text-align: justify; }
         .ql-editor .ql-indent-1 { padding-left: 3em; }
         .ql-editor .ql-indent-2 { padding-left: 6em; }
         .ql-editor .ql-indent-3 { padding-left: 9em; }
-        /* Dejamos que Quill maneje sus viñetas nativas para evitar duplicados en el editor */
       `}</style>
     </div>
   );

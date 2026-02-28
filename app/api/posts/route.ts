@@ -11,31 +11,41 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
-    // AÑADIDO: Extraemos 'isFeatured'
-    const { title, excerpt, content, category, readTime, image, isFeatured } = body;
+    
+    // EXTRAEMOS 'slug' junto con el resto de campos
+    const { title, slug, excerpt, content, category, readTime, image, isFeatured } = body;
 
-    // 2. Validación simple
-    if (!title || !content || !category) {
-      return NextResponse.json({ error: "Faltan campos obligatorios" }, { status: 400 });
+    // 2. Validación: Añadimos 'slug' como campo obligatorio para SEO
+    if (!title || !slug || !content || !category) {
+      return NextResponse.json({ error: "Faltan campos obligatorios (incluyendo la URL/Slug)" }, { status: 400 });
     }
 
     // 3. Crear el post en la base de datos
     const newPost = await prisma.post.create({
       data: {
         title,
+        slug,        // <--- NUEVO: Guardamos el slug semántico
         excerpt,
         content,
-        category, // Ahora guarda el JSON string (ej: '["Ansiedad","Trauma"]')
+        category,    // Guarda el JSON string (ej: '["Ansiedad","Trauma"]')
         readTime,
         image,
-        // AÑADIDO: Guardamos el booleano. Si no viene, asume false.
         isFeatured: isFeatured || false, 
       },
     });
 
     return NextResponse.json(newPost);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error creando post:", error);
+
+    // MANEJO DE ERROR: Si el slug ya existe (violación de campo @unique)
+    if (error.code === 'P2002') {
+        return NextResponse.json(
+            { error: "Ya existe un artículo con esta misma URL (slug). Elige un título diferente." }, 
+            { status: 400 }
+        );
+    }
+
     return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
   }
 }

@@ -1,17 +1,15 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export const dynamic = 'force-dynamic'; // Importante para que no cachee la lista vieja
+export const dynamic = 'force-dynamic'; // Garantiza datos frescos en cada carga
 
 export async function GET() {
   try {
+    // findMany() traerá el campo 'slug' automáticamente tras tu migración
     const posts = await prisma.post.findMany({
-      // CAMBIO CRÍTICO: Ordenamiento compuesto
-      // 1. Primero los destacados (true va antes que false en desc)
-      // 2. Luego por fecha de creación (los más nuevos primero)
       orderBy: [
-        { isFeatured: 'desc' }, 
-        { createdAt: 'desc' }
+        { isFeatured: 'desc' }, // Prioriza artículos destacados (PIAP, etc.)
+        { createdAt: 'desc' }   // Luego los más recientes
       ]
     });
     

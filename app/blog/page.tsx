@@ -1,13 +1,13 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-// 1. IMPORTAMOS STAR
 import { ArrowLeft, Calendar, Clock, ArrowRight, Star } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
-// 2. ACTUALIZAMOS LA INTERFAZ
+// 1. ACTUALIZAMOS LA INTERFAZ PARA INCLUIR EL SLUG
 interface BlogPost {
   id: number;
+  slug: string | null; // <-- AÑADIDO
   title: string;
   excerpt: string;
   content: string;
@@ -16,7 +16,7 @@ interface BlogPost {
   readTime: string;
   createdAt: Date;
   updatedAt: Date;
-  isFeatured: boolean; // Agregamos esta propiedad
+  isFeatured: boolean;
 }
 
 export const dynamic = 'force-dynamic';
@@ -30,11 +30,11 @@ const formatDate = (date: Date) => {
 };
 
 export default async function BlogIndex() {
-  // 3. MODIFICAMOS EL ORDENAMIENTO DE LA BASE DE DATOS
+  // 2. LA CONSULTA SE MANTIENE IGUAL (Prisma traerá todos los campos, incluido slug)
   const posts = await prisma.post.findMany({
     orderBy: [
-      { isFeatured: 'desc' }, // Primero los destacados (true va antes que false)
-      { createdAt: 'desc' }   // Luego por fecha (más recientes primero)
+      { isFeatured: 'desc' },
+      { createdAt: 'desc' }
     ]
   });
 
@@ -61,7 +61,6 @@ export default async function BlogIndex() {
           
           {posts.map((post: BlogPost) => {
             
-            // --- LOGICA DE LIMPIEZA DE ETIQUETAS ---
             let tags: string[] = [];
             try {
                 if (post.category.startsWith("[")) {
@@ -73,7 +72,6 @@ export default async function BlogIndex() {
                 tags = ["General"];
             }
 
-            // Solo mostramos las primeras 2 para que la tarjeta se vea limpia
             const visibleTags = tags.slice(0, 2);
 
             return (
@@ -90,7 +88,6 @@ export default async function BlogIndex() {
                         <div className="w-full h-full flex items-center justify-center text-stone-400 bg-stone-100 font-serif italic">Sin Imagen</div>
                     )}
                     
-                    {/* --- RENDERIZADO DE ETIQUETAS (BADGES) --- */}
                     <div className="absolute top-4 left-4 flex flex-wrap gap-2 max-w-[80%] z-20">
                         {visibleTags.map((tag, index) => (
                             <span key={index} className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-teal-700 shadow-sm border border-white/50">
@@ -105,7 +102,6 @@ export default async function BlogIndex() {
                         )}
                     </div>
 
-                    {/* 4. AGREGAMOS EL INDICADOR DE ESTRELLA (VISUAL) */}
                     {post.isFeatured && (
                          <span className="absolute top-4 right-4 z-20 bg-amber-400 text-white p-1.5 rounded-full shadow-md animate-in fade-in zoom-in duration-300" title="Artículo Destacado">
                             <Star size={12} fill="currentColor" />
@@ -125,10 +121,13 @@ export default async function BlogIndex() {
                     <p className="text-stone-500 text-sm line-clamp-3 mb-4 flex-1 leading-relaxed">
                       {post.excerpt}
                     </p>
-                    <Link href={`/blog/${post.id}`} className="flex items-center text-teal-600 font-bold text-sm group/btn mt-auto">
-                        Leer artículo completo
-                        <ArrowRight size={16} className="ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                    </Link>
+                    
+                    {/* 3. CAMBIAMOS EL ENLACE PARA USAR EL SLUG */}
+                    {/* Usamos el slug si existe, de lo contrario usamos el ID para que no se rompa la navegación mientras migras */}
+<Link href={`/blog/${post.slug || post.id}`} className="flex items-center ...">
+    Leer artículo completo
+    <ArrowRight size={16} className="ml-2 ..." />
+</Link>
                   </div>
                 </article>
             );

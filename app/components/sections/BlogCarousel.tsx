@@ -11,8 +11,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
+// 1. ACTUALIZAMOS LA INTERFAZ PARA INCLUIR EL SLUG
 interface Post {
   id: number;
+  slug: string | null; // <-- Añadido como opcional para la fase de migración
   title: string;
   excerpt: string;
   image: string;
@@ -22,8 +24,6 @@ interface Post {
   isFeatured: boolean;
 }
 
-// --- COMPONENTE SKELETON (Para evitar saltos de pantalla) ---
-// Muestra unas cajas grises pulsantes mientras cargan los datos reales
 const CarouselSkeleton = () => (
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
     {[1, 2, 3].map((i) => (
@@ -45,7 +45,7 @@ export default function BlogCarousel() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const controller = new AbortController(); // Para cancelar petición si el usuario sale rápido
+    const controller = new AbortController();
 
     fetch('/api/posts/list', { signal: controller.signal })
       .then(res => res.json())
@@ -75,20 +75,17 @@ export default function BlogCarousel() {
     }
   };
 
-  // Si no hay posts y ya cargó, no mostramos nada (pero evitamos el error)
   if (!loading && posts.length === 0) return null;
 
   return (
     <section 
         className="py-24 bg-stone-50 relative w-full"
-        // Optimización: content-visibility ayuda al navegador a no renderizarlo si está lejos del viewport
         style={{ contentVisibility: 'auto' }} 
     >
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-stone-300 to-transparent opacity-50"></div>
       
       <div className="container mx-auto px-6">
         
-        {/* CABECERA DE LA SECCIÓN */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div className="max-w-xl">
             <span className="text-teal-600 font-bold tracking-wider text-sm uppercase mb-2 block">
@@ -117,8 +114,7 @@ export default function BlogCarousel() {
           </div>
         </div>
 
-        {/* CONTENIDO PRINCIPAL: SKELETON O CARRUSEL */}
-        <div className="w-full overflow-hidden min-h-[500px]"> {/* min-h evita colapso */}
+        <div className="w-full overflow-hidden min-h-[500px]">
             
             {loading ? (
                 <CarouselSkeleton />
@@ -166,7 +162,6 @@ export default function BlogCarousel() {
                                         alt={post.title} 
                                         fill 
                                         className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                                        // OPTIMIZACIÓN: Sizes ajustados para que móvil descargue imágenes pequeñas
                                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                         loading="lazy"
                                     />
@@ -207,7 +202,8 @@ export default function BlogCarousel() {
                                 </div>
 
                                 <h3 className="text-xl font-serif font-bold text-stone-800 mb-3 group-hover:text-teal-700 transition-colors line-clamp-2 leading-snug">
-                                    <Link href={`/blog/${post.id}`} className="focus:outline-none">
+                                    {/* 2. CAMBIAMOS EL ENLACE AL SLUG (CON FALLBACK AL ID) */}
+                                    <Link href={`/blog/${post.slug || post.id}`} className="focus:outline-none">
                                         <span className="absolute inset-0 z-0"></span>
                                         {post.title}
                                     </Link>

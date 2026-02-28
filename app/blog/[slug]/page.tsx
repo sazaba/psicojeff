@@ -1,4 +1,3 @@
-// app/blog/[id]/page.tsx
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,26 +8,32 @@ import ShareButton from "@/app/components/ui/ShareButton";
 
 export const dynamic = "force-dynamic";
 
-type Params = Promise<{ id: string }>;
+// 1. Cambiamos el tipo de Params para recibir 'slug'
+type Params = Promise<{ slug: string }>;
 
+// 2. Actualizamos generateStaticParams para usar el campo 'slug'
 export async function generateStaticParams() {
-  const posts = await prisma.post.findMany({ select: { id: true } });
+  const posts = await prisma.post.findMany({ 
+    where: { slug: { not: null } }, // Solo generamos rutas para los que tienen slug
+    select: { slug: true } 
+  });
+  
   return posts.map((post) => ({
-    id: post.id.toString(),
+    slug: post.slug as string,
   }));
 }
 
 export default async function BlogPostPage({ params }: { params: Params }) {
-  const { id } = await params;
-  const postId = parseInt(id);
+  const { slug } = await params;
 
-  if (isNaN(postId)) return notFound();
-
+  // 3. Buscamos en la base de datos por el campo 'slug'
   const post = await prisma.post.findUnique({
-    where: { id: postId }
+    where: { slug: slug }
   });
 
   if (!post) return notFound();
+
+  // --- EL RESTO DE LA LÓGICA PERMANECE EXACTAMENTE IGUAL ---
 
   const formattedDate = new Intl.DateTimeFormat('es-CO', {
     dateStyle: 'long'
@@ -118,11 +123,11 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       </div>
 
       <style>{`
-        /* Configuración base */
+        /* Tus estilos CSS se mantienen idénticos */
         .safe-content {
             font-family: 'Lato', system-ui, sans-serif;
             font-size: 1.125rem;
-            line-height: 1.6; /* Interlineado más compacto */
+            line-height: 1.6; 
             color: #44403c;
             width: 100%;
         }
@@ -133,31 +138,21 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             white-space: normal !important; 
         }
 
-        /* ----------------------------------------------------
-           1. AJUSTE DE ESPACIADOS (Solución al "espacio gigante")
-           ---------------------------------------------------- */
         .safe-content p { 
-            margin-bottom: 0.6rem !important; /* Espacio reducido entre párrafos */
-            min-height: 1.2rem; /* Altura mínima para líneas vacías */
+            margin-bottom: 0.6rem !important; 
+            min-height: 1.2rem; 
             text-align: justify !important;
         }
 
-        /* Reducir espacio vertical de las listas */
         .safe-content ul, .safe-content ol {
             margin-bottom: 0.8rem;
             margin-top: 0.4rem;
         }
 
-        /* ----------------------------------------------------
-           2. INDENTACIÓN
-           ---------------------------------------------------- */
         .safe-content .ql-indent-1 { padding-left: 3rem !important; }
         .safe-content .ql-indent-2 { padding-left: 6rem !important; }
         .safe-content .ql-indent-3 { padding-left: 9rem !important; }
 
-        /* ----------------------------------------------------
-           3. LISTAS (Reset completo para evitar duplicados)
-           ---------------------------------------------------- */
         .safe-content ul, 
         .safe-content ol,
         .safe-content li {
@@ -168,7 +163,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
 
         .safe-content li {
             position: relative; 
-            margin-bottom: 0.25rem; /* Items más juntos */
+            margin-bottom: 0.25rem; 
             padding-left: 2rem !important;
             text-align: justify !important;
         }
@@ -176,9 +171,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         .safe-content li.ql-indent-1 { padding-left: 5rem !important; }
         .safe-content li.ql-indent-2 { padding-left: 8rem !important; }
 
-        /* ----------------------------------------------------
-           4. LISTAS NUMÉRICAS (Lógica de contadores)
-           ---------------------------------------------------- */
         .safe-content ol { counter-reset: list-counter; }
         .safe-content ol > li { counter-increment: list-counter; }
         
@@ -188,14 +180,12 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             color: #0d9488; font-weight: 800; font-size: 1rem;
         }
 
-        /* Sub-listas: Forzar números (1. 2. 3.) */
         .safe-content ol li ol { counter-reset: sub-list-counter; }
         .safe-content ol li ol > li { counter-increment: sub-list-counter; }
         .safe-content ol li ol > li::before {
             content: counter(sub-list-counter, decimal) "."; 
         }
 
-        /* Ocultar marcador en items "padre" (Fix visual) */
         .safe-content li:has(> ol), .safe-content li:has(> ul) {
             padding-left: 0 !important; margin-bottom: 0 !important;
         }
@@ -203,9 +193,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             content: none !important; counter-increment: none !important; 
         }
 
-        /* ----------------------------------------------------
-           5. LISTAS DE PUNTOS
-           ---------------------------------------------------- */
         .safe-content ul > li::before {
             content: '•';
             position: absolute; left: 0.5rem; top: 0;
@@ -213,9 +200,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         }
         .safe-content li.ql-indent-1::before { content: '◦' !important; font-weight: 900; }
 
-        /* ----------------------------------------------------
-           6. ESTILOS GENERALES
-           ---------------------------------------------------- */
         .safe-content h1, .safe-content h2, .safe-content h3 {
             font-family: 'Playfair Display', serif; font-weight: 800; color: #1c1917;
             margin-top: 2rem; margin-bottom: 0.5rem; line-height: 1.2; text-align: left !important;

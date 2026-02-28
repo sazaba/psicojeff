@@ -11,6 +11,7 @@ datasource db {
 
 model Post {
   id        Int      @id @default(autoincrement())
+  slug      String?   @unique
   title     String
   excerpt   String   @db.Text // Texto largo para resumen
   content   String   @db.LongText // Contenido muy largo (HTML del blog)
