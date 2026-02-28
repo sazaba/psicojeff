@@ -24,9 +24,9 @@ const credentials = [
   },
   {
     icon: <BookOpen size={24} />,
-    title: "Metodología PBE",
-    institution: "ACT & DBT",
-    text: "Terapia de Aceptación y Compromiso + Dialéctico Conductual. Respaldadas por meta-análisis.",
+    title: "Terapias Contextuales",
+    institution: "Universidad de la Sabana",
+    text: "Diplomado en abordaje de problemáticas clínicas desde terapias de tercera generación.",
     color: "bg-blue-50 text-blue-800"
   }
 ];
