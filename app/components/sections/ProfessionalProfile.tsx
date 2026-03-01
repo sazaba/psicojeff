@@ -9,21 +9,21 @@ import profesionalpsicojeff from "@/app/assets/profesionalpsicojeff.webp";
 
 const credentials = [
   {
-    icon: <BrainCircuit size={32} />, // Tamaño de icono aumentado
+    icon: <BrainCircuit size={32} />,
     title: "Evidencia Científica",
     institution: "Universidad Javeriana",
     text: "Diplomado en Psicología Clínica Basada en la Evidencia. Métodos con eficacia probada.",
     color: "bg-teal-50 text-teal-800"
   },
   {
-    icon: <HeartHandshake size={32} />, // Tamaño de icono aumentado
+    icon: <HeartHandshake size={32} />,
     title: "Visión Holística",
     institution: "Universidad del Rosario",
     text: "Diplomado en Terapias Complementarias. Abordo tu sanación desde la totalidad del ser.",
     color: "bg-stone-50 text-stone-700"
   },
   {
-    icon: <BookOpen size={32} />, // Tamaño de icono aumentado
+    icon: <BookOpen size={32} />,
     title: "Terapias Contextuales",
     institution: "Universidad de la Sabana",
     text: "Diplomado en abordaje de problemáticas clínicas desde terapias de tercera generación.",
@@ -69,7 +69,6 @@ export default function ProfessionalProfile() {
           
         </div>
 
-
         {/* --- COLUMNA 2 --- */}
         <div className="mt-12 lg:mt-0">
             
@@ -105,12 +104,10 @@ export default function ProfessionalProfile() {
                 </p>
             </motion.div>
 
-            {/* Contenedor de las tarjetas con gap incrementado */}
             <div className="flex flex-col gap-4 md:gap-6">
                 {credentials.map((cred, index) => (
                     <motion.div
                         key={index}
-                        // Padding incrementado en mobile (p-6) y desktop (md:p-8)
                         className={`p-6 md:p-8 rounded-2xl ${cred.color} bg-white relative overflow-hidden group hover:shadow-md transition-all duration-300 transform-gpu`}
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -119,24 +116,27 @@ export default function ProfessionalProfile() {
                     >
                         <div className="absolute left-0 top-0 bottom-0 w-1 bg-current opacity-20 group-hover:w-2 transition-all duration-300" />
                         
-                        <div className="flex gap-4 md:gap-5 items-start pl-2">
-                            <div className="mt-1 opacity-70 group-hover:scale-110 group-hover:opacity-100 transition-all duration-300">
+                        {/* CONTENEDOR FLEX ACTUALIZADO: Columna en móvil, Fila en escritorio */}
+                        <div className="flex flex-col md:flex-row gap-4 md:gap-5 items-center md:items-start text-center md:text-left pl-0 md:pl-2">
+                            
+                            {/* ICONO */}
+                            <div className="mt-1 opacity-70 group-hover:scale-110 group-hover:opacity-100 transition-all duration-300 flex-shrink-0">
                                 {cred.icon}
                             </div>
-                            <div>
-                                {/* Tamaño de título aumentado */}
-                                <h4 className="font-bold text-stone-800 text-base md:text-lg flex flex-wrap items-center gap-2 md:gap-3">
+                            
+                            {/* TEXTO */}
+                            <div className="w-full">
+                                <h4 className="font-bold text-stone-800 text-base md:text-lg flex flex-wrap justify-center md:justify-start items-center gap-2 md:gap-3">
                                     {cred.title}
-                                    {/* Tamaño de etiqueta aumentado */}
                                     <span className="text-[10px] md:text-xs uppercase tracking-wider px-2 py-0.5 rounded bg-white font-semibold text-stone-400">
                                         {cred.institution}
                                     </span>
                                 </h4>
-                                {/* Tamaño de texto descriptivo aumentado */}
-                                <p className="text-stone-500 text-sm md:text-base mt-2 leading-relaxed">
+                                <p className="text-stone-500 text-sm md:text-base mt-2 md:mt-1 leading-relaxed">
                                     {cred.text}
                                 </p>
                             </div>
+
                         </div>
                     </motion.div>
                 ))}
