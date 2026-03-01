@@ -1,9 +1,8 @@
-// app/admin/posts/new/page.tsx
 "use client";
 
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { Save, ArrowLeft, Loader2, UploadCloud, X, Check, Star } from "lucide-react";
+import { Save, ArrowLeft, Loader2, UploadCloud, X, Check, Star, Link as LinkIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
@@ -25,6 +24,7 @@ export default function NewPostPage() {
   
   const [formData, setFormData] = useState({
     title: "",
+    slug: "", // <-- AÑADIDO
     excerpt: "",
     content: "",
     tags: [] as string[], 
@@ -64,7 +64,29 @@ export default function NewPostPage() {
   }), []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    if (name === "title") {
+      // Auto-generar slug limpiando tildes, ñ, espacios y caracteres especiales
+      const generatedSlug = value
+        .toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Quita tildes
+        .replace(/[^a-z0-9]+/g, '-') // Reemplaza no-alfanuméricos por guiones
+        .replace(/(^-|-$)+/g, ''); // Quita guiones al inicio o final
+
+      setFormData(prev => ({ ...prev, title: value, slug: generatedSlug }));
+    } else if (name === "slug") {
+      // Si edita el slug manualmente, forzamos el formato seguro para URLs
+      const safeSlug = value
+        .toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9-]+/g, '') // Solo permite letras, números y guiones
+        .replace(/--+/g, '-');
+      
+      setFormData(prev => ({ ...prev, slug: safeSlug }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleEditorChange = (value: string) => {
@@ -111,6 +133,12 @@ export default function NewPostPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Validaciones
+    if (!formData.slug) {
+        Swal.fire({ icon: 'warning', title: 'Falta la URL', text: 'El slug es obligatorio para crear el artículo.' });
+        return;
+    }
+
     if (!formData.content || formData.content === "<p><br></p>") {
         Swal.fire({ icon: 'warning', title: 'Falta contenido', text: 'El contenido no puede estar vacío.' });
         return;
@@ -187,6 +215,24 @@ export default function NewPostPage() {
                     onChange={handleChange}
                     required
                 />
+            </div>
+
+            {/* --- NUEVO CAMPO SLUG AÑADIDO --- */}
+            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
+                <div className="flex items-center gap-2 mb-2">
+                  <LinkIcon size={14} className="text-stone-400" />
+                  <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider">URL del Artículo (Slug)</label>
+                </div>
+                <input
+                    type="text"
+                    name="slug"
+                    placeholder="ej: como-superar-la-ansiedad"
+                    className="w-full text-sm font-mono text-teal-700 placeholder:text-stone-300 border-none focus:ring-0 p-0"
+                    value={formData.slug}
+                    onChange={handleChange}
+                    required
+                />
+                <p className="text-[10px] text-stone-400 mt-2">Se auto-genera al escribir el título. Puedes editarlo manualmente.</p>
             </div>
 
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
