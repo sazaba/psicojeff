@@ -39,11 +39,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></div>
               PsicoJeff
             </span>
-            <span className="block text-[10px] text-stone-500 uppercase tracking-[0.2em] mt-2 font-semibold">
+            <span className="block text-[10px] text-stone-300 uppercase tracking-[0.2em] mt-2 font-semibold">
               Admin Workspace
             </span>
           </div>
-          <button onClick={() => setIsSidebarOpen(false)} className="md:hidden p-2 rounded-lg bg-stone-900 text-stone-400 hover:text-white transition-colors">
+          <button onClick={() => setIsSidebarOpen(false)} className="md:hidden p-2 rounded-lg bg-stone-900 text-stone-300 hover:text-white transition-colors">
             <X size={20} />
           </button>
         </div>
@@ -72,10 +72,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 className={`flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all duration-300 font-medium text-sm ${
                   isActive 
                     ? "bg-white/10 text-white shadow-sm border border-white/5" 
-                    : "text-stone-400 hover:bg-white/5 hover:text-stone-200"
+                    : "text-stone-300 hover:bg-white/5 hover:text-white"
                 }`}
               >
-                <item.icon size={18} className={isActive ? "text-teal-400" : "text-stone-500"} />
+                <item.icon size={18} className={isActive ? "text-teal-400" : "text-stone-400"} />
                 <span>{item.name}</span>
               </Link>
             );
@@ -86,9 +86,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="px-4 pb-4">
             <Link 
                 href="/"
-                className="flex items-center gap-3.5 px-4 py-3 rounded-xl text-stone-500 hover:bg-stone-900 hover:text-stone-300 transition-all font-medium text-sm border border-transparent hover:border-stone-800"
+                className="flex items-center gap-3.5 px-4 py-3 rounded-xl text-stone-300 hover:bg-stone-900 hover:text-white transition-all font-medium text-sm border border-transparent hover:border-stone-800"
             >
-                <Home size={18} />
+                <Home size={18} className="text-stone-400 group-hover:text-white transition-colors" />
                 <span>Ir al Sitio Web</span>
             </Link>
         </div>
@@ -100,14 +100,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 {session?.user?.email?.charAt(0).toUpperCase() || "A"}
              </div>
              <div className="overflow-hidden">
-                <p className="text-sm font-bold text-stone-200 truncate">Administrador</p>
-                <p className="text-xs text-stone-500 truncate">{session?.user?.email}</p>
+                <p className="text-sm font-bold text-white truncate">Administrador</p>
+                <p className="text-xs text-stone-300 truncate">{session?.user?.email}</p>
              </div>
           </div>
           
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
-            className="w-full flex items-center justify-center gap-2 bg-stone-900/80 hover:bg-red-500/10 text-stone-400 hover:text-red-400 py-3 rounded-xl transition-all text-xs font-bold uppercase tracking-wider border border-stone-800 hover:border-red-500/20 group"
+            className="w-full flex items-center justify-center gap-2 bg-stone-900/80 hover:bg-red-500/10 text-stone-300 hover:text-red-400 py-3 rounded-xl transition-all text-xs font-bold uppercase tracking-wider border border-stone-800 hover:border-red-500/20 group"
           >
             <LogOut size={16} className="group-hover:-translate-x-1 transition-transform" />
             Cerrar Sesión
