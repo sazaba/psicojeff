@@ -29,7 +29,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Sidebar Principal */}
       <aside className={`
-        fixed md:static inset-y-0 left-0 z-50 w-[280px] bg-stone-950 text-stone-300 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col border-r border-stone-800/60 shadow-2xl md:shadow-none
+        fixed md:static inset-y-0 left-0 z-50 w-[280px] bg-stone-950 text-white transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col border-r border-stone-800/60 shadow-2xl md:shadow-none
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
       `}>
         {/* Header Sidebar */}
@@ -39,11 +39,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></div>
               PsicoJeff
             </span>
-            <span className="block text-[10px] text-stone-300 uppercase tracking-[0.2em] mt-2 font-semibold">
+            <span className="block text-[10px] text-white uppercase tracking-[0.2em] mt-2 font-semibold">
               Admin Workspace
             </span>
           </div>
-          <button onClick={() => setIsSidebarOpen(false)} className="md:hidden p-2 rounded-lg bg-stone-900 text-stone-300 hover:text-white transition-colors">
+          <button onClick={() => setIsSidebarOpen(false)} className="md:hidden p-2 rounded-lg bg-stone-900 text-white hover:text-white transition-colors">
             <X size={20} />
           </button>
         </div>
@@ -72,7 +72,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 className={`flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all duration-300 font-medium text-sm ${
                   isActive 
                     ? "bg-white/10 text-white shadow-sm border border-white/5" 
-                    : "text-stone-300 hover:bg-white/5 hover:text-white"
+                    : "text-white hover:bg-white/5 hover:text-white"
                 }`}
               >
                 <item.icon size={18} className={isActive ? "text-teal-400" : "text-stone-400"} />
@@ -86,7 +86,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="px-4 pb-4">
             <Link 
                 href="/"
-                className="flex items-center gap-3.5 px-4 py-3 rounded-xl text-stone-300 hover:bg-stone-900 hover:text-white transition-all font-medium text-sm border border-transparent hover:border-stone-800"
+                className="flex items-center gap-3.5 px-4 py-3 rounded-xl text-white hover:bg-stone-900 hover:text-white transition-all font-medium text-sm border border-transparent hover:border-stone-800"
             >
                 <Home size={18} className="text-stone-400 group-hover:text-white transition-colors" />
                 <span>Ir al Sitio Web</span>
@@ -101,13 +101,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
              </div>
              <div className="overflow-hidden">
                 <p className="text-sm font-bold text-white truncate">Administrador</p>
-                <p className="text-xs text-stone-300 truncate">{session?.user?.email}</p>
+                <p className="text-xs text-white truncate">{session?.user?.email}</p>
              </div>
           </div>
           
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
-            className="w-full flex items-center justify-center gap-2 bg-stone-900/80 hover:bg-red-500/10 text-stone-300 hover:text-red-400 py-3 rounded-xl transition-all text-xs font-bold uppercase tracking-wider border border-stone-800 hover:border-red-500/20 group"
+            className="w-full flex items-center justify-center gap-2 bg-stone-900/80 hover:bg-red-500/10 text-white hover:text-red-400 py-3 rounded-xl transition-all text-xs font-bold uppercase tracking-wider border border-stone-800 hover:border-red-500/20 group"
           >
             <LogOut size={16} className="group-hover:-translate-x-1 transition-transform" />
             Cerrar Sesión
