@@ -50,7 +50,7 @@ export default function ValueProposition() {
   return (
     <section 
         ref={containerRef} 
-        className="relative bg-stone-950 text-stone-200 py-20 md:py-0 overflow-hidden"
+        className="relative bg-stone-950 text-stone-200  py-24 md:py-2 overflow-hidden"
     >
       
       {/* Fondo Animado "Nebula" */}

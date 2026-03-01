@@ -116,7 +116,6 @@ export default function ProfessionalProfile() {
                     >
                         <div className="absolute left-0 top-0 bottom-0 w-1 bg-current opacity-20 group-hover:w-2 transition-all duration-300" />
                         
-                        {/* CONTENEDOR FLEX ACTUALIZADO: Columna en móvil, Fila en escritorio */}
                         <div className="flex flex-col md:flex-row gap-4 md:gap-5 items-center md:items-start text-center md:text-left pl-0 md:pl-2">
                             
                             {/* ICONO */}
@@ -124,15 +123,18 @@ export default function ProfessionalProfile() {
                                 {cred.icon}
                             </div>
                             
-                            {/* TEXTO */}
+                            {/* TEXTO REESTRUCTURADO */}
                             <div className="w-full">
-                                <h4 className="font-bold text-stone-800 text-base md:text-lg flex flex-wrap justify-center md:justify-start items-center gap-2 md:gap-3">
-                                    {cred.title}
-                                    <span className="text-[10px] md:text-xs uppercase tracking-wider px-2 py-0.5 rounded bg-white font-semibold text-stone-400">
+                                {/* Contenedor flex-col para forzar la etiqueta debajo del título */}
+                                <div className="flex flex-col items-center md:items-start gap-1.5">
+                                    <h4 className="font-bold text-stone-800 text-base md:text-lg">
+                                        {cred.title}
+                                    </h4>
+                                    <span className="inline-block text-[10px] md:text-xs uppercase tracking-wider px-2 py-0.5 rounded bg-white font-semibold text-stone-500 w-fit shadow-sm">
                                         {cred.institution}
                                     </span>
-                                </h4>
-                                <p className="text-stone-500 text-sm md:text-base mt-2 md:mt-1 leading-relaxed">
+                                </div>
+                                <p className="text-stone-500 text-sm md:text-base mt-3 md:mt-2 leading-relaxed">
                                     {cred.text}
                                 </p>
                             </div>
