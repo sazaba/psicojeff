@@ -15,7 +15,6 @@ import {
   Minus 
 } from "lucide-react";
 
-// --- DATOS BASADOS EN EL DOCUMENTO APORTADO (Hardcoded) ---
 const faqData = [
   {
     id: "profesional",
@@ -30,6 +29,8 @@ const faqData = [
           <li>Especialista en <strong>Salud Ocupacional</strong> (Universidad Libre).</li>
           <li>Diplomado en <strong>Psicología Clínica Basada en la Evidencia</strong> (Universidad Javeriana).</li>
           <li>Diplomado en <strong>Terapias Complementarias</strong> (Universidad del Rosario).</li>
+          {/* NUEVO ELEMENTO AÑADIDO */}
+          <li>Diplomado en <strong>Abordaje de Problemáticas Clínicas desde Terapias de Tercera Generación</strong> (Universidad de la Sabana).</li>
         </ul>
       </>
     )
@@ -90,7 +91,6 @@ const faqData = [
       </>
     )
   },
-  // --- CORRECCIÓN RESPONSIVE AQUÍ ---
   {
     id: "ubicacion",
     question: "¿Dónde se encuentran las sedes y qué horarios manejan?",
@@ -99,7 +99,6 @@ const faqData = [
       <>
         Contamos con dos sedes estratégicas en Manizales para tu comodidad:
         <ul className="space-y-4 mt-3">
-            {/* CORRECCIÓN: 'flex-col' en móvil para apilar, 'sm:flex-row' en PC para alinear */}
             <li className="flex flex-col sm:flex-row items-start gap-1 sm:gap-2">
                 <span className="shrink-0 w-fit bg-teal-100 text-teal-800 text-xs font-bold px-2 py-0.5 rounded sm:mt-0.5">MAÑANA</span>
                 <span><strong>Sede Centro:</strong> (Cra 22 # 24-24). Atención hasta las 2:00 p.m.</span>
@@ -258,7 +257,6 @@ export default function FAQ() {
         {/* --- CTA FINAL DISCRETO --- */}
         <div className="mt-16 text-center">
             <p className="text-stone-500 mb-4">¿Tienes alguna otra pregunta específica?</p>
-            {/* CAMBIO: Se reemplazó <button> por <a> con el enlace de Walink */}
             <a 
                 href="https://wa.link/2x3i8s"
                 target="_blank"
