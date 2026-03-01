@@ -50,7 +50,8 @@ export default function ValueProposition() {
   return (
     <section 
         ref={containerRef} 
-        className="relative bg-stone-950 text-stone-200  py-24 md:py-2 overflow-hidden"
+        // CAMBIO: Se ajustó el padding en desktop de md:py-2 a md:py-32
+        className="relative bg-stone-950 text-stone-200 py-24 md:py-32 overflow-hidden"
     >
       
       {/* Fondo Animado "Nebula" */}
@@ -61,15 +62,9 @@ export default function ValueProposition() {
          className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-teal-500/5 rounded-full blur-[100px] pointer-events-none"
       />
 
-      {/* CAMBIO AQUÍ: 
-         1. max-w-6xl (Antes 7xl) -> Para que no sea tan ancho.
-         2. md:gap-16 -> Para controlar el espacio entre columnas.
-      */}
       <div className="max-w-6xl mx-auto px-6 md:flex md:gap-16 md:min-h-[250vh]"> 
         
-        {/* --- COLUMNA IZQUIERDA (STICKY) --- 
-            CAMBIO AQUÍ: md:w-5/12 (Aprox 42%) -> Le damos menos ancho al texto para que no empuje tanto las cartas.
-        */}
+        {/* --- COLUMNA IZQUIERDA (STICKY) --- */}
         <div className="md:w-5/12 md:h-screen md:sticky md:top-0 flex flex-col justify-center py-12 md:py-0 z-10">
             
             <motion.div
@@ -105,9 +100,7 @@ export default function ValueProposition() {
             </motion.div>
         </div>
 
-        {/* --- COLUMNA DERECHA (SCROLLABLE CARDS) --- 
-            CAMBIO AQUÍ: md:w-7/12 (Aprox 58%) -> Le damos más ancho a la zona de cartas, jalándolas a la izquierda.
-        */}
+        {/* --- COLUMNA DERECHA (SCROLLABLE CARDS) --- */}
         <div className="md:w-7/12 flex flex-col justify-center gap-6 md:gap-32 py-12 md:py-32">
             
             {features.map((item, index) => (
@@ -126,17 +119,14 @@ function Card({ item, index }: { item: any, index: number }) {
         <motion.div
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, margin: "-10%" }} // Se activa antes de llegar al centro
+            viewport={{ once: true, margin: "-10%" }} 
             transition={{ duration: 0.6, delay: 0.1 }}
             className="group relative"
         >
-            {/* Glow Effect detrás de la tarjeta */}
             <div className={`absolute -inset-1 rounded-3xl bg-gradient-to-r ${item.gradient} opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-700`} />
             
-            {/* Tarjeta Principal Glassmorphism Oscuro */}
             <div className="relative p-8 md:p-10 rounded-3xl bg-stone-900/80 backdrop-blur-xl border border-white/10 hover:border-teal-500/30 transition-colors duration-500">
                 
-                {/* Icono Flotante */}
                 <div className="mb-6 inline-flex p-3 rounded-2xl bg-white/5 border border-white/10 shadow-lg shadow-black/20 group-hover:scale-110 transition-transform duration-300">
                     {item.icon}
                 </div>
@@ -153,7 +143,6 @@ function Card({ item, index }: { item: any, index: number }) {
                     {item.text}
                 </p>
 
-                {/* Decoración esquina */}
                 <div className="absolute top-4 right-4 w-2 h-2 rounded-full bg-white/20 group-hover:bg-teal-400 transition-colors" />
             </div>
         </motion.div>
