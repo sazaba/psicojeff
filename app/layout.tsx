@@ -39,7 +39,6 @@ export const metadata: Metadata = {
     "Psicólogo Medellin",
     "Psicólogo Sabaneta",
     "Psicólogo Envigado",
-    "Psicólogo Itagui",
     "Psicólogo Nueva York",
     "Psicólogo New York",
     "Psicólogo ",
@@ -50,7 +49,8 @@ export const metadata: Metadata = {
     "Tratamiento Ansiedad Manizales",
     "Consulta psicológica virtual",
     "Salud mental Manizales",
-    "Psicología Manizales"
+    "Psicología Manizales",
+    "Psicólogo Eje Cafetero"
   ],
 
   authors: [{ name: "Jefferson Bastidas Mejía" }],

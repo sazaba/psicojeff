@@ -22,20 +22,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     // 2. CONSULTAMOS TU MODELO 'Post' EN LA BASE DE DATOS
+    // Solicitamos id y slug para manejar los artículos antiguos y nuevos
     const posts = await prisma.post.findMany({
       select: {
         id: true,
-        updatedAt: true, // Usamos tu campo de actualización real
+        slug: true, 
+        updatedAt: true, 
       }
     });
 
     // 3. CONSTRUIMOS LAS RUTAS DINÁMICAS PARA CADA ARTÍCULO
-    const dynamicRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
-      url: `${baseUrl}/blog/${post.id}`,
-      lastModified: post.updatedAt, 
-      changeFrequency: 'monthly',
-      priority: 0.7, // Prioridad estándar para artículos individuales
-    }));
+    const dynamicRoutes: MetadataRoute.Sitemap = posts.map((post) => {
+      // Lógica de respaldo: Si existe el slug se usa, de lo contrario se usa el ID.
+      const routeIdentifier = post.slug ? post.slug : post.id.toString();
+
+      return {
+        url: `${baseUrl}/blog/${routeIdentifier}`, 
+        lastModified: post.updatedAt, 
+        changeFrequency: 'monthly',
+        priority: 0.7, // Prioridad estándar para artículos individuales
+      };
+    });
 
     // Retornamos la unión de las estáticas y las dinámicas
     return [...staticRoutes, ...dynamicRoutes];
