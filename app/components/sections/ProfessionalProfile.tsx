@@ -100,7 +100,7 @@ export default function ProfessionalProfile() {
                     Egresado de la <strong>Universidad de Manizales</strong>, he dedicado dos décadas a perfeccionar un modelo que une la rigurosidad científica con la calidez humana.
                 </p>
                 <p>
-                    Como Especialista en Gerencia y Control de Riesgos (<strong>Universidad Libre</strong>), entiendo que tu bienestar no ocurre en el vacío, sino en interacción constante con tu entorno laboral y social.
+                    Como Especialista en Salud Ocupacional (<strong>Universidad Libre</strong>), entiendo que tu bienestar no ocurre en el vacío, sino en interacción constante con tu entorno laboral y social.
                 </p>
             </motion.div>
 
