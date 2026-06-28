@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, ArrowRight } from "lucide-react";
@@ -7,27 +7,70 @@ import logoImg from "@/public/Logo.webp";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // Referencia mutable para guardar el scroll anterior sin causar re-renders
+  const lastScrollY = useRef(0);
 
-  // --- OPTIMIZACIÓN 1: Scroll Listener Pasivo y Eficiente ---
+  // OPTIMIZACIÓN: Detección de dirección de scroll con requestAnimationFrame
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      const scrolledNow = window.scrollY > 20;
-      setIsScrolled((prev) => (prev !== scrolledNow ? scrolledNow : prev));
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          
+          // 1. Lógica de fondo transparente/sólido
+          setIsScrolled(currentScrollY > 20);
+
+          // 2. Lógica de visibilidad (ocultar al bajar, mostrar al subir)
+          // Se usa un umbral de 10px para evitar que micro-movimientos oculten el menú
+          if (Math.abs(currentScrollY - lastScrollY.current) > 10) {
+            if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
+              // Scroll hacia abajo y pasado el header
+              setIsVisible(false);
+            } else {
+              // Scroll hacia arriba
+              setIsVisible(true);
+            }
+          }
+
+          lastScrollY.current = currentScrollY;
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 2. BLOQUEO DE SCROLL EN BODY
+  // BLOQUEO DE SCROLL OPTIMIZADO
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
+      // Añadido para Safari iOS: evita el scroll de la página en segundo plano
+      document.body.style.position = "fixed"; 
+      document.body.style.width = "100%";
+      document.body.style.top = `-${window.scrollY}px`;
     } else {
-      document.body.style.overflow = "unset";
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.top = "";
+      // Restaura la posición original si hubo bloqueo fixed
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
     }
-    return () => { document.body.style.overflow = "unset"; };
+    return () => { 
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+    };
   }, [isMobileMenuOpen]);
 
   const navLinks = [
@@ -39,38 +82,34 @@ export default function Navbar() {
 
   const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    
-    // 1. Primero cerramos el menú. Esto disparará el useEffect que quita el 'overflow: hidden'
-    setIsMobileMenuOpen(false); 
-    
     const targetId = href.replace("#", "");
+    const elem = document.getElementById(targetId);
     
-    // 2. Usamos un pequeño retraso (timeout).
-    // Esto da tiempo a React para actualizar el estado y al navegador para desbloquear el scroll del body
-    // antes de calcular las coordenadas y moverse.
-    setTimeout(() => {
-        const elem = document.getElementById(targetId);
-        
-        if (elem) {
-          const headerOffset = 80; 
-          const elementPosition = elem.getBoundingClientRect().top;
-          // Usamos window.scrollY actual (que ya estará desbloqueado)
-          const offsetPosition = elementPosition + window.scrollY - headerOffset;
+    if (elem) {
+      const headerOffset = 80; 
+      // Calculamos la posición exacta basándonos en la posición del elemento relativa al viewport
+      // más el scroll actual de la ventana.
+      const elementPosition = elem.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
     
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: "smooth"
-          });
-        }
-    }, 100); // 100ms es imperceptible para el ojo pero suficiente para el navegador
+    // Cierre inmediato del menú, sin timeouts
+    setIsMobileMenuOpen(false); 
   };
 
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b will-change-transform ${
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 transform-gpu will-change-transform ${
+          isVisible ? "translate-y-0" : "-translate-y-full"
+        } ${
           isScrolled || isMobileMenuOpen 
-            ? "bg-[#f0fdfa]/95 backdrop-blur-md border-teal-100/50 shadow-sm py-3" 
+            ? "bg-[#f0fdfa]/95 backdrop-blur-md border-b border-teal-100/50 shadow-sm py-3" 
             : "bg-transparent border-transparent py-6"
         }`}
       >
@@ -81,7 +120,7 @@ export default function Navbar() {
             <div className="relative w-10 h-10 md:w-12 md:h-12 transition-transform duration-300 group-hover:scale-105">
               <Image 
                 src={logoImg} 
-                alt="Logo Jefferson Bastidas" 
+                alt="Logo" 
                 fill 
                 className="object-contain"
                 priority
@@ -137,10 +176,10 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* MOBILE MENU OPTIMIZADO */}
+      {/* MOBILE MENU */}
       <div
-        className={`fixed inset-0 z-40 bg-[#fffcf8]/98 backdrop-blur-xl flex flex-col items-center justify-center transition-all duration-500 md:hidden h-[100dvh] supports-[height:100dvh]:h-screen w-full transform-gpu will-change-transform
-        ${isMobileMenuOpen 
+        className={`fixed inset-0 z-40 bg-[#fffcf8]/98 backdrop-blur-xl flex flex-col items-center justify-center transition-all duration-500 md:hidden h-[100dvh] supports-[height:100dvh]:h-screen w-full transform-gpu will-change-transform ${
+          isMobileMenuOpen 
             ? "opacity-100 visible translate-y-0" 
             : "opacity-0 invisible -translate-y-4 pointer-events-none"
         }`}
@@ -151,8 +190,9 @@ export default function Navbar() {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleScrollToSection(e, link.href)}
-                className={`text-3xl font-serif text-stone-700 hover:text-teal-700 transition-all duration-500 transform
-                ${isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}
+                className={`text-3xl font-serif text-stone-700 hover:text-teal-700 transition-all duration-500 transform ${
+                  isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+                }`}
                 style={{ transitionDelay: `${i * 100}ms` }}
             >
                 {link.name}
@@ -160,8 +200,9 @@ export default function Navbar() {
             ))}
             
             <div 
-                className={`mt-8 transition-all duration-700 delay-300 transform
-                ${isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}
+                className={`mt-8 transition-all duration-700 delay-300 transform ${
+                  isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+                }`}
             >
                 <a
                 href="https://wa.link/2x3i8s"
