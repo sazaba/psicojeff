@@ -1,29 +1,27 @@
 import { prisma } from "@/lib/prisma";
 import Navbar from "@/app/components/ui/Navbar";
 import Hero from "@/app/components/sections/Hero"; 
+import PainPoints from "@/app/components/sections/PainPoints";
+import ProfessionalProfile from "@/app/components/sections/ProfessionalProfile";
+import ValueProposition from "@/app/components/sections/ValueProposition";
+import TargetAudience from "@/app/components/sections/TargetAudience";
+import Transformation from "@/app/components/sections/Transformation";
+import FAQ from "@/app/components/sections/Faq";
 import Footer from "@/app/components/sections/Footer";
 import dynamic from "next/dynamic"; 
-
-// --- IMPORTACIÓN DE LA IMAGEN PARA EL SCRIPT DE GOOGLE ---
 import imageJeff from "@/app/assets/Jeffseo.webp";
 
-// --- OPTIMIZACIÓN DE CARGA (LAZY LOADING) ---
-const PainPoints = dynamic(() => import("@/app/components/sections/PainPoints"));
-const ProfessionalProfile = dynamic(() => import("@/app/components/sections/ProfessionalProfile"));
-const ValueProposition = dynamic(() => import("@/app/components/sections/ValueProposition"));
-const TargetAudience = dynamic(() => import("@/app/components/sections/TargetAudience"));
-const Transformation = dynamic(() => import("@/app/components/sections/Transformation"));
-
-const Testimonials = dynamic(() => import("@/app/components/sections/Testimonials"));
-const FAQ = dynamic(() => import("@/app/components/sections/Faq"));
+// SOLO usar lazy loading para componentes de cliente (use client) que contengan librerías pesadas.
+// Asumo que estos tres requieren JS pesado (Swiper, Leaflet, etc.). Si son estáticos, impórtalos normalmente.
 const BlogCarousel = dynamic(() => import("@/app/components/sections/BlogCarousel"));
-
+const Testimonials = dynamic(() => import("@/app/components/sections/Testimonials"));
 const Location = dynamic(() => import("@/app/components/sections/Location"), {
   loading: () => <div className="h-96 w-full bg-stone-50 animate-pulse rounded-3xl" />
 });
 
-// --- OPTIMIZACIÓN DE SERVIDOR (SSR) ---
-export const revalidate = 0; 
+// OPTIMIZACIÓN: Revalidar cada 24 horas (86400 segundos). 
+// La página se servirá instantáneamente desde la caché estática, acelerando el TTFB.
+export const revalidate = 86400; 
 
 async function getReviewCount() {
   try {
@@ -38,7 +36,6 @@ async function getReviewCount() {
 export default async function Home() {
   const reviewCount = await getReviewCount();
 
-  // --- ESTRUCTURA DE DATOS JSON-LD PARA GOOGLE SEO ---
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Physician",
@@ -73,8 +70,6 @@ export default async function Home() {
 
   return (
     <div className="relative flex flex-col gap-0 scroll-smooth"> 
-      
-      {/* INYECCIÓN DEL SCRIPT PARA LOS RESULTADOS ENRIQUECIDOS DE GOOGLE */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -92,23 +87,23 @@ export default async function Home() {
         </section>
 
         <section>
-           <TargetAudience/>
+           <TargetAudience />
         </section>
 
         <section id="sobre-mi">
-          <ProfessionalProfile/>
+          <ProfessionalProfile />
         </section>
 
         <section id="diferencial">
-          <ValueProposition/>
+          <ValueProposition />
         </section>
 
         <section id="proceso">
-          <Transformation/>
+          <Transformation />
         </section>
 
         <section id="ubicacion">
-          <Location/>
+          <Location />
         </section>
 
         <section id="testimonios">
@@ -116,7 +111,7 @@ export default async function Home() {
         </section>
         
         <section id="faq">
-          <FAQ/>
+          <FAQ />
         </section>
 
         <section id="blog">

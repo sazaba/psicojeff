@@ -1,24 +1,15 @@
-'use client';
-
-import { MouseEvent } from 'react';
 import Image from 'next/image';
 import Headerpsicojeff from '@/app/assets/Headerpsicojeff.webp'; 
 
+// Al remover 'use client', este componente se renderiza en el servidor.
+// Cero JavaScript es enviado al hilo principal del navegador.
+
 export default function Hero() {
-
-  const handleScrollToEnfoque = (e: MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault(); // Evita que se añada #proceso a la URL
-    const element = document.getElementById('proceso');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
     <section className="relative min-h-[90vh] flex items-center pt-32 md:pt-20 overflow-hidden w-full">
       
-      {/* OPTIMIZACIÓN 1: GPU ACCELERATION */}
-      <div className="absolute top-1/2 right-0 md:right-20 -translate-y-1/2 w-[80vw] md:w-[600px] h-[600px] bg-teal-50/40 rounded-full blur-[120px] -z-10 pointer-events-none transform-gpu will-change-transform" />
+      {/* GPU ACCELERATION - Sin will-change en elementos estáticos para no saturar VRAM en móviles */}
+      <div className="absolute top-1/2 right-0 md:right-20 -translate-y-1/2 w-[80vw] md:w-[600px] h-[600px] bg-teal-50/40 rounded-full blur-[120px] -z-10 pointer-events-none transform-gpu" />
 
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
@@ -26,18 +17,18 @@ export default function Hero() {
             {/* COLUMNA 1: IMAGEN */}
             <div className="relative order-last md:order-first flex justify-center md:justify-end">
                 
-                {/* OPTIMIZACIÓN GPU TAMBIÉN AQUÍ */}
-                <div className="absolute top-10 left-1/2 -translate-x-1/2 w-3/4 h-3/4 bg-teal-200/30 rounded-full blur-[60px] -z-10 transform-gpu will-change-transform"></div>
+                <div className="absolute top-10 left-1/2 -translate-x-1/2 w-3/4 h-3/4 bg-teal-200/30 rounded-full blur-[60px] -z-10 transform-gpu"></div>
 
                 <div className="relative w-full max-w-[500px]"> 
                     <Image
                         src={Headerpsicojeff}
                         alt="Psicólogo Jefferson Bastidas - Terapia Online y Presencial"
-                        className="w-full h-auto object-contain drop-shadow-2xl z-10 [mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)] will-change-transform" 
+                        className="w-full h-auto object-contain drop-shadow-2xl z-10 [mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)]" 
                         priority={true} 
                         placeholder="blur"
-                        quality={100}
-                        sizes="100vw"
+                        // Se elimina quality={100} para permitir la compresión de Vercel/Next.js
+                        // Se ajustan los sizes a la realidad geométrica del diseño responsivo
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 500px"
                     />
                 </div>
             </div>
@@ -87,9 +78,9 @@ export default function Hero() {
                         Solicitar Información
                     </a>
                     
+                    {/* El scroll suave es manejado nativamente por CSS mediante id="#proceso" */}
                     <a 
                         href="#proceso" 
-                        onClick={handleScrollToEnfoque} 
                         className="cursor-pointer px-8 py-4 rounded-full border border-stone-300 hover:border-teal-400 bg-transparent text-stone-600 hover:text-teal-700 font-medium transition-all w-full sm:w-auto text-center"
                     >
                         Conocer mi enfoque
