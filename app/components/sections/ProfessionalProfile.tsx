@@ -59,7 +59,6 @@ export default function ProfessionalProfile() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (selectedPdf) {
-        // Bloquear Ctrl/Cmd + P (Imprimir), S (Guardar), C (Copiar)
         if ((e.ctrlKey || e.metaKey) && ['p', 's', 'c'].includes(e.key.toLowerCase())) {
           e.preventDefault();
         }
@@ -198,7 +197,6 @@ export default function ProfessionalProfile() {
                 style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none' }}
                 onContextMenu={(e) => e.preventDefault()}
             >
-                {/* Capa exterior de cierre */}
                 <div 
                     className="absolute inset-0 cursor-pointer"
                     onClick={() => setSelectedPdf(null)}
@@ -232,27 +230,13 @@ export default function ProfessionalProfile() {
                         </div>
                     </div>
 
-                    <div className="flex-1 w-full bg-stone-200 relative">
-                        {/* BARRERA MÁXIMA Z-50: Intercepta TODO para evitar menú contextual y descargas */}
-                        <div 
-                            className="absolute inset-0 z-50 bg-transparent w-full h-full"
-                            onContextMenu={(e) => e.preventDefault()}
-                            onDragStart={(e) => e.preventDefault()}
-                            onMouseDown={(e) => e.preventDefault()}
-                            onDoubleClick={(e) => e.preventDefault()}
-                            onTouchStart={(e) => e.preventDefault()}
-                        />
-                        
-                        {/* Iframe sin sandbox para evitar pantalla blanca en Safari, pero con estilos para bloquear interacción visual */}
+                    <div className="flex-1 w-full bg-stone-200 relative overflow-hidden">
+                        {/* Se eliminó la capa z-50 para permitir la interacción del usuario y habilitar el scroll nativo dentro del iframe */}
                         <iframe 
-                            src={`${selectedPdf.pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=FitH`} 
-                            className="absolute inset-0 w-full h-full border-none opacity-[0.99]"
-                            style={{ 
-                                pointerEvents: 'none', 
-                                userSelect: 'none',
-                                WebkitUserSelect: 'none' 
-                            }}
+                            src={`${selectedPdf.pdfUrl}#toolbar=0&navpanes=0`} 
+                            className="absolute inset-0 w-full h-full border-none"
                             title={`Diploma de ${selectedPdf.institution}`}
+                            onContextMenu={(e) => e.preventDefault()}
                             tabIndex={-1}
                         />
                     </div>
