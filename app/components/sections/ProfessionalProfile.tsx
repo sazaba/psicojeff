@@ -3,11 +3,10 @@
 import React, { useState, useEffect, ReactNode } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { BookOpen, BrainCircuit, HeartHandshake, Quote, Maximize2, X, Download } from "lucide-react";
+import { BookOpen, BrainCircuit, HeartHandshake, Maximize2, X } from "lucide-react";
 
 import profesionalpsicojeff from "@/app/assets/profesionalpsicojeff.webp"; 
 
-// 1. Definimos la interfaz para TypeScript
 interface Credential {
   icon: ReactNode;
   title: string;
@@ -17,7 +16,6 @@ interface Credential {
   pdfUrl: string;
 }
 
-// 2. Tipamos el arreglo
 const credentials: Credential[] = [
   {
     icon: <BrainCircuit size={32} />,
@@ -46,7 +44,6 @@ const credentials: Credential[] = [
 ];
 
 export default function ProfessionalProfile() {
-  // 3. Pasamos la interfaz al useState permitiendo que sea Credential o null
   const [selectedPdf, setSelectedPdf] = useState<Credential | null>(null);
 
   useEffect(() => {
@@ -56,6 +53,17 @@ export default function ProfessionalProfile() {
       document.body.style.overflow = 'unset';
     }
     return () => { document.body.style.overflow = 'unset'; };
+  }, [selectedPdf]);
+
+  // Función para bloquear comandos de teclado comunes para guardar/imprimir
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedPdf && (e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 's')) {
+        e.preventDefault();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedPdf]);
 
   return (
@@ -77,13 +85,14 @@ export default function ProfessionalProfile() {
             >
                 <Image 
                     src={profesionalpsicojeff} 
-                    alt="Psicólogo Jefferson Bastidas - Perfil Profesional"
+                    alt="Perfil Profesional"
                     fill
-                    className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                    className="object-cover object-top transition-transform duration-700 group-hover:scale-105 select-none"
                     sizes="(max-width: 768px) 100vw, 50vw"
                     quality={100}
                     priority={false} 
                     placeholder="blur"
+                    onContextMenu={(e) => e.preventDefault()}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-900/30 via-transparent to-transparent opacity-60 pointer-events-none transition-opacity duration-500 group-hover:opacity-40" />
             </motion.div>
@@ -178,14 +187,16 @@ export default function ProfessionalProfile() {
                 <div 
                     className="absolute inset-0 bg-stone-900/40 backdrop-blur-md cursor-pointer"
                     onClick={() => setSelectedPdf(null)}
+                    onContextMenu={(e) => e.preventDefault()}
                 />
 
                 <motion.div 
-                    className="relative w-full max-w-4xl h-[85vh] bg-stone-50 rounded-[2rem] shadow-2xl overflow-hidden flex flex-col"
+                    className="relative w-full max-w-4xl h-[85vh] bg-stone-50 rounded-[2rem] shadow-2xl overflow-hidden flex flex-col select-none"
                     initial={{ y: 50, scale: 0.95, opacity: 0 }}
                     animate={{ y: 0, scale: 1, opacity: 1 }}
                     exit={{ y: 20, scale: 0.95, opacity: 0 }}
                     transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                    onContextMenu={(e) => e.preventDefault()}
                 >
                     <div className="flex items-center justify-between px-6 py-4 bg-white/80 backdrop-blur-sm border-b border-stone-200 z-10">
                         <div className="flex flex-col">
@@ -198,17 +209,7 @@ export default function ProfessionalProfile() {
                         </div>
                         
                         <div className="flex items-center gap-2">
-                            <a 
-                                href={selectedPdf.pdfUrl} 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                className="p-2 text-stone-500 hover:text-teal-600 hover:bg-teal-50 rounded-full transition-colors flex items-center gap-2"
-                                title="Abrir en ventana nueva"
-                            >
-                                <Download size={20} />
-                                <span className="text-sm font-medium hidden sm:inline-block">Abrir PDF</span>
-                            </a>
-                            <div className="w-px h-6 bg-stone-200 mx-1"></div>
+                            {/* Se eliminó el botón de descarga aquí */}
                             <button 
                                 onClick={() => setSelectedPdf(null)}
                                 className="p-2 text-stone-500 hover:text-stone-900 hover:bg-stone-100 rounded-full transition-colors"
@@ -219,10 +220,13 @@ export default function ProfessionalProfile() {
                     </div>
 
                     <div className="flex-1 w-full bg-stone-200 relative">
+                        {/* Una capa transparente superpuesta para bloquear clics directos al iframe */}
+                        <div className="absolute inset-0 z-10 opacity-0" onContextMenu={(e) => e.preventDefault()}></div>
                         <iframe 
-                            src={`${selectedPdf.pdfUrl}#toolbar=0`} 
-                            className="absolute inset-0 w-full h-full border-none"
+                            src={`${selectedPdf.pdfUrl}#toolbar=0&navpanes=0&scrollbar=0`} 
+                            className="absolute inset-0 w-full h-full border-none pointer-events-none"
                             title={`Diploma de ${selectedPdf.institution}`}
+                            onContextMenu={(e) => e.preventDefault()}
                         />
                     </div>
                 </motion.div>
