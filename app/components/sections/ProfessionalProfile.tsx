@@ -233,7 +233,7 @@ export default function ProfessionalProfile() {
                     </div>
 
                     <div className="flex-1 w-full bg-stone-200 relative">
-                        {/* BARRERA MÁXIMA Z-50: Intercepta TODO */}
+                        {/* BARRERA MÁXIMA Z-50: Intercepta TODO para evitar menú contextual y descargas */}
                         <div 
                             className="absolute inset-0 z-50 bg-transparent w-full h-full"
                             onContextMenu={(e) => e.preventDefault()}
@@ -243,7 +243,7 @@ export default function ProfessionalProfile() {
                             onTouchStart={(e) => e.preventDefault()}
                         />
                         
-                        {/* Se añade sandbox y tabIndex negativo */}
+                        {/* Iframe sin sandbox para evitar pantalla blanca en Safari, pero con estilos para bloquear interacción visual */}
                         <iframe 
                             src={`${selectedPdf.pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=FitH`} 
                             className="absolute inset-0 w-full h-full border-none opacity-[0.99]"
@@ -254,7 +254,6 @@ export default function ProfessionalProfile() {
                             }}
                             title={`Diploma de ${selectedPdf.institution}`}
                             tabIndex={-1}
-                            sandbox="allow-same-origin allow-scripts"
                         />
                     </div>
                 </motion.div>
