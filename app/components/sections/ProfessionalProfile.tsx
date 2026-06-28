@@ -55,21 +55,32 @@ export default function ProfessionalProfile() {
     return () => { document.body.style.overflow = 'unset'; };
   }, [selectedPdf]);
 
-  // Función para bloquear comandos de teclado comunes para guardar/imprimir
+  // Bloqueo agresivo de teclado a nivel global cuando el modal está abierto
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (selectedPdf && (e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 's')) {
-        e.preventDefault();
+      if (selectedPdf) {
+        // Bloquear Ctrl/Cmd + P (Imprimir), S (Guardar), C (Copiar)
+        if ((e.ctrlKey || e.metaKey) && ['p', 's', 'c'].includes(e.key.toLowerCase())) {
+          e.preventDefault();
+        }
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown, { capture: true });
+    return () => window.removeEventListener('keydown', handleKeyDown, { capture: true });
   }, [selectedPdf]);
+
+  // Prevenir arrastrar y soltar a nivel de documento
+  useEffect(() => {
+    const handleDrag = (e: DragEvent) => e.preventDefault();
+    document.addEventListener('dragstart', handleDrag);
+    return () => document.removeEventListener('dragstart', handleDrag);
+  }, []);
 
   return (
     <section 
         id="sobre-mi" 
-        className="py-24 px-6 bg-white relative overflow-hidden"
+        className="py-24 px-6 bg-white relative overflow-hidden select-none"
+        style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none' }}
     >
       <div className="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] pointer-events-none" />
       
@@ -87,12 +98,13 @@ export default function ProfessionalProfile() {
                     src={profesionalpsicojeff} 
                     alt="Perfil Profesional"
                     fill
-                    className="object-cover object-top transition-transform duration-700 group-hover:scale-105 select-none"
+                    className="object-cover object-top transition-transform duration-700 group-hover:scale-105 pointer-events-none"
                     sizes="(max-width: 768px) 100vw, 50vw"
                     quality={100}
                     priority={false} 
                     placeholder="blur"
                     onContextMenu={(e) => e.preventDefault()}
+                    onDragStart={(e) => e.preventDefault()}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-900/30 via-transparent to-transparent opacity-60 pointer-events-none transition-opacity duration-500 group-hover:opacity-40" />
             </motion.div>
@@ -104,20 +116,20 @@ export default function ProfessionalProfile() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
             >
-                <span className="inline-block py-1 px-3 rounded-full bg-teal-50 border border-teal-100 text-teal-700 font-bold tracking-widest text-[10px] uppercase mb-4">
+                <span className="inline-block py-1 px-3 rounded-full bg-teal-50 border border-teal-100 text-teal-700 font-bold tracking-widest text-[10px] uppercase mb-4 pointer-events-none">
                     Perfil Profesional
                 </span>
-                <h2 className="text-4xl md:text-5xl font-serif text-stone-800 mb-2">
+                <h2 className="text-4xl md:text-5xl font-serif text-stone-800 mb-2 pointer-events-none">
                     Jefferson Bastidas
                 </h2>
-                <h3 className="text-lg md:text-xl text-stone-500 font-sans font-light mb-8 flex items-center gap-2">
+                <h3 className="text-lg md:text-xl text-stone-500 font-sans font-light mb-8 flex items-center gap-2 pointer-events-none">
                     <span className="w-8 h-[1px] bg-teal-500 inline-block"></span>
                     Psicólogo & Especialista SST
                 </h3>
             </motion.div>
 
             <motion.div 
-                className="prose prose-stone text-stone-600 mb-10 leading-relaxed text-sm md:text-base"
+                className="prose prose-stone text-stone-600 mb-10 leading-relaxed text-sm md:text-base pointer-events-none"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
@@ -142,9 +154,9 @@ export default function ProfessionalProfile() {
                         viewport={{ once: true }}
                         transition={{ delay: 0.3 + (index * 0.1) }}
                     >
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-current opacity-20 group-hover:w-3 transition-all duration-300" />
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-current opacity-20 group-hover:w-3 transition-all duration-300 pointer-events-none" />
                         
-                        <div className="flex flex-col md:flex-row gap-4 md:gap-5 items-center md:items-start text-center md:text-left pl-0 md:pl-3 relative z-10">
+                        <div className="flex flex-col md:flex-row gap-4 md:gap-5 items-center md:items-start text-center md:text-left pl-0 md:pl-3 relative z-10 pointer-events-none">
                             
                             <div className="mt-1 opacity-70 group-hover:scale-110 group-hover:opacity-100 transition-all duration-300 flex-shrink-0">
                                 {cred.icon}
@@ -178,27 +190,29 @@ export default function ProfessionalProfile() {
       <AnimatePresence>
         {selectedPdf && (
             <motion.div 
-                className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+                className="fixed inset-0 z-[999] flex items-center justify-center p-4 sm:p-6 bg-stone-900/60 backdrop-blur-md"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
+                style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none' }}
+                onContextMenu={(e) => e.preventDefault()}
             >
+                {/* Capa exterior de cierre */}
                 <div 
-                    className="absolute inset-0 bg-stone-900/40 backdrop-blur-md cursor-pointer"
+                    className="absolute inset-0 cursor-pointer"
                     onClick={() => setSelectedPdf(null)}
-                    onContextMenu={(e) => e.preventDefault()}
                 />
 
                 <motion.div 
-                    className="relative w-full max-w-4xl h-[85vh] bg-stone-50 rounded-[2rem] shadow-2xl overflow-hidden flex flex-col select-none"
+                    className="relative w-full max-w-4xl h-[85vh] bg-stone-50 rounded-[2rem] shadow-2xl overflow-hidden flex flex-col cursor-default"
                     initial={{ y: 50, scale: 0.95, opacity: 0 }}
                     animate={{ y: 0, scale: 1, opacity: 1 }}
                     exit={{ y: 20, scale: 0.95, opacity: 0 }}
                     transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                    onContextMenu={(e) => e.preventDefault()}
+                    onClick={(e) => e.stopPropagation()}
                 >
-                    <div className="flex items-center justify-between px-6 py-4 bg-white/80 backdrop-blur-sm border-b border-stone-200 z-10">
+                    <div className="flex items-center justify-between px-6 py-4 bg-white/90 backdrop-blur-sm border-b border-stone-200 z-20 pointer-events-auto">
                         <div className="flex flex-col">
                             <span className="text-xs font-semibold text-stone-500 uppercase tracking-wider">
                                 {selectedPdf.institution}
@@ -209,7 +223,6 @@ export default function ProfessionalProfile() {
                         </div>
                         
                         <div className="flex items-center gap-2">
-                            {/* Se eliminó el botón de descarga aquí */}
                             <button 
                                 onClick={() => setSelectedPdf(null)}
                                 className="p-2 text-stone-500 hover:text-stone-900 hover:bg-stone-100 rounded-full transition-colors"
@@ -220,13 +233,28 @@ export default function ProfessionalProfile() {
                     </div>
 
                     <div className="flex-1 w-full bg-stone-200 relative">
-                        {/* Una capa transparente superpuesta para bloquear clics directos al iframe */}
-                        <div className="absolute inset-0 z-10 opacity-0" onContextMenu={(e) => e.preventDefault()}></div>
-                        <iframe 
-                            src={`${selectedPdf.pdfUrl}#toolbar=0&navpanes=0&scrollbar=0`} 
-                            className="absolute inset-0 w-full h-full border-none pointer-events-none"
-                            title={`Diploma de ${selectedPdf.institution}`}
+                        {/* BARRERA MÁXIMA Z-50: Intercepta TODO */}
+                        <div 
+                            className="absolute inset-0 z-50 bg-transparent w-full h-full"
                             onContextMenu={(e) => e.preventDefault()}
+                            onDragStart={(e) => e.preventDefault()}
+                            onMouseDown={(e) => e.preventDefault()}
+                            onDoubleClick={(e) => e.preventDefault()}
+                            onTouchStart={(e) => e.preventDefault()}
+                        />
+                        
+                        {/* Se añade sandbox y tabIndex negativo */}
+                        <iframe 
+                            src={`${selectedPdf.pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=FitH`} 
+                            className="absolute inset-0 w-full h-full border-none opacity-[0.99]"
+                            style={{ 
+                                pointerEvents: 'none', 
+                                userSelect: 'none',
+                                WebkitUserSelect: 'none' 
+                            }}
+                            title={`Diploma de ${selectedPdf.institution}`}
+                            tabIndex={-1}
+                            sandbox="allow-same-origin allow-scripts"
                         />
                     </div>
                 </motion.div>
