@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Playfair_Display, Lato } from "next/font/google"; 
 import "./globals.css";
 import { Providers } from "./providers";
-
-// --- IMPORTACIÓN DE IMÁGENES ---
 import iconImage from "./icon.webp"; 
 import imageJeff from "@/app/assets/Jeffseo.webp";
 
@@ -20,42 +18,24 @@ const lato = Lato({
   display: "swap",
 });
 
-// --- SEO OPTIMIZADO PARA MANIZALES, COLOMBIA Y EXTERIOR ---
 export const metadata: Metadata = {
   title: {
     default: "Jefferson Bastidas Mejía | Psicólogo en Manizales y Online",
     template: "%s | Jefferson Bastidas Mejía",
   },
-  
   description: "Psicólogo en Manizales y online. Psicoterapia basada en terapias contextuales de tercera generación y Terapia de Aceptación y Compromiso (ACT).",
-  
   alternates: {
     canonical: 'https://psicologojeffersonbastidas.com',
   },
-  
   keywords: [
-    "Psicólogo Manizales",
-    "Psicólogo Pereira",
-    "Psicólogo Medellin",
-    "Psicólogo Sabaneta",
-    "Psicólogo Envigado",
-    "Psicólogo Nueva York",
-    "Psicólogo New York",
-    "Psicólogo ",
-    "Psicoterapia Online",
-    "Jefferson Bastidas Mejía",
-    "Salud Mental Colombia",
-    "Psicólogo Latino Nueva York", 
-    "Tratamiento Ansiedad Manizales",
-    "Consulta psicológica virtual",
-    "Salud mental Manizales",
-    "Psicología Manizales",
-    "Psicólogo Eje Cafetero"
+    "Psicólogo Manizales", "Psicólogo Pereira", "Psicólogo Medellin", "Psicólogo Sabaneta",
+    "Psicólogo Envigado", "Psicólogo Nueva York", "Psicólogo New York", "Psicoterapia Online",
+    "Jefferson Bastidas Mejía", "Salud Mental Colombia", "Psicólogo Latino Nueva York", 
+    "Tratamiento Ansiedad Manizales", "Consulta psicológica virtual", "Salud mental Manizales",
+    "Psicología Manizales", "Psicólogo Eje Cafetero"
   ],
-
   authors: [{ name: "Jefferson Bastidas Mejía" }],
   creator: "Jefferson Bastidas Mejía",
-
   openGraph: {
     title: "Jefferson Bastidas | Psicólogo en Manizales y Online",
     description: "Psicoterapia presencial en Manizales y online mediante terapias contextuales de tercera generación y Terapia de Aceptación y Compromiso.",
@@ -72,7 +52,6 @@ export const metadata: Metadata = {
       },
     ],
   },
-
   robots: {
     index: true,
     follow: true,
@@ -84,7 +63,6 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-
   icons: {
     icon: iconImage.src, 
     apple: iconImage.src,
@@ -97,18 +75,23 @@ export default function RootLayout({
   return (
     <html lang="es" className="scroll-smooth">
       <body
-        className={`${playfair.variable} ${lato.variable} min-h-screen antialiased bg-[#fffcf8] text-stone-700 overflow-x-hidden`}
+        className={`${playfair.variable} ${lato.variable} min-h-screen antialiased text-stone-700 overflow-x-hidden relative`}
       >
+        {/* OPTIMIZACIÓN: Fondo generado matemáticamente mediante CSS Gradients.
+            Cero desenfoques (blurs), cero impacto en la VRAM, cero bloqueo de hilo principal. */}
+        <div 
+          className="fixed inset-0 z-[-1] pointer-events-none opacity-60"
+          style={{
+            background: `
+              radial-gradient(circle at 15% 10%, #ccfbf1 0%, transparent 40%),
+              radial-gradient(circle at 85% 90%, #fce7f3 0%, transparent 40%),
+              #fffcf8
+            `
+          }}
+        />
+        
         <Providers>
-            
-            {/* FONDO DE LUCES PASTEL - Optimizado para GPU */}
-            <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden opacity-60">
-                <div className="absolute top-[-10%] left-[-5%] w-[60vw] h-[60vw] rounded-full bg-[#ccfbf1] blur-[100px] transform-gpu will-change-transform"></div>
-                <div className="absolute bottom-[-10%] right-[-5%] w-[60vw] h-[60vw] rounded-full bg-[#fce7f3] blur-[100px] transform-gpu will-change-transform"></div>
-            </div>
-            
             {children}
-            
         </Providers>
       </body>
     </html>
