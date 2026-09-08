@@ -2,17 +2,17 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  UserCheck, 
-  Sparkles, 
-  BrainCircuit, 
-  Target, 
-  Clock, 
-  MapPin, 
-  Wallet, 
-  SunMedium, 
-  Plus, 
-  Minus 
+import {
+  UserCheck,
+  Sparkles,
+  BrainCircuit,
+  Target,
+  Clock,
+  MapPin,
+  Wallet,
+  SunMedium,
+  Plus,
+  Minus,
 } from "lucide-react";
 
 const faqData = [
@@ -29,11 +29,10 @@ const faqData = [
           <li>Especialista en <strong>Salud Ocupacional</strong> (Universidad Libre).</li>
           <li>Diplomado en <strong>Psicología Clínica Basada en la Evidencia</strong> (Universidad Javeriana).</li>
           <li>Diplomado en <strong>Terapias Complementarias</strong> (Universidad del Rosario).</li>
-          {/* NUEVO ELEMENTO AÑADIDO */}
           <li>Diplomado en <strong>Abordaje de Problemáticas Clínicas desde Terapias de Tercera Generación</strong> (Universidad de la Sabana).</li>
         </ul>
       </>
-    )
+    ),
   },
   {
     id: "diferencia",
@@ -44,11 +43,11 @@ const faqData = [
         A diferencia de los enfoques tradicionales centrados solo en la narrativa del pasado, mi propuesta es de <strong>Psicología de Precisión</strong>: pasando del <em>"¿Por qué?"</em> al <strong>"¿Cómo?"</strong>.
         <br /><br />
         <div className="bg-stone-50 p-4 rounded-lg border-l-4 border-teal-500 my-3">
-            <strong>Psicoterapia "Artesanal" y "Boutique":</strong> No es una consulta masiva. Solo atiendo un máximo de <strong>4 pacientes al día</strong> para garantizar una inmersión profunda y personalizada.
+          <strong>Psicoterapia "Artesanal" y "Boutique":</strong> No es una consulta masiva. Solo atiendo un máximo de <strong>4 pacientes al día</strong> para garantizar una inmersión profunda y personalizada.
         </div>
         No vienes solo a ser escuchado, sino a ser <strong>entrenado</strong> con mapas claros y estrategias concretas.
       </>
-    )
+    ),
   },
   {
     id: "metodologia",
@@ -62,10 +61,10 @@ const faqData = [
           <li><strong>Terapia Dialéctico Conductual (DBT).</strong></li>
         </ul>
         <p className="mt-2">
-            Estos métodos cuentan con el mayor respaldo científico (meta-análisis) y se integran con <strong>Terapias Complementarias</strong> para unificar ciencia, valores y espiritualidad.
+          Estos métodos cuentan con respaldo científico y se integran con <strong>Terapias Complementarias</strong> para unificar ciencia, valores y espiritualidad.
         </p>
       </>
-    )
+    ),
   },
   {
     id: "publico",
@@ -77,7 +76,7 @@ const faqData = [
         <br /><br />
         Es ideal para quienes sienten que su mente está dispersa, que las emociones los abruman o que les cuesta avanzar hacia lo que es importante para ellos.
       </>
-    )
+    ),
   },
   {
     id: "duracion",
@@ -89,7 +88,7 @@ const faqData = [
         <br /><br />
         Este tiempo permite generar un impacto real y un avance verdadero desde las primeras sesiones.
       </>
-    )
+    ),
   },
   {
     id: "ubicacion",
@@ -99,20 +98,20 @@ const faqData = [
       <>
         Contamos con dos sedes estratégicas en Manizales para tu comodidad:
         <ul className="space-y-4 mt-3">
-            <li className="flex flex-col sm:flex-row items-start gap-1 sm:gap-2">
-                <span className="shrink-0 w-fit bg-teal-100 text-teal-800 text-xs font-bold px-2 py-0.5 rounded sm:mt-0.5">MAÑANA</span>
-                <span><strong>Sede Centro:</strong> (Cra 22 # 24-24). Atención hasta las 2:00 p.m.</span>
-            </li>
-            <li className="flex flex-col sm:flex-row items-start gap-1 sm:gap-2">
-                <span className="shrink-0 w-fit bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-0.5 rounded sm:mt-0.5">TARDE</span>
-                <span><strong>Sede Av. Santander:</strong> (Edificio Cristóbal Colón). Atención hasta las 8:00 p.m.</span>
-            </li>
+          <li className="flex flex-col sm:flex-row items-start gap-1 sm:gap-2">
+            <span className="shrink-0 w-fit bg-teal-100 text-teal-800 text-xs font-bold px-2 py-0.5 rounded sm:mt-0.5">MAÑANA</span>
+            <span><strong>Sede Centro:</strong> Cra. 22 # 24-24. Atención hasta las 2:00 p.m.</span>
+          </li>
+          <li className="flex flex-col sm:flex-row items-start gap-1 sm:gap-2">
+            <span className="shrink-0 w-fit bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-0.5 rounded sm:mt-0.5">TARDE</span>
+            <span><strong>Centro Médico Santa Elena:</strong> Avenida Paralela # 49-46. Atención hasta las 8:00 p.m.</span>
+          </li>
         </ul>
         <p className="mt-3 text-sm text-stone-500">
-            <strong>Consulta Online:</strong> También disponible para mayor flexibilidad.
+          <strong>Consulta Online:</strong> También disponible para mayor flexibilidad.
         </p>
       </>
-    )
+    ),
   },
   {
     id: "costo",
@@ -121,20 +120,20 @@ const faqData = [
     answer: (
       <>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
-            <div className="bg-white border border-stone-200 p-4 rounded-xl text-center shadow-sm">
-                <p className="text-xs text-stone-500 uppercase tracking-wide">Residentes Colombia</p>
-                <p className="text-2xl font-bold text-stone-800">$100.000 COP</p>
-            </div>
-            <div className="bg-white border border-stone-200 p-4 rounded-xl text-center shadow-sm">
-                <p className="text-xs text-stone-500 uppercase tracking-wide">Residentes Exterior</p>
-                <p className="text-2xl font-bold text-stone-800">$30 USD/EUR</p>
-            </div>
+          <div className="bg-white border border-stone-200 p-4 rounded-xl text-center shadow-sm">
+            <p className="text-xs text-stone-500 uppercase tracking-wide">Residentes Colombia</p>
+            <p className="text-2xl font-bold text-stone-800">$100.000 COP</p>
+          </div>
+          <div className="bg-white border border-stone-200 p-4 rounded-xl text-center shadow-sm">
+            <p className="text-xs text-stone-500 uppercase tracking-wide">Residentes Exterior</p>
+            <p className="text-2xl font-bold text-stone-800">$30 USD/EUR</p>
+          </div>
         </div>
         <p className="text-center text-xs text-stone-500 mt-2 italic">
-            Pregunta por las promociones en paquetes de sesiones.
+          Pregunta por las promociones en paquetes de sesiones.
         </p>
       </>
-    )
+    ),
   },
   {
     id: "resultados",
@@ -149,23 +148,16 @@ const faqData = [
           <li><strong>Tranquilizarte:</strong> Obtener una estabilidad que te permita tomar mejores decisiones y actuar con confianza.</li>
         </ul>
       </>
-    )
-  }
+    ),
+  },
 ];
 
 export default function FAQ() {
   const [openId, setOpenId] = useState<string | null>(null);
 
-  const toggleFAQ = (id: string) => {
-    setOpenId(openId === id ? null : id);
-  };
-
   return (
     <section className="py-24 px-6 relative overflow-hidden">
-      
       <div className="max-w-4xl mx-auto relative z-10">
-        
-        {/* --- HEADER --- */}
         <div className="text-center mb-16">
           <span className="text-teal-600 font-bold tracking-widest text-xs uppercase mb-3 block">
             Resuelve tus dudas
@@ -178,54 +170,45 @@ export default function FAQ() {
           </p>
         </div>
 
-        {/* --- GRID DE PREGUNTAS --- */}
         <div className="grid gap-4">
           {faqData.map((item) => {
             const isOpen = openId === item.id;
 
             return (
-              <motion.div 
+              <motion.div
                 key={item.id}
                 layout
-                onClick={() => toggleFAQ(item.id)}
-                className={`group cursor-pointer rounded-2xl border transition-all duration-500 overflow-hidden relative
-                  ${isOpen 
-                    ? "bg-white border-teal-500/30 shadow-xl shadow-teal-900/5" 
+                onClick={() => setOpenId(isOpen ? null : item.id)}
+                className={`group cursor-pointer rounded-2xl border transition-all duration-500 overflow-hidden relative ${
+                  isOpen
+                    ? "bg-white border-teal-500/30 shadow-xl shadow-teal-900/5"
                     : "bg-white/60 hover:bg-white border-white/50 hover:border-stone-200 hover:shadow-lg shadow-sm backdrop-blur-md"
-                  }
-                `}
+                }`}
               >
-                {/* Header de la Tarjeta */}
                 <div className="p-6 md:p-8 flex items-center gap-6">
-                  
-                  {/* Icono Lateral */}
-                  <div className={`shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-300 
-                    ${isOpen ? "bg-teal-50 text-teal-700" : "bg-stone-100 text-stone-400 group-hover:bg-stone-200 group-hover:text-stone-600"}`}>
+                  <div className={`shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-300 ${isOpen ? "bg-teal-50 text-teal-700" : "bg-stone-100 text-stone-400 group-hover:bg-stone-200 group-hover:text-stone-600"}`}>
                     {item.icon}
                   </div>
 
-                  {/* Pregunta */}
                   <div className="flex-grow">
                     <h3 className={`font-serif text-lg md:text-xl font-medium transition-colors duration-300 ${isOpen ? "text-teal-800" : "text-stone-700 group-hover:text-stone-900"}`}>
                       {item.question}
                     </h3>
                   </div>
 
-                  {/* Botón +/- */}
                   <div className={`shrink-0 transition-transform duration-500 ${isOpen ? "rotate-180" : ""}`}>
                     {isOpen ? (
-                        <div className="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center">
-                             <Minus size={16} />
-                        </div>
+                      <div className="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center">
+                        <Minus size={16} />
+                      </div>
                     ) : (
-                        <div className="w-8 h-8 rounded-full bg-stone-100 text-stone-400 group-hover:bg-stone-200 flex items-center justify-center">
-                             <Plus size={16} />
-                        </div>
+                      <div className="w-8 h-8 rounded-full bg-stone-100 text-stone-400 group-hover:bg-stone-200 flex items-center justify-center">
+                        <Plus size={16} />
+                      </div>
                     )}
                   </div>
                 </div>
 
-                {/* Respuesta Desplegable */}
                 <AnimatePresence>
                   {isOpen && (
                     <motion.div
@@ -240,33 +223,29 @@ export default function FAQ() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-                
-                {/* Decoración Sutil Activa */}
-                {isOpen && (
-                    <motion.div 
-                        layoutId="active-glow"
-                        className="absolute inset-0 border-2 border-teal-500/20 rounded-2xl pointer-events-none" 
-                    />
-                )}
 
+                {isOpen && (
+                  <motion.div
+                    layoutId="active-glow"
+                    className="absolute inset-0 border-2 border-teal-500/20 rounded-2xl pointer-events-none"
+                  />
+                )}
               </motion.div>
             );
           })}
         </div>
 
-        {/* --- CTA FINAL DISCRETO --- */}
         <div className="mt-16 text-center">
-            <p className="text-stone-500 mb-4">¿Tienes alguna otra pregunta específica?</p>
-            <a 
-                href="https://wa.link/2x3i8s"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block px-8 py-3 rounded-full bg-stone-800 text-white font-bold hover:bg-stone-700 transition-colors shadow-lg hover:shadow-xl cursor-pointer"
-            >
-                Contáctame Directamente
-            </a>
+          <p className="text-stone-500 mb-4">¿Tienes alguna otra pregunta específica?</p>
+          <a
+            href="https://wa.link/2x3i8s"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block px-8 py-3 rounded-full bg-stone-800 text-white font-bold hover:bg-stone-700 transition-colors shadow-lg hover:shadow-xl cursor-pointer"
+          >
+            Contáctame Directamente
+          </a>
         </div>
-
       </div>
     </section>
   );
