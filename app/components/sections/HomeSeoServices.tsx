@@ -35,44 +35,59 @@ const pathways = [
 
 export default function HomeSeoServices() {
   return (
-    <section id="servicios" className="px-6 py-16 md:py-20 bg-white border-y border-stone-100">
-      <div className="max-w-7xl mx-auto overflow-hidden rounded-[2rem] border border-stone-200 bg-[#fffcf8] shadow-sm">
-        <div className="grid lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="relative p-8 md:p-12 lg:p-14">
-            <div className="absolute left-0 top-12 h-20 w-1 rounded-r-full bg-teal-600" aria-hidden="true" />
-            <span className="block text-teal-700 font-bold tracking-[0.18em] text-xs uppercase mb-4">
+    <section
+      id="servicios"
+      className="relative overflow-hidden border-y border-stone-100 bg-white px-4 py-14 sm:px-6 sm:py-16 md:py-20"
+    >
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-[radial-gradient(circle_at_15%_0%,rgba(20,184,166,0.10),transparent_48%)]"
+        aria-hidden="true"
+      />
+
+      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[1.75rem] border border-stone-200/90 bg-[#fffcf8] shadow-[0_24px_70px_-36px_rgba(28,25,23,0.30)] sm:rounded-[2rem]">
+        <div className="grid lg:grid-cols-[0.88fr_1.12fr]">
+          <div className="relative min-w-0 p-6 sm:p-8 md:p-10 lg:p-14">
+            <div
+              className="absolute left-0 top-10 h-20 w-1 rounded-r-full bg-teal-600 sm:top-12"
+              aria-hidden="true"
+            />
+
+            <span className="block text-[0.7rem] font-bold uppercase tracking-[0.16em] text-teal-800 sm:text-xs sm:tracking-[0.18em]">
               Empieza por lo que hoy te está pesando
             </span>
-            <h2 className="text-3xl md:text-5xl font-serif text-stone-900 leading-[1.05] max-w-xl">
+
+            <h2 className="mt-4 max-w-xl font-serif text-[2rem] leading-[1.08] text-stone-950 sm:text-4xl md:text-5xl">
               No necesitas tenerlo todo claro para empezar a buscar ayuda
             </h2>
-            <p className="mt-6 text-stone-600 text-lg leading-8 max-w-xl">
+
+            <p className="mt-5 max-w-xl text-base leading-7 text-stone-700 sm:mt-6 sm:text-lg sm:leading-8">
               Tal vez lo llamas ansiedad, agotamiento, insomnio o simplemente sentir que algo ya no está funcionando como antes. Puedes empezar por la opción que más se parece a lo que estás viviendo hoy.
             </p>
           </div>
 
           <nav
             aria-label="Rutas de acompañamiento psicológico"
-            className="bg-[#124c46] p-4 md:p-6 lg:p-8"
+            className="min-w-0 bg-[linear-gradient(145deg,#123f3a_0%,#0d312e_100%)] p-3 sm:p-5 md:p-6 lg:p-8"
           >
-            <div className="rounded-[1.5rem] border border-white/10 overflow-hidden">
-              {pathways.map((pathway, index) => (
+            <div className="h-full overflow-hidden rounded-[1.35rem] border border-white/15 bg-white/[0.025] shadow-inner sm:rounded-[1.5rem]">
+              {pathways.map((pathway) => (
                 <Link
                   key={pathway.href}
                   href={pathway.href}
-                  className="group grid gap-2 sm:grid-cols-[1fr_auto] sm:items-center px-6 py-5 md:px-7 border-b border-white/10 last:border-b-0 hover:bg-white/[0.06] transition-colors"
+                  className="group grid min-w-0 gap-3 border-b border-white/10 px-5 py-5 transition-all last:border-b-0 hover:bg-white/[0.08] focus-visible:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-teal-300 sm:grid-cols-[1fr_auto] sm:items-center sm:px-6 md:px-7"
                 >
-                  <div>
-                    <span className="text-white font-serif text-xl md:text-2xl group-hover:text-teal-100 transition-colors">
+                  <div className="min-w-0">
+                    <span className="block break-words font-serif text-xl leading-tight text-white transition-colors group-hover:text-teal-100 sm:text-2xl">
                       {pathway.label}
                     </span>
-                    <p className="mt-1.5 text-sm leading-6 text-teal-50/70 max-w-xl">
+                    <p className="mt-1.5 max-w-xl text-sm leading-6 text-stone-200 sm:text-[0.95rem]">
                       {pathway.detail}
                     </p>
                   </div>
+
                   <span
                     aria-hidden="true"
-                    className="hidden sm:inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white group-hover:bg-white group-hover:text-[#124c46] transition-all"
+                    className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/25 text-white transition-all group-hover:border-white group-hover:bg-white group-hover:text-[#123f3a] sm:h-10 sm:w-10"
                   >
                     →
                   </span>
