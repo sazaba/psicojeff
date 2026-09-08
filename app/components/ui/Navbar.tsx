@@ -1,12 +1,30 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Menu, X, ArrowRight } from "lucide-react";
 import logoImg from "@/public/Logo.webp";
 
+const HOME_SECTION_PREFIX = "/#";
+
+function scrollToHomeSection(sectionId: string, updateHash = true) {
+  const target = document.getElementById(sectionId);
+  if (!target) return;
+
+  const navOffset = window.innerWidth >= 1024 ? 92 : 78;
+  const top = target.getBoundingClientRect().top + window.scrollY - navOffset;
+
+  window.scrollTo({ top: Math.max(top, 0), behavior: "smooth" });
+
+  if (updateHash) {
+    window.history.pushState(null, "", `/#${sectionId}`);
+  }
+}
+
 export default function Navbar() {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -63,17 +81,50 @@ export default function Navbar() {
     };
   }, [isMobileMenuOpen]);
 
+  useEffect(() => {
+    if (pathname !== "/" || !window.location.hash) return;
+
+    const sectionId = window.location.hash.replace("#", "");
+    if (!sectionId) return;
+
+    const timeout = window.setTimeout(() => {
+      scrollToHomeSection(sectionId, false);
+    }, 140);
+
+    return () => window.clearTimeout(timeout);
+  }, [pathname]);
+
   const navLinks = [
     { name: "Servicios", href: "/#servicios" },
     { name: "Empresas", href: "/riesgo-psicosocial-empresas" },
-    { name: "Perfil", href: "/sobre-jefferson-bastidas" },
+    { name: "Perfil", href: "/#sobre-mi" },
     { name: "Ubicación", href: "/#ubicacion" },
     { name: "Glosario", href: "/glosario" },
-    { name: "Blog", href: "/blog" },
+    { name: "Blog", href: "/#blog" },
   ];
 
-  const handleNavigation = () => {
+  const handleNavigation = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    const isHomeSection = href.startsWith(HOME_SECTION_PREFIX);
+    const sectionId = isHomeSection ? href.slice(HOME_SECTION_PREFIX.length) : "";
+    const wasMobileMenuOpen = isMobileMenuOpen;
+
     setIsMobileMenuOpen(false);
+
+    if (!isHomeSection || pathname !== "/") return;
+
+    event.preventDefault();
+
+    const runScroll = () => {
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => scrollToHomeSection(sectionId));
+      });
+    };
+
+    if (wasMobileMenuOpen) {
+      window.setTimeout(runScroll, 80);
+    } else {
+      runScroll();
+    }
   };
 
   return (
@@ -90,7 +141,7 @@ export default function Navbar() {
         <div className="w-full max-w-7xl mx-auto px-5 sm:px-6 flex items-center justify-between h-full gap-4">
           <Link
             href="/"
-            onClick={handleNavigation}
+            onClick={() => setIsMobileMenuOpen(false)}
             className="relative z-50 flex items-center gap-3 group shrink-0"
           >
             <div className="relative w-10 h-10 md:w-12 md:h-12 transition-transform duration-300 group-hover:scale-105">
@@ -120,7 +171,7 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  onClick={handleNavigation}
+                  onClick={(event) => handleNavigation(event, link.href)}
                   className="text-sm font-bold text-stone-600 hover:text-teal-700 transition-colors relative group tracking-wide font-sans whitespace-nowrap"
                 >
                   {link.name}
@@ -162,7 +213,7 @@ export default function Navbar() {
             <Link
               key={link.name}
               href={link.href}
-              onClick={handleNavigation}
+              onClick={(event) => handleNavigation(event, link.href)}
               className={`text-2xl sm:text-3xl font-serif text-stone-700 hover:text-teal-700 transition-all duration-500 transform text-center ${
                 isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
               }`}
@@ -181,7 +232,7 @@ export default function Navbar() {
               href="https://wa.link/2x3i8s"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={handleNavigation}
+              onClick={() => setIsMobileMenuOpen(false)}
               className="inline-flex px-8 sm:px-10 py-4 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 text-white font-bold shadow-xl shadow-teal-500/20 active:scale-95 transition-transform"
             >
               Agendar Sesión
