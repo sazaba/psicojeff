@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import Navbar from "@/app/components/ui/Navbar";
 import Hero from "@/app/components/sections/Hero";
 import PainPoints from "@/app/components/sections/PainPoints";
+import HomeSeoServices from "@/app/components/sections/HomeSeoServices";
 import ProfessionalProfile from "@/app/components/sections/ProfessionalProfile";
 import ValueProposition from "@/app/components/sections/ValueProposition";
 import TargetAudience from "@/app/components/sections/TargetAudience";
@@ -16,13 +17,16 @@ import imageJeff from "@/app/assets/Jeffseo.webp";
 const siteUrl = "https://psicologojeffersonbastidas.com";
 
 export const metadata: Metadata = {
+  title: "Psicólogo en Manizales y psicoterapia online para adultos",
+  description:
+    "Psicólogo en Manizales con atención presencial y psicoterapia online para adultos. Enfoque en terapias contextuales de tercera generación y ACT.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Jefferson Bastidas | Psicólogo en Manizales y Online",
+    title: "Psicólogo en Manizales y psicoterapia online para adultos",
     description:
-      "Psicoterapia presencial en Manizales y online mediante terapias contextuales de tercera generación y Terapia de Aceptación y Compromiso.",
+      "Atención psicológica presencial en Manizales y online para adultos, con terapias contextuales de tercera generación y ACT.",
     url: "/",
     siteName: "Jefferson Bastidas Psicólogo",
     locale: "es_CO",
@@ -38,9 +42,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jefferson Bastidas | Psicólogo en Manizales y Online",
+    title: "Psicólogo en Manizales y psicoterapia online para adultos",
     description:
-      "Psicoterapia presencial en Manizales y online mediante terapias contextuales de tercera generación.",
+      "Atención psicológica presencial en Manizales y online para adultos con un enfoque contextual y basado en ACT.",
     images: [imageJeff.src],
   },
 };
@@ -157,6 +161,8 @@ export default async function Home() {
         <section id="motivos">
           <PainPoints />
         </section>
+
+        <HomeSeoServices />
 
         <section>
           <TargetAudience />

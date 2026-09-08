@@ -64,33 +64,14 @@ export default function Navbar() {
   }, [isMobileMenuOpen]);
 
   const navLinks = [
-    { name: "Inicio", href: "#inicio" },
-    { name: "Acerca de Mí", href: "#sobre-mi" },
-    { name: "Ubicación", href: "#ubicacion" },
+    { name: "Inicio", href: "/#inicio" },
+    { name: "Servicios", href: "/#servicios" },
+    { name: "Perfil", href: "/sobre-jefferson-bastidas" },
+    { name: "Ubicación", href: "/#ubicacion" },
     { name: "Blog", href: "/blog" },
   ];
 
-  const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (!href.startsWith("#")) {
-      setIsMobileMenuOpen(false);
-      return;
-    }
-
-    e.preventDefault();
-    const targetId = href.replace("#", "");
-    const elem = document.getElementById(targetId);
-
-    if (elem) {
-      const headerOffset = 80;
-      const elementPosition = elem.getBoundingClientRect().top + window.scrollY;
-      const offsetPosition = elementPosition - headerOffset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-    }
-
+  const handleNavigation = () => {
     setIsMobileMenuOpen(false);
   };
 
@@ -107,8 +88,8 @@ export default function Navbar() {
       >
         <div className="w-full max-w-7xl mx-auto px-6 flex items-center justify-between h-full">
           <Link
-            href="#inicio"
-            onClick={(e) => handleNavigation(e, "#inicio")}
+            href="/"
+            onClick={handleNavigation}
             className="relative z-50 flex items-center gap-3 group shrink-0"
           >
             <div className="relative w-10 h-10 md:w-12 md:h-12 transition-transform duration-300 group-hover:scale-105">
@@ -132,18 +113,18 @@ export default function Navbar() {
             </div>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
-            <div className="flex items-center gap-6 lg:gap-8">
+          <div className="hidden md:flex items-center gap-6 lg:gap-8">
+            <div className="flex items-center gap-5 lg:gap-7">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.name}
                   href={link.href}
-                  onClick={(e) => handleNavigation(e, link.href)}
-                  className="text-sm font-bold text-stone-600 hover:text-teal-700 transition-colors relative group tracking-wide font-sans cursor-pointer"
+                  onClick={handleNavigation}
+                  className="text-sm font-bold text-stone-600 hover:text-teal-700 transition-colors relative group tracking-wide font-sans"
                 >
                   {link.name}
                   <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-teal-400 transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100" />
-                </a>
+                </Link>
               ))}
             </div>
 
@@ -151,7 +132,7 @@ export default function Navbar() {
               href="https://wa.link/2x3i8s"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#14b8a6] hover:bg-[#0f766e] text-white text-sm font-semibold transition-all duration-300 shadow-md shadow-teal-100 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
+              className="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#14b8a6] hover:bg-[#0f766e] text-white text-sm font-semibold transition-all duration-300 shadow-md shadow-teal-100 hover:shadow-lg hover:-translate-y-0.5"
             >
               Solicitar Información
               <ArrowRight size={16} className="text-white group-hover:translate-x-1 transition-transform" />
@@ -169,7 +150,7 @@ export default function Navbar() {
       </nav>
 
       <div
-        className={`fixed inset-0 z-40 bg-[#fffcf8]/98 backdrop-blur-xl flex flex-col items-center justify-center transition-all duration-500 md:hidden h-[100dvh] supports-[height:100dvh]:h-screen w-full transform-gpu will-change-transform ${
+        className={`fixed inset-0 z-40 bg-[#fffcf8]/98 backdrop-blur-xl flex flex-col items-center justify-center transition-all duration-500 md:hidden h-[100dvh] w-full transform-gpu will-change-transform ${
           isMobileMenuOpen
             ? "opacity-100 visible translate-y-0"
             : "opacity-0 invisible -translate-y-4 pointer-events-none"
@@ -177,17 +158,17 @@ export default function Navbar() {
       >
         <div className="flex flex-col items-center space-y-6 p-4 w-full">
           {navLinks.map((link, i) => (
-            <a
+            <Link
               key={link.name}
               href={link.href}
-              onClick={(e) => handleNavigation(e, link.href)}
+              onClick={handleNavigation}
               className={`text-3xl font-serif text-stone-700 hover:text-teal-700 transition-all duration-500 transform ${
                 isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
               }`}
-              style={{ transitionDelay: `${i * 100}ms` }}
+              style={{ transitionDelay: `${i * 80}ms` }}
             >
               {link.name}
-            </a>
+            </Link>
           ))}
 
           <div
@@ -199,7 +180,7 @@ export default function Navbar() {
               href="https://wa.link/2x3i8s"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => setIsMobileMenuOpen(false)}
+              onClick={handleNavigation}
               className="inline-flex px-10 py-4 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 text-white font-bold shadow-xl shadow-teal-500/20 active:scale-95 transition-transform"
             >
               Agendar Sesión
