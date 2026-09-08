@@ -10,7 +10,6 @@ import TargetAudience from "@/app/components/sections/TargetAudience";
 import Transformation from "@/app/components/sections/Transformation";
 import FAQ from "@/app/components/sections/Faq";
 import Footer from "@/app/components/sections/Footer";
-import LocationSeoSummary from "@/app/components/sections/LocationSeoSummary";
 import dynamic from "next/dynamic";
 import imageJeff from "@/app/assets/Jeffseo.webp";
 
@@ -72,7 +71,6 @@ export default async function Home() {
 
   const personId = `${siteUrl}/#person`;
   const websiteId = `${siteUrl}/#website`;
-  const centroId = `${siteUrl}/#sede-centro`;
   const santaElenaId = `${siteUrl}/#sede-santa-elena`;
 
   const jsonLd = {
@@ -91,7 +89,7 @@ export default async function Home() {
           "Terapias Contextuales de Tercera Generación",
           "Psicología Clínica Basada en la Evidencia",
         ],
-        worksFor: [{ "@id": centroId }, { "@id": santaElenaId }],
+        worksFor: { "@id": santaElenaId },
       },
       {
         "@type": "WebSite",
@@ -100,26 +98,6 @@ export default async function Home() {
         name: "Jefferson Bastidas Psicólogo",
         inLanguage: "es-CO",
         publisher: { "@id": personId },
-      },
-      {
-        "@type": "ProfessionalService",
-        "@id": centroId,
-        name: "Consulta psicológica Jefferson Bastidas Mejía - Sede Centro",
-        url: siteUrl,
-        image: `${siteUrl}${imageJeff.src}`,
-        priceRange: "$100.000 COP",
-        founder: { "@id": personId },
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: "Cra. 22 # 24-24",
-          addressLocality: "Manizales",
-          addressRegion: "Caldas",
-          addressCountry: "CO",
-        },
-        areaServed: {
-          "@type": "City",
-          name: "Manizales",
-        },
       },
       {
         "@type": "ProfessionalService",
@@ -181,7 +159,6 @@ export default async function Home() {
         </section>
 
         <section id="ubicacion">
-          <LocationSeoSummary />
           <Location />
         </section>
 

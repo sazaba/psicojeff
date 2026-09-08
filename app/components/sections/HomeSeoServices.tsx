@@ -1,79 +1,42 @@
 import Link from "next/link";
 
 const pathways = [
-  {
-    href: "/psicoterapia-online",
-    title: "Psicoterapia online",
-    description:
-      "Acompañamiento psicológico para adultos que necesitan flexibilidad geográfica y una atención estructurada.",
-  },
-  {
-    href: "/ansiedad-manizales",
-    title: "Ansiedad en Manizales",
-    description:
-      "Un espacio para trabajar preocupación, alerta constante y patrones que interfieren con la vida cotidiana.",
-  },
-  {
-    href: "/estres-burnout-manizales",
-    title: "Estrés laboral y burnout",
-    description:
-      "Acompañamiento para comprender la relación entre exigencia, trabajo, agotamiento y bienestar emocional.",
-  },
-  {
-    href: "/insomnio-manizales",
-    title: "Insomnio y bienestar emocional",
-    description:
-      "Abordaje psicológico de los factores emocionales, cognitivos y conductuales que pueden acompañar el mal descanso.",
-  },
-  {
-    href: "/terapias-contextuales-act",
-    title: "Terapias contextuales y ACT",
-    description:
-      "Conoce el enfoque basado en Terapia de Aceptación y Compromiso y otras terapias de tercera generación.",
-  },
-  {
-    href: "/sobre-jefferson-bastidas",
-    title: "Perfil profesional",
-    description:
-      "Formación, experiencia y enfoque clínico de Jefferson Bastidas Mejía, psicólogo en Manizales.",
-  },
+  { href: "/psicoterapia-online", label: "Psicoterapia online" },
+  { href: "/ansiedad-manizales", label: "Ansiedad" },
+  { href: "/estres-burnout-manizales", label: "Estrés y burnout" },
+  { href: "/insomnio-manizales", label: "Insomnio" },
+  { href: "/terapias-contextuales-act", label: "Terapias contextuales y ACT" },
+  { href: "/sobre-jefferson-bastidas", label: "Perfil profesional" },
 ];
 
 export default function HomeSeoServices() {
   return (
-    <section id="servicios" className="py-20 md:py-24 px-6 bg-white border-y border-stone-100">
-      <div className="max-w-7xl mx-auto">
-        <div className="max-w-3xl mb-12">
-          <span className="block text-teal-600 font-bold tracking-widest text-xs uppercase mb-4">
-            Rutas de acompañamiento
+    <section id="servicios" className="px-6 py-12 md:py-14 bg-white border-y border-stone-100">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center gap-7 lg:gap-12">
+        <div className="lg:max-w-md shrink-0">
+          <span className="block text-teal-600 font-bold tracking-widest text-xs uppercase mb-3">
+            Explora según lo que necesitas
           </span>
-          <h2 className="text-3xl md:text-5xl font-serif text-stone-900 leading-tight">
-            Encuentra el tipo de acompañamiento que estás buscando
+          <h2 className="text-2xl md:text-3xl font-serif text-stone-900 leading-tight">
+            Información útil sin repetir el recorrido visual
           </h2>
-          <p className="mt-5 text-stone-600 text-lg leading-relaxed">
-            Explora páginas específicas sobre modalidad de atención, motivos de consulta y el enfoque terapéutico para entender mejor qué opción puede ajustarse a tu momento actual.
+          <p className="mt-3 text-stone-600 leading-7">
+            Accede directamente a modalidad de atención, motivos de consulta, enfoque terapéutico y perfil profesional.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <nav aria-label="Rutas de acompañamiento" className="flex flex-wrap gap-3">
           {pathways.map((pathway) => (
             <Link
               key={pathway.href}
               href={pathway.href}
-              className="group rounded-3xl border border-stone-200 bg-[#fffcf8] p-7 hover:border-teal-300 hover:shadow-lg transition-all"
+              className="inline-flex items-center rounded-full border border-stone-200 bg-[#fffcf8] px-5 py-3 text-sm font-semibold text-stone-700 hover:border-teal-300 hover:text-teal-700 hover:bg-teal-50/50 transition-colors"
             >
-              <h3 className="font-serif text-2xl font-bold text-stone-900 group-hover:text-teal-700 transition-colors">
-                {pathway.title}
-              </h3>
-              <p className="mt-4 text-stone-600 leading-7">
-                {pathway.description}
-              </p>
-              <span className="mt-6 inline-flex text-sm font-bold text-teal-700">
-                Conocer más →
-              </span>
+              {pathway.label}
+              <span className="ml-2" aria-hidden="true">→</span>
             </Link>
           ))}
-        </div>
+        </nav>
       </div>
     </section>
   );

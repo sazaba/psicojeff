@@ -87,16 +87,16 @@ const faqData = [
     id: "ubicacion",
     question: "¿Dónde se realiza la atención?",
     answerText:
-      "La atención presencial está disponible en Manizales en la Sede Centro, Cra. 22 #24-24, y en el Centro Médico Santa Elena, Avenida Paralela #49-46. También existe modalidad online.",
+      "La atención presencial está disponible en el Centro Médico Santa Elena, Avenida Paralela #49-46, Manizales. También existe modalidad online para adultos en Colombia y personas que residen en el exterior.",
     icon: MapPin,
     answer: (
       <>
-        <p>La atención presencial está disponible en Manizales en dos ubicaciones:</p>
-        <ul className="mt-4 space-y-2">
-          <li><strong>Sede Centro:</strong> Cra. 22 #24-24.</li>
-          <li><strong>Centro Médico Santa Elena:</strong> Avenida Paralela #49-46.</li>
-        </ul>
-        <p className="mt-4">También está disponible la <strong>modalidad online</strong>.</p>
+        <p>
+          La atención presencial está disponible en <strong>Centro Médico Santa Elena</strong>, Avenida Paralela #49-46, Manizales, Caldas.
+        </p>
+        <p className="mt-4">
+          También está disponible la <strong>modalidad online</strong> para adultos que necesitan flexibilidad geográfica o residen fuera de Colombia.
+        </p>
       </>
     ),
   },
