@@ -1,4 +1,6 @@
+import Link from "next/link";
 import Image from "next/image";
+import { ArrowUpRight, Building2 } from "lucide-react";
 import Headerpsicojeff from "@/app/assets/Headerpsicojeff.webp";
 
 export default function Hero() {
@@ -65,6 +67,19 @@ export default function Hero() {
               >
                 Explorar acompañamiento
               </a>
+            </div>
+
+            <div className="mt-6 flex justify-center md:justify-start">
+              <Link
+                href="/riesgo-psicosocial-empresas"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-2xl border border-stone-200/90 bg-white/70 px-4 py-3 text-sm font-semibold text-stone-600 shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-teal-300 hover:bg-white hover:text-teal-800 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60"
+              >
+                <Building2 size={17} className="shrink-0 text-teal-700" />
+                <span className="text-left">
+                  ¿Representas una empresa? <span className="font-bold text-stone-800 group-hover:text-teal-800">Ver servicios de riesgo psicosocial</span>
+                </span>
+                <ArrowUpRight size={16} className="shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
             </div>
           </div>
         </div>

@@ -65,6 +65,7 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Servicios", href: "/#servicios" },
+    { name: "Empresas", href: "/riesgo-psicosocial-empresas" },
     { name: "Perfil", href: "/sobre-jefferson-bastidas" },
     { name: "Ubicación", href: "/#ubicacion" },
     { name: "Glosario", href: "/glosario" },
@@ -86,7 +87,7 @@ export default function Navbar() {
             : "bg-transparent border-transparent py-6"
         }`}
       >
-        <div className="w-full max-w-7xl mx-auto px-6 flex items-center justify-between h-full">
+        <div className="w-full max-w-7xl mx-auto px-5 sm:px-6 flex items-center justify-between h-full gap-4">
           <Link
             href="/"
             onClick={handleNavigation}
@@ -113,14 +114,14 @@ export default function Navbar() {
             </div>
           </Link>
 
-          <div className="hidden md:flex items-center gap-6 lg:gap-8">
-            <div className="flex items-center gap-5 lg:gap-7">
+          <div className="hidden lg:flex items-center gap-5 xl:gap-7 min-w-0">
+            <div className="flex items-center gap-4 xl:gap-6">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}
                   onClick={handleNavigation}
-                  className="text-sm font-bold text-stone-600 hover:text-teal-700 transition-colors relative group tracking-wide font-sans"
+                  className="text-sm font-bold text-stone-600 hover:text-teal-700 transition-colors relative group tracking-wide font-sans whitespace-nowrap"
                 >
                   {link.name}
                   <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-teal-400 transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100" />
@@ -132,7 +133,7 @@ export default function Navbar() {
               href="https://wa.link/2x3i8s"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#14b8a6] hover:bg-[#0f766e] text-white text-sm font-semibold transition-all duration-300 shadow-md shadow-teal-100 hover:shadow-lg hover:-translate-y-0.5"
+              className="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#14b8a6] hover:bg-[#0f766e] text-white text-sm font-semibold transition-all duration-300 shadow-md shadow-teal-100 hover:shadow-lg hover:-translate-y-0.5 whitespace-nowrap"
             >
               Solicitar Información
               <ArrowRight size={16} className="text-white group-hover:translate-x-1 transition-transform" />
@@ -141,7 +142,7 @@ export default function Navbar() {
 
           <button
             aria-label="Abrir o cerrar menú"
-            className="md:hidden relative z-50 p-1 text-stone-700 hover:text-teal-700 transition-colors active:scale-95"
+            className="lg:hidden relative z-50 p-1 text-stone-700 hover:text-teal-700 transition-colors active:scale-95"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -150,29 +151,29 @@ export default function Navbar() {
       </nav>
 
       <div
-        className={`fixed inset-0 z-40 bg-[#fffcf8]/98 backdrop-blur-xl flex flex-col items-center justify-center transition-all duration-500 md:hidden h-[100dvh] w-full transform-gpu will-change-transform ${
+        className={`fixed inset-0 z-40 bg-[#fffcf8]/98 backdrop-blur-xl flex flex-col items-center justify-center transition-all duration-500 lg:hidden h-[100dvh] w-full transform-gpu will-change-transform ${
           isMobileMenuOpen
             ? "opacity-100 visible translate-y-0"
             : "opacity-0 invisible -translate-y-4 pointer-events-none"
         }`}
       >
-        <div className="flex flex-col items-center space-y-6 p-4 w-full">
+        <div className="flex flex-col items-center space-y-5 sm:space-y-6 p-4 w-full max-h-[100dvh] overflow-y-auto">
           {navLinks.map((link, i) => (
             <Link
               key={link.name}
               href={link.href}
               onClick={handleNavigation}
-              className={`text-3xl font-serif text-stone-700 hover:text-teal-700 transition-all duration-500 transform ${
+              className={`text-2xl sm:text-3xl font-serif text-stone-700 hover:text-teal-700 transition-all duration-500 transform text-center ${
                 isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
               }`}
-              style={{ transitionDelay: `${i * 80}ms` }}
+              style={{ transitionDelay: `${i * 70}ms` }}
             >
               {link.name}
             </Link>
           ))}
 
           <div
-            className={`mt-8 transition-all duration-700 delay-300 transform ${
+            className={`mt-7 sm:mt-8 transition-all duration-700 delay-300 transform ${
               isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
             }`}
           >
@@ -181,7 +182,7 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleNavigation}
-              className="inline-flex px-10 py-4 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 text-white font-bold shadow-xl shadow-teal-500/20 active:scale-95 transition-transform"
+              className="inline-flex px-8 sm:px-10 py-4 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 text-white font-bold shadow-xl shadow-teal-500/20 active:scale-95 transition-transform"
             >
               Agendar Sesión
             </a>
