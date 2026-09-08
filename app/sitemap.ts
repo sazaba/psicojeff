@@ -1,55 +1,63 @@
-import { MetadataRoute } from 'next'
-import { prisma } from "@/lib/prisma" 
+import { MetadataRoute } from "next";
+import { prisma } from "@/lib/prisma";
+
+const baseUrl = "https://psicologojeffersonbastidas.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://psicologojeffersonbastidas.com';
-
-  // 1. RUTAS ESTÁTICAS (Las principales de tu web)
-  const staticRoutes: MetadataRoute.Sitemap = [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 1.0, // Prioridad máxima para tu perfil y servicios
-    },
-    {
-      url: `${baseUrl}/blog`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9, // Prioridad alta para el índice de tu bitácora
-    },
-  ];
-
   try {
-    // 2. CONSULTAMOS TU MODELO 'Post' EN LA BASE DE DATOS
-    // Solicitamos id y slug para manejar los artículos antiguos y nuevos
     const posts = await prisma.post.findMany({
+      where: {
+        slug: { not: null },
+      },
       select: {
-        id: true,
-        slug: true, 
-        updatedAt: true, 
-      }
+        slug: true,
+        updatedAt: true,
+      },
+      orderBy: {
+        updatedAt: "desc",
+      },
     });
 
-    // 3. CONSTRUIMOS LAS RUTAS DINÁMICAS PARA CADA ARTÍCULO
-    const dynamicRoutes: MetadataRoute.Sitemap = posts.map((post) => {
-      // Lógica de respaldo: Si existe el slug se usa, de lo contrario se usa el ID.
-      const routeIdentifier = post.slug ? post.slug : post.id.toString();
+    const latestPostUpdate = posts[0]?.updatedAt;
 
-      return {
-        url: `${baseUrl}/blog/${routeIdentifier}`, 
-        lastModified: post.updatedAt, 
-        changeFrequency: 'monthly',
-        priority: 0.7, // Prioridad estándar para artículos individuales
-      };
-    });
+    const staticRoutes: MetadataRoute.Sitemap = [
+      {
+        url: baseUrl,
+        changeFrequency: "monthly",
+        priority: 1,
+      },
+      {
+        url: `${baseUrl}/blog`,
+        ...(latestPostUpdate ? { lastModified: latestPostUpdate } : {}),
+        changeFrequency: "weekly",
+        priority: 0.9,
+      },
+    ];
 
-    // Retornamos la unión de las estáticas y las dinámicas
+    const dynamicRoutes: MetadataRoute.Sitemap = posts
+      .filter((post) => Boolean(post.slug))
+      .map((post) => ({
+        url: `${baseUrl}/blog/${post.slug as string}`,
+        lastModified: post.updatedAt,
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+      }));
+
     return [...staticRoutes, ...dynamicRoutes];
-
   } catch (error) {
     console.error("Error generando el sitemap dinámico:", error);
-    // Si la BD falla, garantizamos que al menos la página principal se indexe
-    return staticRoutes;
+
+    return [
+      {
+        url: baseUrl,
+        changeFrequency: "monthly",
+        priority: 1,
+      },
+      {
+        url: `${baseUrl}/blog`,
+        changeFrequency: "weekly",
+        priority: 0.9,
+      },
+    ];
   }
 }

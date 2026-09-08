@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,11 +10,8 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
-  // Referencia mutable para guardar el scroll anterior sin causar re-renders
   const lastScrollY = useRef(0);
 
-  // OPTIMIZACIÓN: Detección de dirección de scroll con requestAnimationFrame
   useEffect(() => {
     let ticking = false;
 
@@ -21,18 +19,12 @@ export default function Navbar() {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const currentScrollY = window.scrollY;
-          
-          // 1. Lógica de fondo transparente/sólido
           setIsScrolled(currentScrollY > 20);
 
-          // 2. Lógica de visibilidad (ocultar al bajar, mostrar al subir)
-          // Se usa un umbral de 10px para evitar que micro-movimientos oculten el menú
           if (Math.abs(currentScrollY - lastScrollY.current) > 10) {
             if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
-              // Scroll hacia abajo y pasado el header
               setIsVisible(false);
             } else {
-              // Scroll hacia arriba
               setIsVisible(true);
             }
           }
@@ -48,12 +40,10 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // BLOQUEO DE SCROLL OPTIMIZADO
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
-      // Añadido para Safari iOS: evita el scroll de la página en segundo plano
-      document.body.style.position = "fixed"; 
+      document.body.style.position = "fixed";
       document.body.style.width = "100%";
       document.body.style.top = `-${window.scrollY}px`;
     } else {
@@ -62,12 +52,12 @@ export default function Navbar() {
       document.body.style.position = "";
       document.body.style.width = "";
       document.body.style.top = "";
-      // Restaura la posición original si hubo bloqueo fixed
       if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
       }
     }
-    return () => { 
+
+    return () => {
       document.body.style.overflow = "";
       document.body.style.position = "";
     };
@@ -77,29 +67,31 @@ export default function Navbar() {
     { name: "Inicio", href: "#inicio" },
     { name: "Acerca de Mí", href: "#sobre-mi" },
     { name: "Ubicación", href: "#ubicacion" },
-    { name: "Blog", href: "#blog" }, 
+    { name: "Blog", href: "/blog" },
   ];
 
-  const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!href.startsWith("#")) {
+      setIsMobileMenuOpen(false);
+      return;
+    }
+
     e.preventDefault();
     const targetId = href.replace("#", "");
     const elem = document.getElementById(targetId);
-    
+
     if (elem) {
-      const headerOffset = 80; 
-      // Calculamos la posición exacta basándonos en la posición del elemento relativa al viewport
-      // más el scroll actual de la ventana.
+      const headerOffset = 80;
       const elementPosition = elem.getBoundingClientRect().top + window.scrollY;
       const offsetPosition = elementPosition - headerOffset;
 
       window.scrollTo({
         top: offsetPosition,
-        behavior: "smooth"
+        behavior: "smooth",
       });
     }
-    
-    // Cierre inmediato del menú, sin timeouts
-    setIsMobileMenuOpen(false); 
+
+    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -108,26 +100,28 @@ export default function Navbar() {
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 transform-gpu will-change-transform ${
           isVisible ? "translate-y-0" : "-translate-y-full"
         } ${
-          isScrolled || isMobileMenuOpen 
-            ? "bg-[#f0fdfa]/95 backdrop-blur-md border-b border-teal-100/50 shadow-sm py-3" 
+          isScrolled || isMobileMenuOpen
+            ? "bg-[#f0fdfa]/95 backdrop-blur-md border-b border-teal-100/50 shadow-sm py-3"
             : "bg-transparent border-transparent py-6"
         }`}
       >
         <div className="w-full max-w-7xl mx-auto px-6 flex items-center justify-between h-full">
-          
-          {/* LOGO */}
-          <Link href="#inicio" onClick={(e) => handleScrollToSection(e, "#inicio")} className="relative z-50 flex items-center gap-3 group shrink-0">
+          <Link
+            href="#inicio"
+            onClick={(e) => handleNavigation(e, "#inicio")}
+            className="relative z-50 flex items-center gap-3 group shrink-0"
+          >
             <div className="relative w-10 h-10 md:w-12 md:h-12 transition-transform duration-300 group-hover:scale-105">
-              <Image 
-                src={logoImg} 
-                alt="Logo" 
-                fill 
+              <Image
+                src={logoImg}
+                alt="Jefferson Bastidas Psicólogo"
+                fill
                 className="object-contain"
                 priority
                 sizes="(max-width: 768px) 48px, 64px"
               />
             </div>
-            
+
             <div className="leading-tight hidden sm:block">
               <span className="block text-stone-700 font-bold tracking-wide text-sm md:text-base group-hover:text-teal-700 transition-colors font-serif">
                 Jefferson Bastidas
@@ -138,22 +132,21 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* MENU DESKTOP */}
           <div className="hidden md:flex items-center gap-8">
             <div className="flex items-center gap-6 lg:gap-8">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  onClick={(e) => handleScrollToSection(e, link.href)}
+                  onClick={(e) => handleNavigation(e, link.href)}
                   className="text-sm font-bold text-stone-600 hover:text-teal-700 transition-colors relative group tracking-wide font-sans cursor-pointer"
                 >
                   {link.name}
-                  <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-teal-400 transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100"></span>
+                  <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-teal-400 transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100" />
                 </a>
               ))}
             </div>
-            
+
             <a
               href="https://wa.link/2x3i8s"
               target="_blank"
@@ -165,9 +158,8 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* MOBILE TOGGLE */}
           <button
-            aria-label="Toggle Menu"
+            aria-label="Abrir o cerrar menú"
             className="md:hidden relative z-50 p-1 text-stone-700 hover:text-teal-700 transition-colors active:scale-95"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
@@ -176,44 +168,43 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* MOBILE MENU */}
       <div
         className={`fixed inset-0 z-40 bg-[#fffcf8]/98 backdrop-blur-xl flex flex-col items-center justify-center transition-all duration-500 md:hidden h-[100dvh] supports-[height:100dvh]:h-screen w-full transform-gpu will-change-transform ${
-          isMobileMenuOpen 
-            ? "opacity-100 visible translate-y-0" 
+          isMobileMenuOpen
+            ? "opacity-100 visible translate-y-0"
             : "opacity-0 invisible -translate-y-4 pointer-events-none"
         }`}
       >
         <div className="flex flex-col items-center space-y-6 p-4 w-full">
-            {navLinks.map((link, i) => (
+          {navLinks.map((link, i) => (
             <a
-                key={link.name}
-                href={link.href}
-                onClick={(e) => handleScrollToSection(e, link.href)}
-                className={`text-3xl font-serif text-stone-700 hover:text-teal-700 transition-all duration-500 transform ${
-                  isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-                }`}
-                style={{ transitionDelay: `${i * 100}ms` }}
+              key={link.name}
+              href={link.href}
+              onClick={(e) => handleNavigation(e, link.href)}
+              className={`text-3xl font-serif text-stone-700 hover:text-teal-700 transition-all duration-500 transform ${
+                isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+              }`}
+              style={{ transitionDelay: `${i * 100}ms` }}
             >
-                {link.name}
+              {link.name}
             </a>
-            ))}
-            
-            <div 
-                className={`mt-8 transition-all duration-700 delay-300 transform ${
-                  isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-                }`}
+          ))}
+
+          <div
+            className={`mt-8 transition-all duration-700 delay-300 transform ${
+              isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            }`}
+          >
+            <a
+              href="https://wa.link/2x3i8s"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="inline-flex px-10 py-4 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 text-white font-bold shadow-xl shadow-teal-500/20 active:scale-95 transition-transform"
             >
-                <a
-                href="https://wa.link/2x3i8s"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="inline-flex px-10 py-4 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 text-white font-bold shadow-xl shadow-teal-500/20 active:scale-95 transition-transform"
-                >
-                Agendar Sesión
-                </a>
-            </div>
+              Agendar Sesión
+            </a>
+          </div>
         </div>
       </div>
     </>

@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Lato } from "next/font/google"; 
+import { Playfair_Display, Lato } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
-import iconImage from "./icon.webp"; 
+import iconImage from "./icon.webp";
 import imageJeff from "@/app/assets/Jeffseo.webp";
 
-const playfair = Playfair_Display({ 
+const siteUrl = "https://psicologojeffersonbastidas.com";
+
+const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-serif",
   display: "swap",
 });
 
-const lato = Lato({ 
+const lato = Lato({
   weight: ["300", "400", "700"],
   subsets: ["latin"],
   variable: "--font-sans",
@@ -19,38 +21,31 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: "Jefferson Bastidas Mejía | Psicólogo en Manizales y Online",
     template: "%s | Jefferson Bastidas Mejía",
   },
-  description: "Psicólogo en Manizales y online. Psicoterapia basada en terapias contextuales de tercera generación y Terapia de Aceptación y Compromiso (ACT).",
-  alternates: {
-    canonical: 'https://psicologojeffersonbastidas.com',
-  },
-  keywords: [
-    "Psicólogo Manizales", "Psicólogo Pereira", "Psicólogo Medellin", "Psicólogo Sabaneta",
-    "Psicólogo Envigado", "Psicólogo Nueva York", "Psicólogo New York", "Psicoterapia Online",
-    "Jefferson Bastidas Mejía", "Salud Mental Colombia", "Psicólogo Latino Nueva York", 
-    "Tratamiento Ansiedad Manizales", "Consulta psicológica virtual", "Salud mental Manizales",
-    "Psicología Manizales", "Psicólogo Eje Cafetero"
-  ],
+  description:
+    "Psicólogo en Manizales y online. Psicoterapia basada en terapias contextuales de tercera generación y Terapia de Aceptación y Compromiso (ACT).",
   authors: [{ name: "Jefferson Bastidas Mejía" }],
   creator: "Jefferson Bastidas Mejía",
   openGraph: {
-    title: "Jefferson Bastidas | Psicólogo en Manizales y Online",
-    description: "Psicoterapia presencial en Manizales y online mediante terapias contextuales de tercera generación y Terapia de Aceptación y Compromiso.",
-    url: "https://psicologojeffersonbastidas.com",
     siteName: "Jefferson Bastidas Psicólogo",
     locale: "es_CO",
     type: "website",
     images: [
       {
-        url: `https://psicologojeffersonbastidas.com${imageJeff.src}`, 
+        url: imageJeff.src,
         width: 800,
         height: 800,
-        alt: 'Psicólogo Jefferson Bastidas Mejía',
+        alt: "Psicólogo Jefferson Bastidas Mejía",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [imageJeff.src],
   },
   robots: {
     index: true,
@@ -64,7 +59,7 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: iconImage.src, 
+    icon: iconImage.src,
     apple: iconImage.src,
   },
 };
@@ -73,26 +68,22 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es" className="scroll-smooth">
+    <html lang="es-CO" className="scroll-smooth">
       <body
         className={`${playfair.variable} ${lato.variable} min-h-screen antialiased text-stone-700 overflow-x-hidden relative`}
       >
-        {/* OPTIMIZACIÓN: Fondo generado matemáticamente mediante CSS Gradients.
-            Cero desenfoques (blurs), cero impacto en la VRAM, cero bloqueo de hilo principal. */}
-        <div 
+        <div
           className="fixed inset-0 z-[-1] pointer-events-none opacity-60"
           style={{
             background: `
               radial-gradient(circle at 15% 10%, #ccfbf1 0%, transparent 40%),
               radial-gradient(circle at 85% 90%, #fce7f3 0%, transparent 40%),
               #fffcf8
-            `
+            `,
           }}
         />
-        
-        <Providers>
-            {children}
-        </Providers>
+
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
