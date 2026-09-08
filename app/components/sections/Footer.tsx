@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { MapPin } from "lucide-react";
-import FooterAdminControls from "@/app/components/sections/FooterAdminControls";
+import { Lock, MapPin } from "lucide-react";
 
 const exploreLinks = [
   { name: "Inicio", href: "/#inicio" },
@@ -91,7 +90,15 @@ export default function Footer() {
             <Link href="/terminos" className="hover:text-stone-400 transition-colors">
               Términos de uso
             </Link>
-            <FooterAdminControls />
+            <Link
+              href="/login"
+              className="text-stone-700 hover:text-teal-500 transition-colors p-2"
+              aria-label="Acceso administrativo"
+              title="Acceso privado"
+              rel="nofollow"
+            >
+              <Lock size={14} />
+            </Link>
           </div>
         </div>
       </div>
