@@ -7,6 +7,7 @@ import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import ShareButton from "@/app/components/ui/ShareButton";
 import imageJeff from "@/app/assets/Jeffseo.webp";
+import { findGlossaryTermsInText } from "@/lib/seo/glossary";
 
 const siteUrl = "https://psicologojeffersonbastidas.com";
 
@@ -128,13 +129,16 @@ export default async function BlogPostPage({ params }: { params: Params }) {
   const cleanContent = post.content
     .replace(/&nbsp;/g, " ")
     .replace(/\u00a0/g, " ")
-    .replace(/href=(["'])www\./g, "href=$1https://www.")
+    .replace(/href=(["'])www\./g, 'href=$1https://www.')
     .replace(/<a /g, '<a target="_blank" rel="noopener noreferrer" ');
 
   const tags = parseTags(post.category);
   const canonicalUrl = `${siteUrl}/blog/${post.slug}`;
   const description = cleanDescription(post.excerpt || post.content);
   const image = absoluteImageUrl(post.image);
+  const glossaryMatches = findGlossaryTermsInText(
+    `${post.title} ${post.excerpt || ""} ${post.content}`,
+  );
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -256,6 +260,34 @@ export default async function BlogPostPage({ params }: { params: Params }) {
           )}
 
           <div className="safe-content relative z-20" dangerouslySetInnerHTML={{ __html: cleanContent }} />
+
+          {glossaryMatches.length > 0 && (
+            <section className="mt-14 rounded-3xl border border-teal-100 bg-teal-50/40 p-7 md:p-8">
+              <span className="text-xs font-bold uppercase tracking-[0.18em] text-teal-700">
+                Conceptos relacionados
+              </span>
+              <h2 className="font-serif text-2xl md:text-3xl text-stone-900 mt-2">
+                Amplía estos términos en el glosario
+              </h2>
+              <div className="mt-6 flex flex-wrap gap-3">
+                {glossaryMatches.map((term) => (
+                  <Link
+                    key={term.slug}
+                    href={`/glosario/${term.slug}`}
+                    className="rounded-full border border-teal-200 bg-white px-4 py-2 text-sm font-bold text-teal-800 hover:border-teal-400 transition-colors"
+                  >
+                    {term.term}
+                  </Link>
+                ))}
+              </div>
+              <Link
+                href="/glosario"
+                className="mt-6 inline-flex text-sm font-bold text-teal-700 hover:text-teal-800 transition-colors"
+              >
+                Ver glosario completo →
+              </Link>
+            </section>
+          )}
 
           <div className="mt-16 pt-8 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-center gap-6 relative z-20">
             <div className="flex flex-col gap-2 text-stone-500 font-bold text-sm">
