@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { ArrowRight, Clock, Loader2, MapPin, Navigation } from "lucide-react";
+import { ArrowRight, Loader2, MapPin, Navigation } from "lucide-react";
 
 const LOCATION = {
   name: "Centro Médico Santa Elena",
   address: "Avenida Paralela # 49-46",
-  schedule: "Tarde noche: hasta las 8:00 p.m.",
   description:
     "Atención presencial en un punto de fácil acceso en Manizales, con un espacio pensado para acompañar el proceso terapéutico con privacidad y tranquilidad.",
   mapSrc:
@@ -53,7 +52,7 @@ export default function Location() {
             La atención presencial se realiza actualmente en una sola sede. También puedes elegir psicoterapia online si resides fuera de Manizales o necesitas mayor flexibilidad geográfica.
           </p>
 
-          <div className="space-y-6">
+          <div className="space-y-7">
             <div className="flex items-start gap-4">
               <div className="p-3 rounded-xl bg-gradient-to-br from-teal-600 to-teal-800 text-white shadow-lg">
                 <MapPin size={24} />
@@ -61,16 +60,6 @@ export default function Location() {
               <div>
                 <h3 className="text-xl font-bold text-stone-800">{LOCATION.address}</h3>
                 <p className="text-teal-600 font-medium text-sm">Manizales, Caldas, Colombia</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-xl bg-stone-100 text-stone-500">
-                <Clock size={24} />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-stone-800">Horario disponible</h3>
-                <p className="text-stone-500 text-sm">{LOCATION.schedule}</p>
               </div>
             </div>
 
