@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Lato } from "next/font/google";
 import "./globals.css";
-import { Providers } from "./providers";
 import iconImage from "./icon.webp";
 import imageJeff from "@/app/assets/Jeffseo.webp";
 
@@ -83,7 +82,7 @@ export default function RootLayout({
           }}
         />
 
-        <Providers>{children}</Providers>
+        {children}
       </body>
     </html>
   );
