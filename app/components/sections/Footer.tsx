@@ -61,10 +61,8 @@ export default function Footer() {
                 <div>
                   <p className="text-white font-medium">Atención presencial</p>
                   <p className="text-stone-500 text-sm mt-1 leading-6">
-                    Sede Centro: Cra. 22 #24-24
-                    <br />
-                    Centro Médico Santa Elena: Avenida Paralela #49-46
-                    <br />
+                    Centro Médico Santa Elena<br />
+                    Avenida Paralela #49-46<br />
                     Manizales, Caldas, Colombia
                   </p>
                 </div>
@@ -74,7 +72,7 @@ export default function Footer() {
                 href="/psicoterapia-online"
                 className="inline-flex text-sm font-bold text-teal-400 hover:text-teal-300 transition-colors"
               >
-                También disponible en modalidad online →
+                Psicoterapia online, también para colombianos en el exterior →
               </Link>
             </div>
           </div>
