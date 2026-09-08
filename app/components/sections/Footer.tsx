@@ -10,7 +10,11 @@ export default function Footer() {
 
   const links = [
     { name: "Inicio", href: "/#inicio" },
-    { name: "Acerca de Mí", href: "/#sobre-mi" },
+    { name: "Psicoterapia online", href: "/psicoterapia-online" },
+    { name: "Ansiedad en Manizales", href: "/ansiedad-manizales" },
+    { name: "Estrés y burnout", href: "/estres-burnout-manizales" },
+    { name: "Terapias ACT", href: "/terapias-contextuales-act" },
+    { name: "Perfil profesional", href: "/sobre-jefferson-bastidas" },
     { name: "Blog", href: "/blog" },
   ];
 
@@ -24,7 +28,7 @@ export default function Footer() {
                 Jefferson <br /> Bastidas
               </h2>
               <p className="text-stone-500 text-lg md:text-xl font-light mt-4 max-w-sm leading-relaxed">
-                Psicoterapia de alta precisión para recuperar tu equilibrio vital
+                Psicoterapia para adultos en Manizales y online, con un enfoque contextual orientado a significado, propósito y acción.
               </p>
             </div>
           </div>
@@ -33,12 +37,12 @@ export default function Footer() {
             <h3 className="text-xs font-bold text-teal-500 uppercase tracking-widest mb-8">
               Explorar
             </h3>
-            <ul className="space-y-4">
+            <ul className="space-y-3">
               {links.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="group flex items-center gap-2 text-stone-400 hover:text-white transition-colors duration-300 text-lg"
+                    className="group flex items-center gap-2 text-stone-400 hover:text-white transition-colors duration-300 text-base"
                   >
                     <span className="w-0 group-hover:w-2 h-px bg-teal-500 transition-all duration-300" />
                     {link.name}
@@ -58,14 +62,23 @@ export default function Footer() {
                   <MapPin size={20} />
                 </div>
                 <div>
-                  <p className="text-white font-medium">Consultorio Privado</p>
-                  <p className="text-stone-500 text-sm mt-1">
-                    Manizales, Caldas
+                  <p className="text-white font-medium">Atención presencial</p>
+                  <p className="text-stone-500 text-sm mt-1 leading-6">
+                    Sede Centro: Cra. 22 #24-24
                     <br />
-                    Colombia
+                    Centro Médico Santa Elena: Avenida Paralela #49-46
+                    <br />
+                    Manizales, Caldas, Colombia
                   </p>
                 </div>
               </div>
+
+              <Link
+                href="/psicoterapia-online"
+                className="inline-flex text-sm font-bold text-teal-400 hover:text-teal-300 transition-colors"
+              >
+                También disponible en modalidad online →
+              </Link>
             </div>
           </div>
         </div>
