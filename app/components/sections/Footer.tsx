@@ -1,23 +1,20 @@
-"use client";
-
 import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
-import { MapPin, Lock, LayoutDashboard, LogOut } from "lucide-react";
+import { MapPin } from "lucide-react";
+import FooterAdminControls from "@/app/components/sections/FooterAdminControls";
+
+const exploreLinks = [
+  { name: "Inicio", href: "/#inicio" },
+  { name: "Psicoterapia online", href: "/psicoterapia-online" },
+  { name: "Ansiedad en Manizales", href: "/ansiedad-manizales" },
+  { name: "Estrés y burnout", href: "/estres-burnout-manizales" },
+  { name: "Terapias ACT", href: "/terapias-contextuales-act" },
+  { name: "Glosario", href: "/glosario" },
+  { name: "Perfil profesional", href: "/sobre-jefferson-bastidas" },
+  { name: "Blog", href: "/blog" },
+];
 
 export default function Footer() {
-  const { data: session } = useSession();
   const currentYear = new Date().getFullYear();
-
-  const links = [
-    { name: "Inicio", href: "/#inicio" },
-    { name: "Psicoterapia online", href: "/psicoterapia-online" },
-    { name: "Ansiedad en Manizales", href: "/ansiedad-manizales" },
-    { name: "Estrés y burnout", href: "/estres-burnout-manizales" },
-    { name: "Terapias ACT", href: "/terapias-contextuales-act" },
-    { name: "Glosario de psicología", href: "/glosario" },
-    { name: "Perfil profesional", href: "/sobre-jefferson-bastidas" },
-    { name: "Blog", href: "/blog" },
-  ];
 
   return (
     <footer className="w-full bg-[#0c0a09] text-[#e7e5e4] pt-24 pb-12 overflow-hidden border-t border-stone-800 relative">
@@ -31,12 +28,6 @@ export default function Footer() {
               <p className="text-stone-500 text-lg md:text-xl font-light mt-4 max-w-sm leading-relaxed">
                 Psicoterapia para adultos en Manizales y online, con un enfoque contextual orientado a significado, propósito y acción.
               </p>
-              <Link
-                href="/glosario"
-                className="mt-6 inline-flex text-sm font-bold text-teal-400 hover:text-teal-300 transition-colors"
-              >
-                Explorar conceptos de psicología →
-              </Link>
             </div>
           </div>
 
@@ -45,7 +36,7 @@ export default function Footer() {
               Explorar
             </h3>
             <ul className="space-y-3">
-              {links.map((link) => (
+              {exploreLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
@@ -93,37 +84,14 @@ export default function Footer() {
         <div className="border-t border-stone-800/50 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-stone-600 font-medium">
           <p>&copy; {currentYear} Jefferson Bastidas Mejía. Todos los derechos reservados.</p>
 
-          <div className="flex items-center gap-6">
-            {session ? (
-              <div className="flex items-center gap-2 border-l border-stone-800 pl-4 ml-2">
-                <Link
-                  href="/admin"
-                  className="text-stone-500 hover:text-teal-500 transition-colors p-2"
-                  title="Ir al Panel Administrativo"
-                  rel="nofollow"
-                >
-                  <LayoutDashboard size={14} />
-                </Link>
-
-                <button
-                  onClick={() => signOut({ callbackUrl: "/" })}
-                  className="text-stone-500 hover:text-red-500 transition-colors p-2"
-                  title="Cerrar Sesión"
-                >
-                  <LogOut size={14} />
-                </button>
-              </div>
-            ) : (
-              <Link
-                href="/login"
-                className="text-stone-800 hover:text-teal-600 transition-colors duration-300 p-2"
-                aria-label="Admin Login"
-                title="Acceso Privado"
-                rel="nofollow"
-              >
-                <Lock size={14} />
-              </Link>
-            )}
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            <Link href="/privacidad" className="hover:text-stone-400 transition-colors">
+              Privacidad
+            </Link>
+            <Link href="/terminos" className="hover:text-stone-400 transition-colors">
+              Términos de uso
+            </Link>
+            <FooterAdminControls />
           </div>
         </div>
       </div>

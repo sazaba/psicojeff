@@ -3,13 +3,16 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Calendar, Clock } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, RefreshCw } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import ShareButton from "@/app/components/ui/ShareButton";
+import AuthorTrustCard from "@/app/components/seo/AuthorTrustCard";
+import RelatedPosts from "@/app/components/seo/RelatedPosts";
 import imageJeff from "@/app/assets/Jeffseo.webp";
 import { findGlossaryTermsInText } from "@/lib/seo/glossary";
 
 const siteUrl = "https://psicologojeffersonbastidas.com";
+const authorUrl = `${siteUrl}/sobre-jefferson-bastidas`;
 
 export const revalidate = 3600;
 
@@ -72,7 +75,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   return {
     title: post.title,
     description,
-    authors: [{ name: "Jefferson Bastidas Mejía" }],
+    authors: [{ name: "Jefferson Bastidas Mejía", url: "/sobre-jefferson-bastidas" }],
     alternates: {
       canonical: canonicalPath,
     },
@@ -85,7 +88,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       type: "article",
       publishedTime: post.createdAt.toISOString(),
       modifiedTime: post.updatedAt.toISOString(),
-      authors: ["Jefferson Bastidas Mejía"],
+      authors: [authorUrl],
       images: [
         {
           url: image,
@@ -122,9 +125,13 @@ export default async function BlogPostPage({ params }: { params: Params }) {
 
   if (!post) return notFound();
 
-  const formattedDate = new Intl.DateTimeFormat("es-CO", {
+  const dateFormatter = new Intl.DateTimeFormat("es-CO", {
     dateStyle: "long",
-  }).format(post.createdAt);
+  });
+  const formattedDate = dateFormatter.format(post.createdAt);
+  const formattedUpdatedDate = dateFormatter.format(post.updatedAt);
+  const hasMeaningfulUpdate =
+    post.updatedAt.getTime() - post.createdAt.getTime() > 24 * 60 * 60 * 1000;
 
   const cleanContent = post.content
     .replace(/&nbsp;/g, " ")
@@ -156,17 +163,24 @@ export default async function BlogPostPage({ params }: { params: Params }) {
           "@type": "WebPage",
           "@id": canonicalUrl,
         },
+        isPartOf: {
+          "@type": "Blog",
+          "@id": `${siteUrl}/blog#blog`,
+          url: `${siteUrl}/blog`,
+          name: "Bitácora Terapéutica",
+        },
         author: {
           "@type": "Person",
           "@id": `${siteUrl}/#person`,
           name: "Jefferson Bastidas Mejía",
-          url: siteUrl,
+          url: authorUrl,
           jobTitle: "Psicólogo",
         },
         publisher: {
           "@type": "Person",
           "@id": `${siteUrl}/#person`,
           name: "Jefferson Bastidas Mejía",
+          url: authorUrl,
         },
         about: tags.map((tag) => ({
           "@type": "Thing",
@@ -259,6 +273,22 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             </div>
           )}
 
+          <div className="mb-10 flex flex-wrap gap-x-6 gap-y-2 text-sm text-stone-500">
+            <Link href="/sobre-jefferson-bastidas" className="font-bold text-stone-700 hover:text-teal-700">
+              Por Jefferson Bastidas Mejía, Psicólogo
+            </Link>
+            <span className="flex items-center gap-2">
+              <Calendar size={16} className="text-teal-600" />
+              Publicado el {formattedDate}
+            </span>
+            {hasMeaningfulUpdate && (
+              <span className="flex items-center gap-2">
+                <RefreshCw size={15} className="text-teal-600" />
+                Actualizado el {formattedUpdatedDate}
+              </span>
+            )}
+          </div>
+
           <div className="safe-content relative z-20" dangerouslySetInnerHTML={{ __html: cleanContent }} />
 
           {glossaryMatches.length > 0 && (
@@ -289,14 +319,23 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             </section>
           )}
 
-          <div className="mt-16 pt-8 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-center gap-6 relative z-20">
-            <div className="flex flex-col gap-2 text-stone-500 font-bold text-sm">
-              <span className="text-stone-700">Por Jefferson Bastidas Mejía, Psicólogo</span>
-              <span className="flex items-center gap-2">
-                <Calendar size={18} className="text-teal-600" />
-                Publicado el {formattedDate}
-              </span>
-            </div>
+          <div className="mt-14">
+            <AuthorTrustCard />
+          </div>
+
+          <RelatedPosts currentPostId={post.id} currentTags={tags} />
+
+          <div className="mt-14 rounded-2xl border border-stone-200 bg-stone-50 p-5 text-sm leading-6 text-stone-500">
+            <strong className="text-stone-700">Nota editorial:</strong> este contenido tiene fines educativos y no sustituye una valoración psicológica individual. Si el artículo se actualiza, la fecha de modificación se refleja en los metadatos y, cuando corresponde, también de forma visible en esta página.
+          </div>
+
+          <div className="mt-12 pt-8 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-center gap-6 relative z-20">
+            <Link
+              href="/sobre-jefferson-bastidas"
+              className="text-sm font-bold text-teal-700 hover:text-teal-800"
+            >
+              Conocer al autor →
+            </Link>
             <ShareButton />
           </div>
         </div>
@@ -306,7 +345,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         .safe-content {
             font-family: 'Lato', system-ui, sans-serif;
             font-size: 1.125rem;
-            line-height: 1.6;
+            line-height: 1.7;
             color: #44403c;
             width: 100%;
         }
@@ -318,14 +357,13 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         }
 
         .safe-content p {
-            margin-bottom: 0.6rem !important;
+            margin-bottom: 1rem !important;
             min-height: 1.2rem;
-            text-align: justify !important;
         }
 
         .safe-content ul, .safe-content ol {
-            margin-bottom: 0.8rem;
-            margin-top: 0.4rem;
+            margin-bottom: 1rem;
+            margin-top: 0.5rem;
         }
 
         .safe-content .ql-indent-1 { padding-left: 3rem !important; }
@@ -336,15 +374,13 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         .safe-content ol,
         .safe-content li {
             list-style: none !important;
-            margin: 0;
-            padding: 0;
+            margin-left: 0;
         }
 
         .safe-content li {
             position: relative;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.35rem;
             padding-left: 2rem !important;
-            text-align: justify !important;
         }
 
         .safe-content li.ql-indent-1 { padding-left: 5rem !important; }
@@ -381,7 +417,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
 
         .safe-content h1, .safe-content h2, .safe-content h3 {
             font-family: 'Playfair Display', serif; font-weight: 800; color: #1c1917;
-            margin-top: 2rem; margin-bottom: 0.5rem; line-height: 1.2; text-align: left !important;
+            margin-top: 2.2rem; margin-bottom: 0.75rem; line-height: 1.2; text-align: left !important;
         }
 
         .safe-content blockquote {

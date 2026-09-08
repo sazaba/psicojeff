@@ -1,249 +1,207 @@
-"use client";
-
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import {
-  UserCheck,
-  Sparkles,
   BrainCircuit,
-  Target,
   Clock,
   MapPin,
-  Wallet,
+  Sparkles,
   SunMedium,
-  Plus,
-  Minus,
+  Target,
+  UserCheck,
+  Wallet,
 } from "lucide-react";
 
 const faqData = [
   {
     id: "profesional",
     question: "¿Quién es el profesional a cargo y cuál es su experiencia?",
-    icon: <UserCheck size={24} />,
+    answerText:
+      "El servicio es liderado por Jefferson Bastidas Mejía, psicólogo egresado de la Universidad de Manizales, con 20 años de experiencia laboral continua y formación complementaria en salud ocupacional, psicología clínica basada en evidencia, terapias complementarias y terapias de tercera generación.",
+    icon: UserCheck,
     answer: (
       <>
-        El servicio es liderado por <strong>Jefferson Bastidas</strong>, psicólogo egresado de la Universidad de Manizales con <span className="text-teal-700 font-bold">20 años de experiencia laboral continua</span>.
-        <br /><br />
-        Su formación especializada incluye:
-        <ul className="list-disc pl-5 mt-2 space-y-1 text-stone-600">
-          <li>Especialista en <strong>Salud Ocupacional</strong> (Universidad Libre).</li>
-          <li>Diplomado en <strong>Psicología Clínica Basada en la Evidencia</strong> (Universidad Javeriana).</li>
-          <li>Diplomado en <strong>Terapias Complementarias</strong> (Universidad del Rosario).</li>
-          <li>Diplomado en <strong>Abordaje de Problemáticas Clínicas desde Terapias de Tercera Generación</strong> (Universidad de la Sabana).</li>
+        <p>
+          El servicio es liderado por <strong>Jefferson Bastidas Mejía</strong>, psicólogo egresado de la Universidad de Manizales, con <strong>20 años de experiencia laboral continua</strong>.
+        </p>
+        <ul className="mt-4 list-disc pl-5 space-y-2">
+          <li>Especialista en Salud Ocupacional — Universidad Libre.</li>
+          <li>Diplomado en Psicología Clínica Basada en la Evidencia — Universidad Javeriana.</li>
+          <li>Diplomado en Terapias Complementarias — Universidad del Rosario.</li>
+          <li>Diplomado en problemáticas clínicas desde terapias de tercera generación — Universidad de la Sabana.</li>
         </ul>
       </>
     ),
   },
   {
     id: "diferencia",
-    question: "¿Qué hace que este enfoque sea diferente a otros?",
-    icon: <Sparkles size={24} />,
+    question: "¿Qué hace diferente este enfoque terapéutico?",
+    answerText:
+      "El proceso busca comprender cómo funcionan actualmente pensamientos, emociones y conductas, y trabajar con estrategias concretas y contextualizadas. La atención es personalizada y no se plantea como una consulta masiva.",
+    icon: Sparkles,
     answer: (
-      <>
-        A diferencia de los enfoques tradicionales centrados solo en la narrativa del pasado, mi propuesta es de <strong>Psicología de Precisión</strong>: pasando del <em>"¿Por qué?"</em> al <strong>"¿Cómo?"</strong>.
-        <br /><br />
-        <div className="bg-stone-50 p-4 rounded-lg border-l-4 border-teal-500 my-3">
-          <strong>Psicoterapia "Artesanal" y "Boutique":</strong> No es una consulta masiva. Solo atiendo un máximo de <strong>4 pacientes al día</strong> para garantizar una inmersión profunda y personalizada.
-        </div>
-        No vienes solo a ser escuchado, sino a ser <strong>entrenado</strong> con mapas claros y estrategias concretas.
-      </>
+      <p>
+        El proceso busca comprender <strong>cómo funcionan actualmente</strong> pensamientos, emociones, conductas y contextos, para trabajar con estrategias concretas y personalizadas. La atención se plantea como un proceso individual, no como una consulta masiva.
+      </p>
     ),
   },
   {
     id: "metodologia",
     question: "¿Qué metodologías se utilizan en las sesiones?",
-    icon: <BrainCircuit size={24} />,
+    answerText:
+      "El trabajo integra terapias contextuales de tercera generación, incluyendo Terapia de Aceptación y Compromiso (ACT) y recursos de Terapia Dialéctico Conductual (DBT), junto con la formación clínica del profesional.",
+    icon: BrainCircuit,
     answer: (
       <>
-        El trabajo se fundamenta en las <strong>Terapias Contextuales de Tercera Generación</strong>, específicamente:
-        <ul className="list-disc pl-5 mt-2 space-y-1 text-stone-600">
-          <li><strong>Terapia de Aceptación y Compromiso (ACT).</strong></li>
-          <li><strong>Terapia Dialéctico Conductual (DBT).</strong></li>
+        <p>El trabajo integra herramientas provenientes de las <strong>terapias contextuales de tercera generación</strong>, entre ellas:</p>
+        <ul className="mt-4 list-disc pl-5 space-y-2">
+          <li>Terapia de Aceptación y Compromiso (ACT).</li>
+          <li>Recursos de Terapia Dialéctico Conductual (DBT).</li>
         </ul>
-        <p className="mt-2">
-          Estos métodos cuentan con respaldo científico y se integran con <strong>Terapias Complementarias</strong> para unificar ciencia, valores y espiritualidad.
-        </p>
+        <p className="mt-4">La selección de estrategias depende de la comprensión del caso y de los objetivos del proceso.</p>
       </>
     ),
   },
   {
     id: "publico",
     question: "¿A quién va dirigido este servicio?",
-    icon: <Target size={24} />,
+    answerText:
+      "Está dirigido principalmente a personas adultas en etapa productiva que trabajan, estudian o atraviesan demandas importantes de la vida personal, laboral o académica.",
+    icon: Target,
     answer: (
-      <>
-        El servicio está diseñado para <strong>personas adultas en etapa productiva</strong> (que trabajan, estudian o deberían estar haciéndolo).
-        <br /><br />
-        Es ideal para quienes sienten que su mente está dispersa, que las emociones los abruman o que les cuesta avanzar hacia lo que es importante para ellos.
-      </>
+      <p>
+        Está dirigido principalmente a <strong>personas adultas en etapa productiva</strong> que trabajan, estudian o atraviesan demandas importantes de la vida personal, laboral o académica.
+      </p>
     ),
   },
   {
     id: "duracion",
-    question: "¿Cuánto dura cada sesión y qué frecuencia tienen?",
-    icon: <Clock size={24} />,
+    question: "¿Cuánto dura cada sesión?",
+    answerText:
+      "Cada encuentro tiene una duración aproximada de 60 a 90 minutos. La frecuencia se define según las necesidades y características del proceso.",
+    icon: Clock,
     answer: (
-      <>
-        Aquí no trabajamos con sesiones "exprés". Cada encuentro es una <strong>inmersión en tu salud mental</strong> y dura entre <strong>60 y 90 minutos</strong>.
-        <br /><br />
-        Este tiempo permite generar un impacto real y un avance verdadero desde las primeras sesiones.
-      </>
+      <p>
+        Cada encuentro tiene una duración aproximada de <strong>60 a 90 minutos</strong>. La frecuencia se define según las necesidades y características del proceso.
+      </p>
     ),
   },
   {
     id: "ubicacion",
-    question: "¿Dónde se encuentran las sedes y qué horarios manejan?",
-    icon: <MapPin size={24} />,
+    question: "¿Dónde se realiza la atención?",
+    answerText:
+      "La atención presencial está disponible en Manizales en la Sede Centro, Cra. 22 #24-24, y en el Centro Médico Santa Elena, Avenida Paralela #49-46. También existe modalidad online.",
+    icon: MapPin,
     answer: (
       <>
-        Contamos con dos sedes estratégicas en Manizales para tu comodidad:
-        <ul className="space-y-4 mt-3">
-          <li className="flex flex-col sm:flex-row items-start gap-1 sm:gap-2">
-            <span className="shrink-0 w-fit bg-teal-100 text-teal-800 text-xs font-bold px-2 py-0.5 rounded sm:mt-0.5">MAÑANA</span>
-            <span><strong>Sede Centro:</strong> Cra. 22 # 24-24. Atención hasta las 2:00 p.m.</span>
-          </li>
-          <li className="flex flex-col sm:flex-row items-start gap-1 sm:gap-2">
-            <span className="shrink-0 w-fit bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-0.5 rounded sm:mt-0.5">TARDE</span>
-            <span><strong>Centro Médico Santa Elena:</strong> Avenida Paralela # 49-46. Atención hasta las 8:00 p.m.</span>
-          </li>
+        <p>La atención presencial está disponible en Manizales en dos ubicaciones:</p>
+        <ul className="mt-4 space-y-2">
+          <li><strong>Sede Centro:</strong> Cra. 22 #24-24.</li>
+          <li><strong>Centro Médico Santa Elena:</strong> Avenida Paralela #49-46.</li>
         </ul>
-        <p className="mt-3 text-sm text-stone-500">
-          <strong>Consulta Online:</strong> También disponible para mayor flexibilidad.
-        </p>
+        <p className="mt-4">También está disponible la <strong>modalidad online</strong>.</p>
       </>
     ),
   },
   {
     id: "costo",
-    question: "¿Cuál es el costo de la consulta?",
-    icon: <Wallet size={24} />,
+    question: "¿Cuál es el valor de la consulta?",
+    answerText:
+      "La consulta tiene un valor de 100.000 COP para residentes en Colombia y 30 USD o EUR para residentes en el exterior. La información puede confirmarse antes de agendar.",
+    icon: Wallet,
     answer: (
-      <>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
-          <div className="bg-white border border-stone-200 p-4 rounded-xl text-center shadow-sm">
-            <p className="text-xs text-stone-500 uppercase tracking-wide">Residentes Colombia</p>
-            <p className="text-2xl font-bold text-stone-800">$100.000 COP</p>
-          </div>
-          <div className="bg-white border border-stone-200 p-4 rounded-xl text-center shadow-sm">
-            <p className="text-xs text-stone-500 uppercase tracking-wide">Residentes Exterior</p>
-            <p className="text-2xl font-bold text-stone-800">$30 USD/EUR</p>
-          </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="rounded-xl border border-stone-200 bg-white p-4 text-center">
+          <p className="text-xs uppercase tracking-wide text-stone-500">Residentes en Colombia</p>
+          <p className="mt-1 text-2xl font-bold text-stone-800">$100.000 COP</p>
         </div>
-        <p className="text-center text-xs text-stone-500 mt-2 italic">
-          Pregunta por las promociones en paquetes de sesiones.
-        </p>
-      </>
+        <div className="rounded-xl border border-stone-200 bg-white p-4 text-center">
+          <p className="text-xs uppercase tracking-wide text-stone-500">Residentes en el exterior</p>
+          <p className="mt-1 text-2xl font-bold text-stone-800">$30 USD/EUR</p>
+        </div>
+      </div>
     ),
   },
   {
     id: "resultados",
-    question: "¿Qué resultados puedo esperar del proceso?",
-    icon: <SunMedium size={24} />,
+    question: "¿Qué puedo esperar del proceso?",
+    answerText:
+      "El proceso busca favorecer claridad, regulación emocional y acciones más coherentes con los valores personales. Los resultados varían entre personas y no pueden garantizarse de antemano.",
+    icon: SunMedium,
     answer: (
-      <>
-        El objetivo final es alcanzar una <strong>"Calma Vitalizada"</strong>. Al trabajar juntos, podrás:
-        <ul className="list-disc pl-5 mt-2 space-y-1 text-stone-600">
-          <li><strong>Enfocarte:</strong> Claridad sobre lo que realmente importa en tu vida.</li>
-          <li><strong>Centrarte:</strong> Gestionar tus emociones y pensamientos sin que te controlen.</li>
-          <li><strong>Tranquilizarte:</strong> Obtener una estabilidad que te permita tomar mejores decisiones y actuar con confianza.</li>
-        </ul>
-      </>
+      <p>
+        El proceso busca favorecer <strong>claridad, regulación emocional y acciones más coherentes con los valores personales</strong>. La evolución depende de múltiples factores y los resultados no pueden garantizarse de antemano.
+      </p>
     ),
   },
 ];
 
 export default function FAQ() {
-  const [openId, setOpenId] = useState<string | null>(null);
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqData.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answerText,
+      },
+    })),
+  };
 
   return (
     <section className="py-24 px-6 relative overflow-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+
       <div className="max-w-4xl mx-auto relative z-10">
         <div className="text-center mb-16">
           <span className="text-teal-600 font-bold tracking-widest text-xs uppercase mb-3 block">
             Resuelve tus dudas
           </span>
           <h2 className="text-4xl md:text-5xl font-serif text-stone-800 leading-tight mb-4">
-            Preguntas Frecuentes
+            Preguntas frecuentes
           </h2>
           <p className="text-stone-500 text-lg font-light max-w-2xl mx-auto">
-            Entiendo que iniciar un proceso terapéutico genera preguntas. Aquí tienes respuestas claras y directas, sin letra pequeña.
+            Información práctica sobre el profesional, las sesiones, la modalidad de atención y el enfoque terapéutico.
           </p>
         </div>
 
         <div className="grid gap-4">
           {faqData.map((item) => {
-            const isOpen = openId === item.id;
+            const Icon = item.icon;
 
             return (
-              <motion.div
+              <details
                 key={item.id}
-                layout
-                onClick={() => setOpenId(isOpen ? null : item.id)}
-                className={`group cursor-pointer rounded-2xl border transition-all duration-500 overflow-hidden relative ${
-                  isOpen
-                    ? "bg-white border-teal-500/30 shadow-xl shadow-teal-900/5"
-                    : "bg-white/60 hover:bg-white border-white/50 hover:border-stone-200 hover:shadow-lg shadow-sm backdrop-blur-md"
-                }`}
+                className="group rounded-2xl border border-stone-200 bg-white shadow-sm open:border-teal-200 open:shadow-md"
               >
-                <div className="p-6 md:p-8 flex items-center gap-6">
-                  <div className={`shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-300 ${isOpen ? "bg-teal-50 text-teal-700" : "bg-stone-100 text-stone-400 group-hover:bg-stone-200 group-hover:text-stone-600"}`}>
-                    {item.icon}
-                  </div>
-
-                  <div className="flex-grow">
-                    <h3 className={`font-serif text-lg md:text-xl font-medium transition-colors duration-300 ${isOpen ? "text-teal-800" : "text-stone-700 group-hover:text-stone-900"}`}>
-                      {item.question}
-                    </h3>
-                  </div>
-
-                  <div className={`shrink-0 transition-transform duration-500 ${isOpen ? "rotate-180" : ""}`}>
-                    {isOpen ? (
-                      <div className="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center">
-                        <Minus size={16} />
-                      </div>
-                    ) : (
-                      <div className="w-8 h-8 rounded-full bg-stone-100 text-stone-400 group-hover:bg-stone-200 flex items-center justify-center">
-                        <Plus size={16} />
-                      </div>
-                    )}
-                  </div>
+                <summary className="cursor-pointer list-none p-6 md:p-8 flex items-center gap-5 [&::-webkit-details-marker]:hidden">
+                  <span className="shrink-0 w-11 h-11 rounded-xl bg-stone-100 text-teal-700 flex items-center justify-center">
+                    <Icon size={22} />
+                  </span>
+                  <h3 className="flex-1 font-serif text-lg md:text-xl font-medium text-stone-800 text-left">
+                    {item.question}
+                  </h3>
+                  <span className="text-2xl text-stone-400 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                </summary>
+                <div className="px-6 pb-8 md:px-24 md:pb-10 text-stone-600 leading-7 md:leading-8 border-t border-stone-100 pt-6">
+                  {item.answer}
                 </div>
-
-                <AnimatePresence>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                    >
-                      <div className="px-6 pb-8 md:px-24 md:pb-10 text-stone-600 leading-relaxed text-base md:text-lg border-t border-stone-100/50 pt-6 mx-2">
-                        {item.answer}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {isOpen && (
-                  <motion.div
-                    layoutId="active-glow"
-                    className="absolute inset-0 border-2 border-teal-500/20 rounded-2xl pointer-events-none"
-                  />
-                )}
-              </motion.div>
+              </details>
             );
           })}
         </div>
 
-        <div className="mt-16 text-center">
-          <p className="text-stone-500 mb-4">¿Tienes alguna otra pregunta específica?</p>
+        <div className="mt-14 text-center">
+          <p className="text-stone-500 mb-4">¿Tienes una pregunta específica antes de agendar?</p>
           <a
             href="https://wa.link/2x3i8s"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-8 py-3 rounded-full bg-stone-800 text-white font-bold hover:bg-stone-700 transition-colors shadow-lg hover:shadow-xl cursor-pointer"
+            className="inline-block px-8 py-3 rounded-full bg-stone-800 text-white font-bold hover:bg-stone-700 transition-colors shadow-lg"
           >
-            Contáctame Directamente
+            Solicitar información
           </a>
         </div>
       </div>

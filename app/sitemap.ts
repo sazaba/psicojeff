@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
-import { glossaryTerms } from "@/lib/seo/glossary";
+import { GLOSSARY_TERMS } from "@/lib/seo/glossary";
 
 const baseUrl = "https://psicologojeffersonbastidas.com";
 
@@ -43,11 +43,24 @@ const glossaryRoutes: MetadataRoute.Sitemap = [
     changeFrequency: "monthly",
     priority: 0.8,
   },
-  ...glossaryTerms.map((term) => ({
+  ...GLOSSARY_TERMS.map((term) => ({
     url: `${baseUrl}/glosario/${term.slug}`,
     changeFrequency: "monthly" as const,
     priority: 0.65,
   })),
+];
+
+const trustRoutes: MetadataRoute.Sitemap = [
+  {
+    url: `${baseUrl}/privacidad`,
+    changeFrequency: "yearly",
+    priority: 0.3,
+  },
+  {
+    url: `${baseUrl}/terminos`,
+    changeFrequency: "yearly",
+    priority: 0.3,
+  },
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -75,6 +88,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
       ...pillarRoutes,
       ...glossaryRoutes,
+      ...trustRoutes,
       {
         url: `${baseUrl}/blog`,
         ...(latestPostUpdate ? { lastModified: latestPostUpdate } : {}),
@@ -104,6 +118,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
       ...pillarRoutes,
       ...glossaryRoutes,
+      ...trustRoutes,
       {
         url: `${baseUrl}/blog`,
         changeFrequency: "weekly",
