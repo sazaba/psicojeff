@@ -154,7 +154,7 @@ export default function RiesgoPsicosocialEmpresasPage() {
       <Navbar />
 
       <main>
-        <section className="px-6 pt-16 md:pt-24 pb-20 md:pb-28 bg-[radial-gradient(circle_at_top_left,_rgba(20,184,166,0.12),_transparent_38%),linear-gradient(180deg,#fffcf8_0%,#f5f2ec_100%)]">
+        <section className="px-5 sm:px-6 pt-16 md:pt-24 pb-20 md:pb-28 bg-[radial-gradient(circle_at_top_left,_rgba(20,184,166,0.12),_transparent_38%),linear-gradient(180deg,#fffcf8_0%,#f5f2ec_100%)]">
           <div className="max-w-7xl mx-auto">
             <nav aria-label="Breadcrumb" className="text-sm text-stone-500 mb-10">
               <Link href="/" className="hover:text-teal-700 transition-colors">Inicio</Link>
@@ -163,12 +163,12 @@ export default function RiesgoPsicosocialEmpresasPage() {
             </nav>
 
             <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-16 items-center">
-              <div>
+              <div className="min-w-0">
                 <span className="inline-flex items-center gap-2 text-teal-700 font-bold tracking-[0.18em] text-xs uppercase mb-5">
                   <Building2 size={17} />
                   Servicios para empresas
                 </span>
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif leading-[0.98] tracking-tight">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif leading-[0.98] tracking-tight break-words">
                   Batería de riesgo psicosocial y bienestar para empresas
                 </h1>
                 <p className="mt-7 text-lg md:text-xl leading-8 text-stone-600 max-w-3xl">
@@ -182,13 +182,13 @@ export default function RiesgoPsicosocialEmpresasPage() {
                 </div>
               </div>
 
-              <div className="rounded-[2rem] bg-[#124c46] text-white p-8 md:p-10 shadow-2xl shadow-teal-900/10">
+              <div className="rounded-[1.75rem] md:rounded-[2rem] bg-[linear-gradient(145deg,#155e56_0%,#0f4f49_100%)] text-white p-6 sm:p-8 md:p-10 shadow-2xl shadow-teal-900/10 ring-1 ring-white/10">
                 <ShieldCheck size={34} className="text-teal-200" />
-                <h2 className="mt-6 text-3xl font-serif">Marco técnico y normativo</h2>
-                <p className="mt-4 text-teal-50/80 leading-7">
+                <h2 className="mt-6 text-2xl sm:text-3xl font-serif text-white leading-tight">Marco técnico y normativo</h2>
+                <p className="mt-4 text-stone-100/90 leading-7 md:leading-8">
                   El servicio toma como referencia la Resolución 2646 de 2008, que establece responsabilidades frente a la identificación, evaluación, prevención, intervención y monitoreo de los factores de riesgo psicosocial en el trabajo.
                 </p>
-                <p className="mt-4 text-teal-50/80 leading-7">
+                <p className="mt-4 text-stone-100/90 leading-7 md:leading-8">
                   La Resolución 2764 de 2022 adopta la batería de instrumentos, la guía técnica general y protocolos específicos para la gestión de estos factores en la población trabajadora.
                 </p>
               </div>
@@ -196,7 +196,7 @@ export default function RiesgoPsicosocialEmpresasPage() {
           </div>
         </section>
 
-        <section className="px-6 py-20 md:py-24 bg-white">
+        <section className="px-5 sm:px-6 py-20 md:py-24 bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="max-w-3xl">
               <span className="text-xs uppercase tracking-[0.18em] font-bold text-teal-700">Qué incluye</span>
@@ -223,7 +223,7 @@ export default function RiesgoPsicosocialEmpresasPage() {
           </div>
         </section>
 
-        <section className="px-6 py-20 md:py-24 bg-[#f4f1eb]">
+        <section className="px-5 sm:px-6 py-20 md:py-24 bg-[#f4f1eb]">
           <div className="max-w-7xl mx-auto grid lg:grid-cols-[0.8fr_1.2fr] gap-12 lg:gap-16">
             <div>
               <span className="text-xs uppercase tracking-[0.18em] font-bold text-teal-700">Proceso de trabajo</span>
@@ -244,7 +244,7 @@ export default function RiesgoPsicosocialEmpresasPage() {
           </div>
         </section>
 
-        <section className="px-6 py-20 md:py-24 bg-white">
+        <section className="px-5 sm:px-6 py-20 md:py-24 bg-white">
           <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
             <div>
               <span className="text-xs uppercase tracking-[0.18em] font-bold text-teal-700">Capacitación y bienestar</span>
@@ -268,14 +268,14 @@ export default function RiesgoPsicosocialEmpresasPage() {
               </ul>
             </div>
 
-            <div className="rounded-[2rem] bg-stone-950 text-white p-8 md:p-10">
-              <h3 className="text-3xl font-serif">Experiencia profesional aplicada al entorno laboral</h3>
-              <p className="mt-5 text-stone-300 leading-8">
+            <div className="rounded-[1.75rem] md:rounded-[2rem] bg-[linear-gradient(145deg,#11100f_0%,#070706_100%)] text-white p-6 sm:p-8 md:p-10 ring-1 ring-white/10 shadow-xl shadow-stone-300/20">
+              <h3 className="text-2xl sm:text-3xl font-serif text-white leading-tight">Experiencia profesional aplicada al entorno laboral</h3>
+              <p className="mt-5 text-stone-200 leading-8">
                 El servicio es liderado por Jefferson Bastidas Mejía, psicólogo y especialista en Salud Ocupacional, con experiencia profesional y formación complementaria en psicología clínica basada en la evidencia y terapias de tercera generación.
               </p>
               <Link
                 href="/sobre-jefferson-bastidas"
-                className="mt-7 inline-flex items-center gap-2 text-teal-300 font-bold hover:text-teal-200 transition-colors"
+                className="mt-7 inline-flex items-center gap-2 text-teal-300 font-bold hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-300/70 rounded-md"
               >
                 Conocer perfil profesional <ArrowRight size={18} />
               </Link>
@@ -283,7 +283,7 @@ export default function RiesgoPsicosocialEmpresasPage() {
           </div>
         </section>
 
-        <section className="px-6 py-20 md:py-24 bg-[#fffcf8]">
+        <section className="px-5 sm:px-6 py-20 md:py-24 bg-[#fffcf8]">
           <div className="max-w-4xl mx-auto">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <span className="text-xs uppercase tracking-[0.18em] font-bold text-teal-700">Preguntas frecuentes</span>
@@ -304,18 +304,20 @@ export default function RiesgoPsicosocialEmpresasPage() {
           </div>
         </section>
 
-        <section className="px-6 pb-24 bg-[#fffcf8]">
-          <div className="max-w-5xl mx-auto rounded-[2rem] bg-[#124c46] text-white p-8 md:p-12 text-center">
-            <span className="text-teal-200 text-xs font-bold uppercase tracking-[0.18em]">Para empresas y organizaciones</span>
-            <h2 className="mt-4 text-3xl md:text-5xl font-serif">Conversemos sobre el alcance que necesita tu organización</h2>
-            <p className="mt-5 text-teal-50/80 text-lg leading-8 max-w-2xl mx-auto">
+        <section className="px-5 sm:px-6 pb-24 bg-[#fffcf8]">
+          <div className="max-w-5xl mx-auto rounded-[1.75rem] md:rounded-[2rem] bg-[linear-gradient(145deg,#155e56_0%,#0f4f49_100%)] text-white p-7 sm:p-9 md:p-12 text-center ring-1 ring-white/10 shadow-2xl shadow-teal-900/10">
+            <span className="text-teal-100 text-xs font-bold uppercase tracking-[0.18em]">Para empresas y organizaciones</span>
+            <h2 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-serif text-white leading-tight max-w-3xl mx-auto">
+              Conversemos sobre el alcance que necesita tu organización
+            </h2>
+            <p className="mt-5 text-stone-100/90 text-base sm:text-lg leading-8 max-w-2xl mx-auto">
               Puedes solicitar información sobre aplicación de batería de riesgo psicosocial, capacitaciones o actividades de bienestar emocional para equipos de trabajo.
             </p>
             <a
               href="https://wa.link/2x3i8s"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-8 inline-flex items-center gap-3 rounded-full bg-white px-7 py-3.5 font-bold text-[#124c46] hover:bg-teal-50 transition-colors"
+              className="mt-8 inline-flex w-full sm:w-auto items-center justify-center gap-3 rounded-full bg-white px-7 py-3.5 font-bold text-[#124c46] hover:bg-teal-50 transition-all hover:-translate-y-0.5 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
             >
               Solicitar información <ArrowRight size={18} />
             </a>
