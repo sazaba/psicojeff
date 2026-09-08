@@ -7,6 +7,7 @@ const exploreLinks = [
   { name: "Ansiedad en Manizales", href: "/ansiedad-manizales" },
   { name: "Estrés y burnout", href: "/estres-burnout-manizales" },
   { name: "Terapias ACT", href: "/terapias-contextuales-act" },
+  { name: "Riesgo psicosocial empresas", href: "/riesgo-psicosocial-empresas" },
   { name: "Glosario", href: "/glosario" },
   { name: "Perfil profesional", href: "/sobre-jefferson-bastidas" },
   { name: "Blog", href: "/blog" },

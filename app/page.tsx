@@ -4,6 +4,7 @@ import Navbar from "@/app/components/ui/Navbar";
 import Hero from "@/app/components/sections/Hero";
 import PainPoints from "@/app/components/sections/PainPoints";
 import HomeSeoServices from "@/app/components/sections/HomeSeoServices";
+import HomeBusinessServices from "@/app/components/sections/HomeBusinessServices";
 import ProfessionalProfile from "@/app/components/sections/ProfessionalProfile";
 import ValueProposition from "@/app/components/sections/ValueProposition";
 import TargetAudience from "@/app/components/sections/TargetAudience";
@@ -88,6 +89,8 @@ export default async function Home() {
           "Terapia Dialéctico Conductual (DBT)",
           "Terapias Contextuales de Tercera Generación",
           "Psicología Clínica Basada en la Evidencia",
+          "Riesgo psicosocial laboral",
+          "Bienestar emocional en el trabajo",
         ],
         worksFor: { "@id": santaElenaId },
       },
@@ -169,6 +172,8 @@ export default async function Home() {
         <section id="faq">
           <FAQ />
         </section>
+
+        <HomeBusinessServices />
 
         <section id="blog">
           <BlogCarousel />
