@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
-import { GLOSSARY_TERMS } from "@/lib/seo/glossary";
+import { glossaryTerms } from "@/lib/seo/glossary";
 
 const baseUrl = "https://psicologojeffersonbastidas.com";
 
@@ -43,7 +43,7 @@ const glossaryRoutes: MetadataRoute.Sitemap = [
     changeFrequency: "monthly",
     priority: 0.8,
   },
-  ...GLOSSARY_TERMS.map((term) => ({
+  ...glossaryTerms.map((term) => ({
     url: `${baseUrl}/glosario/${term.slug}`,
     changeFrequency: "monthly" as const,
     priority: 0.65,
