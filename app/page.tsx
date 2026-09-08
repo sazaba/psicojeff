@@ -9,6 +9,7 @@ import TargetAudience from "@/app/components/sections/TargetAudience";
 import Transformation from "@/app/components/sections/Transformation";
 import FAQ from "@/app/components/sections/Faq";
 import Footer from "@/app/components/sections/Footer";
+import LocationSeoSummary from "@/app/components/sections/LocationSeoSummary";
 import dynamic from "next/dynamic";
 import imageJeff from "@/app/assets/Jeffseo.webp";
 
@@ -174,6 +175,7 @@ export default async function Home() {
         </section>
 
         <section id="ubicacion">
+          <LocationSeoSummary />
           <Location />
         </section>
 
