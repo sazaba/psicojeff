@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
+import { glossaryTerms } from "@/lib/seo/glossary";
 
 const baseUrl = "https://psicologojeffersonbastidas.com";
 
@@ -36,6 +37,19 @@ const pillarRoutes: MetadataRoute.Sitemap = [
   },
 ];
 
+const glossaryRoutes: MetadataRoute.Sitemap = [
+  {
+    url: `${baseUrl}/glosario`,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  },
+  ...glossaryTerms.map((term) => ({
+    url: `${baseUrl}/glosario/${term.slug}`,
+    changeFrequency: "monthly" as const,
+    priority: 0.65,
+  })),
+];
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const posts = await prisma.post.findMany({
@@ -60,6 +74,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 1,
       },
       ...pillarRoutes,
+      ...glossaryRoutes,
       {
         url: `${baseUrl}/blog`,
         ...(latestPostUpdate ? { lastModified: latestPostUpdate } : {}),
@@ -88,6 +103,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 1,
       },
       ...pillarRoutes,
+      ...glossaryRoutes,
       {
         url: `${baseUrl}/blog`,
         changeFrequency: "weekly",

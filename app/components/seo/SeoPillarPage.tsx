@@ -2,6 +2,7 @@ import Link from "next/link";
 import Navbar from "@/app/components/ui/Navbar";
 import Footer from "@/app/components/sections/Footer";
 import { AUTHOR_NAME, SITE_URL } from "@/lib/seo/metadata";
+import { getGlossaryTerm } from "@/lib/seo/glossary";
 
 export interface SeoSection {
   heading: string;
@@ -27,6 +28,45 @@ interface SeoPillarPageProps {
   areaServed?: string;
 }
 
+const pillarGlossaryMap: Record<string, string[]> = {
+  "/psicoterapia-online": [
+    "flexibilidad-psicologica",
+    "regulacion-emocional",
+    "ansiedad",
+    "mindfulness",
+  ],
+  "/ansiedad-manizales": [
+    "ansiedad",
+    "evitacion-experiencial",
+    "rumiacion",
+    "regulacion-emocional",
+  ],
+  "/estres-burnout-manizales": [
+    "estres-laboral",
+    "burnout",
+    "regulacion-emocional",
+    "insomnio",
+  ],
+  "/insomnio-manizales": [
+    "insomnio",
+    "rumiacion",
+    "ansiedad",
+    "estres-laboral",
+  ],
+  "/terapias-contextuales-act": [
+    "terapia-de-aceptacion-y-compromiso-act",
+    "flexibilidad-psicologica",
+    "defusion-cognitiva",
+    "aceptacion-psicologica",
+  ],
+  "/sobre-jefferson-bastidas": [
+    "terapias-contextuales",
+    "terapias-de-tercera-generacion",
+    "terapia-de-aceptacion-y-compromiso-act",
+    "terapia-dialectico-conductual-dbt",
+  ],
+};
+
 export default function SeoPillarPage({
   eyebrow,
   title,
@@ -40,6 +80,9 @@ export default function SeoPillarPage({
 }: SeoPillarPageProps) {
   const pageUrl = `${SITE_URL}${canonicalPath}`;
   const personId = `${SITE_URL}/#person`;
+  const glossaryLinks = (pillarGlossaryMap[canonicalPath] || [])
+    .map((slug) => getGlossaryTerm(slug))
+    .filter((value): value is NonNullable<typeof value> => Boolean(value));
 
   const primaryEntity =
     schemaType === "ProfilePage"
@@ -208,11 +251,52 @@ export default function SeoPillarPage({
               >
                 Explorar artículos
               </Link>
+              <Link
+                href="/glosario"
+                className="mt-3 inline-flex w-full justify-center rounded-full border border-stone-200 px-6 py-3.5 font-semibold text-stone-700 hover:border-teal-300 hover:text-teal-700 transition-colors"
+              >
+                Consultar glosario
+              </Link>
             </aside>
           </div>
         </section>
 
-        <section className="py-20 px-6 bg-stone-50 border-y border-stone-200/70">
+        {glossaryLinks.length > 0 && (
+          <section className="py-16 px-6 bg-white border-y border-stone-200/70">
+            <div className="max-w-6xl mx-auto">
+              <div className="max-w-2xl mb-9">
+                <span className="text-xs font-bold uppercase tracking-[0.18em] text-teal-700">
+                  Conceptos clave
+                </span>
+                <h2 className="font-serif text-3xl md:text-4xl text-stone-900 mt-3">
+                  Profundiza en el glosario
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {glossaryLinks.map((term) => (
+                  <Link
+                    key={term.slug}
+                    href={`/glosario/${term.slug}`}
+                    className="group rounded-2xl border border-stone-200 p-5 hover:border-teal-300 hover:shadow-sm transition-all"
+                  >
+                    <h3 className="font-serif text-lg font-bold text-stone-900 group-hover:text-teal-700 transition-colors">
+                      {term.term}
+                    </h3>
+                    <p className="mt-2 text-sm leading-6 text-stone-500 line-clamp-3">
+                      {term.shortDefinition}
+                    </p>
+                    <span className="mt-4 inline-block text-sm font-bold text-teal-700">
+                      Ver definición →
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        <section className="py-20 px-6 bg-stone-50 border-b border-stone-200/70">
           <div className="max-w-6xl mx-auto">
             <div className="max-w-2xl mb-10">
               <span className="text-xs font-bold uppercase tracking-[0.18em] text-teal-700">

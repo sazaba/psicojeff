@@ -14,6 +14,7 @@ export default function Footer() {
     { name: "Ansiedad en Manizales", href: "/ansiedad-manizales" },
     { name: "Estrés y burnout", href: "/estres-burnout-manizales" },
     { name: "Terapias ACT", href: "/terapias-contextuales-act" },
+    { name: "Glosario de psicología", href: "/glosario" },
     { name: "Perfil profesional", href: "/sobre-jefferson-bastidas" },
     { name: "Blog", href: "/blog" },
   ];
@@ -30,6 +31,12 @@ export default function Footer() {
               <p className="text-stone-500 text-lg md:text-xl font-light mt-4 max-w-sm leading-relaxed">
                 Psicoterapia para adultos en Manizales y online, con un enfoque contextual orientado a significado, propósito y acción.
               </p>
+              <Link
+                href="/glosario"
+                className="mt-6 inline-flex text-sm font-bold text-teal-400 hover:text-teal-300 transition-colors"
+              >
+                Explorar conceptos de psicología →
+              </Link>
             </div>
           </div>
 

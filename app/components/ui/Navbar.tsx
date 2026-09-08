@@ -64,10 +64,10 @@ export default function Navbar() {
   }, [isMobileMenuOpen]);
 
   const navLinks = [
-    { name: "Inicio", href: "/#inicio" },
     { name: "Servicios", href: "/#servicios" },
     { name: "Perfil", href: "/sobre-jefferson-bastidas" },
     { name: "Ubicación", href: "/#ubicacion" },
+    { name: "Glosario", href: "/glosario" },
     { name: "Blog", href: "/blog" },
   ];
 
