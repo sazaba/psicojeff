@@ -15,7 +15,7 @@ import dynamic from "next/dynamic";
 import imageJeff from "@/app/assets/Jeffseo.webp";
 
 const siteUrl = "https://psicologojeffersonbastidas.com";
-const homeSocialImage = `${siteUrl}/api/og/home`;
+const homeSocialImage = `${siteUrl}/Logo.webp`;
 
 export const metadata: Metadata = {
   title: "Psicólogo en Manizales y psicoterapia online para adultos",
@@ -35,9 +35,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: homeSocialImage,
-        width: 1200,
-        height: 630,
-        type: "image/png",
+        type: "image/webp",
         alt: "Logo de Jefferson Bastidas Psicólogo",
       },
     ],
