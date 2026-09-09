@@ -47,7 +47,7 @@ export default function SobreJeffersonBastidasPage() {
         {
           heading: "Dónde atiende en Manizales",
           paragraphs: [
-            "La atención presencial se presta en Sede Centro, Cra. 22 #24-24, y en Centro Médico Santa Elena, Avenida Paralela #49-46. La modalidad online está disponible como alternativa para personas que no pueden desplazarse a estas sedes.",
+            "La atención presencial se presta en el Centro Médico Santa Elena, Avenida Paralela #49-46, Manizales. La modalidad online está disponible como alternativa para personas que no pueden desplazarse al consultorio.",
           ],
         },
       ]}

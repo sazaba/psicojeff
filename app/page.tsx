@@ -15,6 +15,7 @@ import dynamic from "next/dynamic";
 import imageJeff from "@/app/assets/Jeffseo.webp";
 
 const siteUrl = "https://psicologojeffersonbastidas.com";
+const homeSocialImage = `${siteUrl}/api/og/home`;
 
 export const metadata: Metadata = {
   title: "Psicólogo en Manizales y psicoterapia online para adultos",
@@ -33,10 +34,11 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: imageJeff.src,
-        width: 800,
-        height: 800,
-        alt: "Psicólogo Jefferson Bastidas Mejía",
+        url: homeSocialImage,
+        width: 1200,
+        height: 630,
+        type: "image/png",
+        alt: "Logo de Jefferson Bastidas Psicólogo",
       },
     ],
   },
@@ -45,7 +47,7 @@ export const metadata: Metadata = {
     title: "Psicólogo en Manizales y psicoterapia online para adultos",
     description:
       "Atención psicológica presencial en Manizales y online para adultos con un enfoque contextual y basado en ACT.",
-    images: [imageJeff.src],
+    images: [homeSocialImage],
   },
 };
 

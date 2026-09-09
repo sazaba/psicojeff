@@ -44,13 +44,9 @@ export default function Location() {
             Atención presencial en Manizales
           </span>
 
-          <h2 id="ubicacion-santa-elena" className="text-3xl md:text-5xl font-serif text-stone-800 leading-tight mb-5">
+          <h2 id="ubicacion-santa-elena" className="text-3xl md:text-5xl font-serif text-stone-800 leading-tight mb-10">
             Centro Médico Santa Elena
           </h2>
-
-          <p className="text-stone-500 leading-7 mb-10 max-w-xl">
-            La atención presencial se realiza actualmente en una sola sede. También puedes elegir psicoterapia online si resides fuera de Manizales o necesitas mayor flexibilidad geográfica.
-          </p>
 
           <div className="space-y-7">
             <div className="flex items-start gap-4">

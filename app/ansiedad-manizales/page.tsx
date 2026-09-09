@@ -39,7 +39,7 @@ export default function AnsiedadManizalesPage() {
         {
           heading: "Atención en Manizales y modalidad online",
           paragraphs: [
-            "Jefferson Bastidas atiende presencialmente en dos sedes de Manizales: Sede Centro, en Cra. 22 #24-24, y Centro Médico Santa Elena, en Avenida Paralela #49-46. También existe modalidad online para quienes necesitan mayor flexibilidad.",
+            "Jefferson Bastidas atiende presencialmente en el Centro Médico Santa Elena, Avenida Paralela #49-46, Manizales. También existe modalidad online para quienes necesitan mayor flexibilidad.",
             "Las sesiones tienen una duración aproximada de 60 a 90 minutos, de acuerdo con la información de atención publicada en el sitio.",
           ],
         },

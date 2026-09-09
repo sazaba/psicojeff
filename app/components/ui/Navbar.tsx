@@ -95,7 +95,6 @@ export default function Navbar() {
   }, [pathname]);
 
   const navLinks = [
-    { name: "Servicios", href: "/#servicios" },
     { name: "Empresas", href: "/riesgo-psicosocial-empresas" },
     { name: "Perfil", href: "/#sobre-mi" },
     { name: "Ubicación", href: "/#ubicacion" },
