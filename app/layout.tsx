@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Lato } from "next/font/google";
 import "./globals.css";
-import iconImage from "./icon.webp";
 import imageJeff from "@/app/assets/Jeffseo.webp";
 
 const siteUrl = "https://psicologojeffersonbastidas.com";
@@ -58,8 +57,21 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: iconImage.src,
-    apple: iconImage.src,
+    icon: [
+      {
+        url: "/favicon.png",
+        type: "image/png",
+        sizes: "512x512",
+      },
+    ],
+    shortcut: "/favicon.png",
+    apple: [
+      {
+        url: "/favicon.png",
+        type: "image/png",
+        sizes: "512x512",
+      },
+    ],
   },
 };
 
