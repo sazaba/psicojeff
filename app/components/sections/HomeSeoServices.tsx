@@ -44,27 +44,7 @@ export default function HomeSeoServices() {
         aria-hidden="true"
       />
 
-      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[1.75rem] border border-stone-200/90 bg-[#fffcf8] shadow-[0_24px_70px_-36px_rgba(28,25,23,0.30)] sm:rounded-[2rem]">
-        <div className="grid lg:grid-cols-[0.88fr_1.12fr]">
-          <div className="relative min-w-0 p-6 sm:p-8 md:p-10 lg:p-14">
-            <div
-              className="absolute left-0 top-10 h-20 w-1 rounded-r-full bg-teal-600 sm:top-12"
-              aria-hidden="true"
-            />
-
-            <span className="block text-[0.7rem] font-bold uppercase tracking-[0.16em] text-teal-800 sm:text-xs sm:tracking-[0.18em]">
-              Empieza por lo que hoy te está pesando
-            </span>
-
-            <h2 className="mt-4 max-w-xl font-serif text-[2rem] leading-[1.08] text-stone-950 sm:text-4xl md:text-5xl">
-              No necesitas tenerlo todo claro para empezar a buscar ayuda
-            </h2>
-
-            <p className="mt-5 max-w-xl text-base leading-7 text-stone-700 sm:mt-6 sm:text-lg sm:leading-8">
-              Tal vez lo llamas ansiedad, agotamiento, insomnio o simplemente sentir que algo ya no está funcionando como antes. Puedes empezar por la opción que más se parece a lo que estás viviendo hoy.
-            </p>
-          </div>
-
+      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[1.75rem] border border-stone-200/90 shadow-[0_24px_70px_-36px_rgba(28,25,23,0.30)] sm:rounded-[2rem]">
           <nav
             aria-label="Rutas de acompañamiento psicológico"
             className="min-w-0 bg-[linear-gradient(145deg,#123f3a_0%,#0d312e_100%)] p-3 sm:p-5 md:p-6 lg:p-8"
@@ -95,7 +75,6 @@ export default function HomeSeoServices() {
               ))}
             </div>
           </nav>
-        </div>
       </div>
     </section>
   );
