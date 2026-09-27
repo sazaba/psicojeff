@@ -18,16 +18,16 @@ const siteUrl = "https://psicologojeffersonbastidas.com";
 const homeSocialImage = `${siteUrl}/Logo.webp`;
 
 export const metadata: Metadata = {
-  title: "Psicólogo en Manizales y psicoterapia online para adultos",
+  title: "Psicólogo en Manizales | Jefferson Bastidas",
   description:
-    "Psicólogo en Manizales con atención presencial y psicoterapia online para adultos. Enfoque en terapias contextuales de tercera generación y ACT.",
+    "Psicólogo en Manizales para adultos. Atención presencial y psicoterapia online con enfoque en terapias contextuales, ACT y DBT.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Psicólogo en Manizales y psicoterapia online para adultos",
+    title: "Psicólogo en Manizales | Jefferson Bastidas",
     description:
-      "Atención psicológica presencial en Manizales y online para adultos, con terapias contextuales de tercera generación y ACT.",
+      "Atención psicológica para adultos en Manizales y online, con enfoque en terapias contextuales, ACT y DBT.",
     url: "/",
     siteName: "Jefferson Bastidas Psicólogo",
     locale: "es_CO",
@@ -42,9 +42,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Psicólogo en Manizales y psicoterapia online para adultos",
+    title: "Psicólogo en Manizales | Jefferson Bastidas",
     description:
-      "Atención psicológica presencial en Manizales y online para adultos con un enfoque contextual y basado en ACT.",
+      "Atención psicológica para adultos en Manizales y online, con enfoque en terapias contextuales, ACT y DBT.",
     images: [homeSocialImage],
   },
 };
