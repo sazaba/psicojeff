@@ -21,8 +21,8 @@ const pathways = [
     mobile: "col-span-2",
   },
   {
-    href: "/ansiedad-manizales",
-    label: "Ansiedad",
+    href: "/motivos-de-consulta",
+    label: "Motivos de consulta",
     icon: Waves,
     desktop: "right-[8%] top-[10%]",
     mobile: "",
