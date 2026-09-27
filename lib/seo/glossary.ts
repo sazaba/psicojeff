@@ -48,7 +48,7 @@ export const glossaryTerms: GlossaryTerm[] = [
         ],
       },
     ],
-    relatedSlugs: ["flexibilidad-psicologica", "aceptacion-psicologica", "defusion-cognitiva", "valores"],
+    relatedSlugs: ["flexibilidad-psicologica", "aceptacion-psicologica", "defusion-cognitiva", "valores", "accion-comprometida", "yo-como-contexto"],
     pillarLinks: [{ href: "/terapias-contextuales-act", label: "Terapias contextuales y ACT" }],
   },
   {
@@ -384,8 +384,305 @@ export const glossaryTerms: GlossaryTerm[] = [
         ],
       },
     ],
-    relatedSlugs: ["regulacion-emocional", "mindfulness", "terapias-contextuales", "terapias-de-tercera-generacion"],
+    relatedSlugs: ["regulacion-emocional", "mindfulness", "tolerancia-al-malestar", "efectividad-interpersonal", "aceptacion-radical", "mente-sabia"],
+    pillarLinks: [{ href: "/terapia-dialectico-conductual-dbt", label: "Terapia Dialéctico Conductual (DBT)" }],
+  },
+  {
+    slug: "accion-comprometida",
+    term: "Acción comprometida",
+    category: "Procesos ACT",
+    shortDefinition:
+      "Proceso de ACT orientado a convertir valores personales en conductas concretas, sostenidas y ajustables a las condiciones reales de la vida.",
+    aliases: ["acción comprometida", "accion comprometida", "committed action"],
+    sections: [
+      {
+        heading: "¿Qué es la acción comprometida?",
+        paragraphs: [
+          "En ACT, la acción comprometida consiste en avanzar mediante conductas concretas vinculadas con valores elegidos. No depende de sentirse motivado todo el tiempo ni de eliminar previamente el malestar.",
+          "El énfasis está en construir patrones de conducta que puedan sostenerse, revisarse y ajustarse cuando cambian las circunstancias.",
+        ],
+      },
+      {
+        heading: "Valores y acción",
+        paragraphs: [
+          "Los valores funcionan como direcciones y la acción comprometida los traduce en decisiones observables. Una meta puede alcanzarse o no, mientras que un valor puede orientar muchas acciones distintas.",
+          "Por eso el trabajo suele incluir pasos pequeños, seguimiento de obstáculos y ajustes realistas.",
+        ],
+      },
+      {
+        heading: "No significa insistir a cualquier costo",
+        paragraphs: [
+          "Comprometerse con una dirección no implica ignorar límites, seguridad o nueva información. La flexibilidad también incluye cambiar de estrategia cuando una conducta deja de ser útil.",
+          "El objetivo es ampliar la capacidad de actuar con intención, no imponer productividad permanente.",
+        ],
+      },
+    ],
+    relatedSlugs: ["valores", "flexibilidad-psicologica", "terapia-de-aceptacion-y-compromiso-act", "aceptacion-psicologica"],
     pillarLinks: [{ href: "/terapias-contextuales-act", label: "Terapias contextuales y ACT" }],
+  },
+  {
+    slug: "yo-como-contexto",
+    term: "Yo como contexto",
+    category: "Procesos ACT",
+    shortDefinition:
+      "Proceso de ACT que favorece una perspectiva desde la cual pensamientos, emociones y experiencias pueden observarse sin reducir la identidad a su contenido.",
+    aliases: ["yo como contexto", "self as context", "perspectiva del yo"],
+    sections: [
+      {
+        heading: "¿Qué significa yo como contexto?",
+        paragraphs: [
+          "ACT diferencia entre el contenido de la experiencia y la perspectiva desde la que esa experiencia puede observarse. Pensar “soy un fracaso” no es lo mismo que notar que la mente está produciendo ese pensamiento.",
+          "Esta distinción puede disminuir la rigidez de etiquetas personales y abrir espacio para responder de otra manera.",
+        ],
+      },
+      {
+        heading: "Identidad y experiencia",
+        paragraphs: [
+          "El objetivo no es construir una identidad ideal ni negar la historia personal. Se busca que una descripción, emoción o recuerdo no funcione como una definición total de quién es la persona.",
+          "La perspectiva se entrena mediante ejercicios de observación y atención al presente.",
+        ],
+      },
+      {
+        heading: "Relación con la flexibilidad psicológica",
+        paragraphs: [
+          "Tomar perspectiva puede facilitar que una persona mantenga contacto con experiencias difíciles sin quedar completamente organizada por ellas.",
+          "Su utilidad depende del contexto y se integra con aceptación, defusión, valores y acción comprometida.",
+        ],
+      },
+    ],
+    relatedSlugs: ["defusion-cognitiva", "flexibilidad-psicologica", "mindfulness", "terapia-de-aceptacion-y-compromiso-act"],
+    pillarLinks: [{ href: "/terapias-contextuales-act", label: "Terapias contextuales y ACT" }],
+  },
+  {
+    slug: "contacto-con-el-momento-presente",
+    term: "Contacto con el momento presente",
+    category: "Procesos ACT",
+    shortDefinition:
+      "Capacidad de dirigir la atención de manera flexible a lo que ocurre aquí y ahora, sin quedar absorbido exclusivamente por recuerdos, anticipaciones o juicios.",
+    aliases: ["contacto con el momento presente", "momento presente", "present moment awareness"],
+    sections: [
+      {
+        heading: "¿Qué significa estar en el presente?",
+        paragraphs: [
+          "En ACT, el contacto con el momento presente implica notar de forma flexible lo que está ocurriendo dentro y fuera de la persona. No exige mantener una concentración perfecta ni eliminar distracciones.",
+          "La habilidad consiste en volver al contexto actual cuando hacerlo ayuda a responder con mayor claridad.",
+        ],
+      },
+      {
+        heading: "No es vivir sin pensar en el pasado o el futuro",
+        paragraphs: [
+          "Recordar, planear y anticipar son capacidades útiles. El problema aparece cuando la atención queda atrapada de manera rígida y se pierde contacto con información relevante del presente.",
+          "La práctica busca ampliar la capacidad de elegir dónde poner la atención.",
+        ],
+      },
+      {
+        heading: "Relación con mindfulness",
+        paragraphs: [
+          "Mindfulness puede ser una vía para entrenar esta habilidad, aunque el contacto con el presente también se trabaja durante actividades cotidianas y conversaciones.",
+          "En terapia se utiliza de acuerdo con las necesidades y características de cada persona.",
+        ],
+      },
+    ],
+    relatedSlugs: ["mindfulness", "flexibilidad-psicologica", "defusion-cognitiva", "terapia-de-aceptacion-y-compromiso-act"],
+    pillarLinks: [{ href: "/terapias-contextuales-act", label: "Terapias contextuales y ACT" }],
+  },
+  {
+    slug: "fusion-cognitiva",
+    term: "Fusión cognitiva",
+    category: "Procesos ACT",
+    shortDefinition:
+      "Patrón en el que los pensamientos ejercen una influencia rígida sobre la conducta porque se experimentan como hechos, reglas u órdenes que deben seguirse.",
+    aliases: ["fusión cognitiva", "fusion cognitiva", "cognitive fusion"],
+    sections: [
+      {
+        heading: "¿Qué es la fusión cognitiva?",
+        paragraphs: [
+          "La fusión cognitiva describe momentos en los que una persona queda tan vinculada al contenido de un pensamiento que este organiza directamente su conducta. La mente puede decir “no puedo”, “va a salir mal” o “debo evitarlo”, y esa frase se trata como una instrucción literal.",
+          "El concepto no supone que pensar sea un problema, sino que algunas relaciones rígidas con el pensamiento pueden limitar opciones.",
+        ],
+      },
+      {
+        heading: "Fusión y defusión",
+        paragraphs: [
+          "La defusión cognitiva busca crear una relación más flexible con el lenguaje interno. No intenta demostrar que cada pensamiento es falso, sino reducir su control automático sobre la conducta.",
+          "La persona puede seguir teniendo el pensamiento y, al mismo tiempo, elegir una respuesta distinta.",
+        ],
+      },
+      {
+        heading: "¿Cuándo puede ser relevante?",
+        paragraphs: [
+          "Puede observarse en ansiedad, rumiación, autoexigencia o evitación, aunque su presencia por sí sola no constituye un diagnóstico.",
+          "En terapia se analiza la función que esos pensamientos cumplen dentro de cada contexto.",
+        ],
+      },
+    ],
+    relatedSlugs: ["defusion-cognitiva", "rumiacion", "evitacion-experiencial", "terapia-de-aceptacion-y-compromiso-act"],
+    pillarLinks: [{ href: "/terapias-contextuales-act", label: "Terapias contextuales y ACT" }],
+  },
+  {
+    slug: "aceptacion-radical",
+    term: "Aceptación radical",
+    category: "Habilidades DBT",
+    shortDefinition:
+      "Habilidad de DBT orientada a reconocer la realidad de una situación tal como es en el momento presente, sin añadir una lucha secundaria contra hechos que ya están ocurriendo.",
+    aliases: ["aceptación radical", "aceptacion radical", "radical acceptance"],
+    sections: [
+      {
+        heading: "¿Qué es la aceptación radical?",
+        paragraphs: [
+          "En DBT, la aceptación radical se refiere a reconocer completamente un hecho presente cuando negarlo o luchar contra su existencia aumenta el sufrimiento. No significa aprobarlo, justificarlo ni renunciar a intentar cambios posibles.",
+          "La palabra radical señala que la aceptación incluye pensamiento, emoción y conducta, no solo una afirmación intelectual.",
+        ],
+      },
+      {
+        heading: "Aceptar no es estar de acuerdo",
+        paragraphs: [
+          "Una persona puede aceptar que algo ocurrió y, al mismo tiempo, considerar que fue injusto o decidir establecer límites. Aceptar la realidad presente permite dirigir recursos hacia lo que todavía puede hacerse.",
+          "La habilidad es especialmente relevante cuando una situación no puede modificarse de inmediato.",
+        ],
+      },
+      {
+        heading: "Relación con tolerancia al malestar",
+        paragraphs: [
+          "La aceptación radical forma parte de habilidades utilizadas para atravesar situaciones difíciles sin empeorarlas mediante respuestas impulsivas o luchas imposibles.",
+          "Su aplicación debe considerar seguridad, contexto y capacidad de la persona para afrontar la situación.",
+        ],
+      },
+    ],
+    relatedSlugs: ["tolerancia-al-malestar", "mente-sabia", "regulacion-emocional", "terapia-dialectico-conductual-dbt"],
+    pillarLinks: [{ href: "/terapia-dialectico-conductual-dbt", label: "Terapia Dialéctico Conductual (DBT)" }],
+  },
+  {
+    slug: "tolerancia-al-malestar",
+    term: "Tolerancia al malestar",
+    category: "Habilidades DBT",
+    shortDefinition:
+      "Conjunto de habilidades de DBT para atravesar momentos de alta intensidad emocional sin empeorar la situación mediante respuestas impulsivas o poco efectivas.",
+    aliases: ["tolerancia al malestar", "distress tolerance"],
+    sections: [
+      {
+        heading: "¿Qué es tolerar el malestar?",
+        paragraphs: [
+          "Tolerar el malestar no significa disfrutarlo ni permanecer pasivamente en situaciones dañinas. Se refiere a poder atravesar una crisis o una emoción intensa cuando resolver el problema de inmediato no es posible.",
+          "La meta inmediata puede ser evitar que una situación difícil se vuelva todavía más perjudicial.",
+        ],
+      },
+      {
+        heading: "Habilidades para momentos de crisis",
+        paragraphs: [
+          "DBT incluye estrategias para modular activación, orientar la atención, aceptar temporalmente una realidad y elegir conductas que protejan objetivos de largo plazo.",
+          "Las habilidades se seleccionan según el contexto y no sustituyen medidas de seguridad cuando existe riesgo.",
+        ],
+      },
+      {
+        heading: "Tolerar y cambiar son complementarios",
+        paragraphs: [
+          "Algunas situaciones requieren aceptación temporal y otras requieren solución de problemas, límites o cambios concretos. DBT trabaja ambas posibilidades de forma dialéctica.",
+          "La habilidad consiste también en reconocer cuál de esas respuestas es pertinente en cada momento.",
+        ],
+      },
+    ],
+    relatedSlugs: ["aceptacion-radical", "regulacion-emocional", "mente-sabia", "terapia-dialectico-conductual-dbt"],
+    pillarLinks: [{ href: "/terapia-dialectico-conductual-dbt", label: "Terapia Dialéctico Conductual (DBT)" }],
+  },
+  {
+    slug: "efectividad-interpersonal",
+    term: "Efectividad interpersonal",
+    category: "Habilidades DBT",
+    shortDefinition:
+      "Área de habilidades de DBT orientada a pedir, decir no, negociar y cuidar relaciones manteniendo objetivos, autorrespeto y contexto.",
+    aliases: ["efectividad interpersonal", "interpersonal effectiveness"],
+    sections: [
+      {
+        heading: "¿Qué es la efectividad interpersonal?",
+        paragraphs: [
+          "La efectividad interpersonal reúne habilidades para comunicarse de forma clara en situaciones donde existen necesidades, límites, desacuerdos o decisiones importantes.",
+          "No se trata de conseguir siempre lo que se quiere, sino de equilibrar objetivos, relación y autorrespeto.",
+        ],
+      },
+      {
+        heading: "Pedir y poner límites",
+        paragraphs: [
+          "Una parte del trabajo consiste en formular peticiones concretas, expresar desacuerdos y sostener límites sin depender exclusivamente de la evitación, la agresividad o la complacencia.",
+          "El modo de hacerlo cambia según la relación, el riesgo y las consecuencias posibles.",
+        ],
+      },
+      {
+        heading: "Relación con la regulación emocional",
+        paragraphs: [
+          "La intensidad emocional puede dificultar la comunicación. Por eso las habilidades interpersonales suelen combinarse con mindfulness, regulación emocional y tolerancia al malestar.",
+          "En terapia se practican con situaciones reales y objetivos definidos.",
+        ],
+      },
+    ],
+    relatedSlugs: ["regulacion-emocional", "validacion-emocional", "mente-sabia", "terapia-dialectico-conductual-dbt"],
+    pillarLinks: [{ href: "/terapia-dialectico-conductual-dbt", label: "Terapia Dialéctico Conductual (DBT)" }],
+  },
+  {
+    slug: "mente-sabia",
+    term: "Mente sabia",
+    category: "Habilidades DBT",
+    shortDefinition:
+      "Concepto de DBT que describe una forma de decidir integrando información emocional y razonamiento, en lugar de depender rígidamente de uno solo.",
+    aliases: ["mente sabia", "wise mind"],
+    sections: [
+      {
+        heading: "¿Qué significa mente sabia?",
+        paragraphs: [
+          "DBT utiliza el concepto de mente sabia para describir una integración entre emoción y razón. Las emociones aportan información relevante y el pensamiento analítico también; ninguno necesita dominar de forma absoluta.",
+          "La práctica busca reconocer ambos tipos de información y responder de acuerdo con el contexto.",
+        ],
+      },
+      {
+        heading: "No es una decisión perfecta",
+        paragraphs: [
+          "Actuar desde mente sabia no garantiza certeza ni resultados ideales. Muchas decisiones importantes siguen implicando incertidumbre.",
+          "La utilidad del concepto está en disminuir respuestas extremas y ampliar la capacidad de observar antes de actuar.",
+        ],
+      },
+      {
+        heading: "Cómo se entrena",
+        paragraphs: [
+          "Puede entrenarse mediante mindfulness, pausa, observación de impulsos y revisión de objetivos. El aprendizaje ocurre al aplicar estas habilidades a situaciones concretas.",
+          "Se relaciona con otras áreas de DBT como regulación emocional y tolerancia al malestar.",
+        ],
+      },
+    ],
+    relatedSlugs: ["mindfulness", "regulacion-emocional", "tolerancia-al-malestar", "terapia-dialectico-conductual-dbt"],
+    pillarLinks: [{ href: "/terapia-dialectico-conductual-dbt", label: "Terapia Dialéctico Conductual (DBT)" }],
+  },
+  {
+    slug: "validacion-emocional",
+    term: "Validación emocional",
+    category: "Habilidades DBT",
+    shortDefinition:
+      "Proceso de reconocer que una emoción o respuesta tiene sentido dentro de un contexto, sin asumir que toda interpretación o conducta derivada de ella sea correcta o efectiva.",
+    aliases: ["validación emocional", "validacion emocional", "emotional validation"],
+    sections: [
+      {
+        heading: "¿Qué es validar una emoción?",
+        paragraphs: [
+          "Validar implica reconocer la experiencia de una persona y comprender cómo puede tener sentido a partir de su historia, información disponible y circunstancias actuales.",
+          "No exige estar de acuerdo con todas las conclusiones ni aprobar conductas perjudiciales.",
+        ],
+      },
+      {
+        heading: "Validación y cambio",
+        paragraphs: [
+          "DBT combina aceptación y cambio. Una emoción puede ser comprensible y, al mismo tiempo, ciertas respuestas pueden necesitar modificarse para proteger relaciones, objetivos o seguridad.",
+          "Esta combinación evita presentar aceptación y cambio como opciones incompatibles.",
+        ],
+      },
+      {
+        heading: "Autovalidación",
+        paragraphs: [
+          "La validación también puede dirigirse hacia la propia experiencia: nombrar lo que ocurre, reconocer el contexto y evitar añadir juicios innecesarios.",
+          "Esto puede facilitar una respuesta más deliberada antes de decidir qué hacer con la emoción.",
+        ],
+      },
+    ],
+    relatedSlugs: ["regulacion-emocional", "efectividad-interpersonal", "aceptacion-radical", "terapia-dialectico-conductual-dbt"],
+    pillarLinks: [{ href: "/terapia-dialectico-conductual-dbt", label: "Terapia Dialéctico Conductual (DBT)" }],
   },
   {
     slug: "ansiedad",
