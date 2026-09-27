@@ -10,6 +10,8 @@ import AuthorTrustCard from "@/app/components/seo/AuthorTrustCard";
 import RelatedPosts from "@/app/components/seo/RelatedPosts";
 import imageJeff from "@/app/assets/Jeffseo.webp";
 import { findGlossaryTermsInText } from "@/lib/seo/glossary";
+import Navbar from "@/app/components/ui/Navbar";
+import Footer from "@/app/components/sections/Footer";
 
 const siteUrl = "https://psicologojeffersonbastidas.com";
 const authorUrl = `${siteUrl}/sobre-jefferson-bastidas`;
@@ -215,7 +217,9 @@ export default async function BlogPostPage({ params }: { params: Params }) {
   };
 
   return (
-    <article className="min-h-screen bg-white pb-24 font-sans text-stone-900">
+    <>
+      <Navbar />
+      <article className="min-h-screen bg-white pb-24 pt-[72px] md:pt-[88px] font-sans text-stone-900">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
@@ -441,6 +445,8 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         .safe-content .ql-align-right { text-align: right !important; }
         .safe-content .ql-align-justify { text-align: justify !important; }
       `}</style>
-    </article>
+      </article>
+      <Footer />
+    </>
   );
 }

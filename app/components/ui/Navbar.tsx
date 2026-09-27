@@ -99,7 +99,7 @@ export default function Navbar() {
     { name: "Perfil", href: "/#sobre-mi" },
     { name: "Ubicación", href: "/#ubicacion" },
     { name: "Glosario", href: "/glosario" },
-    { name: "Blog", href: "/#blog" },
+    { name: "Blog", href: "/blog" },
   ];
 
   const handleNavigation = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -132,7 +132,7 @@ export default function Navbar() {
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 transform-gpu will-change-transform ${
           isVisible ? "translate-y-0" : "-translate-y-full"
         } ${
-          isScrolled || isMobileMenuOpen
+          isScrolled || isMobileMenuOpen || pathname !== "/"
             ? "bg-[#f0fdfa]/95 backdrop-blur-md border-b border-teal-100/50 shadow-sm py-3"
             : "bg-transparent border-transparent py-6"
         }`}
