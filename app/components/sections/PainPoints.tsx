@@ -258,9 +258,9 @@ export default function PainPoints() {
       <div className="max-w-7xl mx-auto">
         
         {/* CABECERA */}
-        <div className="text-center mb-16 md:mb-20 max-w-3xl mx-auto">
+        <div className="text-center mb-12 md:mb-16 max-w-3xl mx-auto">
           <motion.h2
-            className="text-3xl md:text-5xl font-medium font-serif text-stone-800 mb-6 tracking-tight leading-tight"
+            className="text-3xl md:text-5xl font-medium font-serif text-stone-800 tracking-tight leading-tight"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -268,21 +268,6 @@ export default function PainPoints() {
           >
             ¿Te identificas con esto?
           </motion.h2>
-          
-          <motion.p
-            className="text-base md:text-xl text-stone-600 font-sans font-light leading-relaxed"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <span className="text-teal-700 font-medium italic font-serif relative inline-block mt-2">
-               Validemos lo que sientes.
-               <svg className="absolute w-full h-2 -bottom-1 left-0 text-teal-300 opacity-60" viewBox="0 0 100 10" preserveAspectRatio="none">
-                    <path d="M0 5 Q 50 12 100 5" stroke="currentColor" strokeWidth="4" fill="none" />
-               </svg>
-            </span>
-          </motion.p>
         </div>
 
         {/* GRID DE TARJETAS */}
