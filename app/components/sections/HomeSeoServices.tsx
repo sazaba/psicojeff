@@ -37,44 +37,77 @@ export default function HomeSeoServices() {
   return (
     <section
       id="servicios"
-      className="relative overflow-hidden border-y border-stone-100 bg-white px-4 py-14 sm:px-6 sm:py-16 md:py-20"
+      className="relative overflow-hidden border-y border-stone-100/80 bg-[#f7f8f6] px-4 py-16 sm:px-6 md:px-8 md:py-24"
     >
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-[radial-gradient(circle_at_15%_0%,rgba(20,184,166,0.10),transparent_48%)]"
         aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_0%,rgba(20,184,166,0.10),transparent_32%),radial-gradient(circle_at_88%_100%,rgba(13,148,136,0.08),transparent_30%)]"
       />
 
-      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[1.75rem] border border-stone-200/90 shadow-[0_24px_70px_-36px_rgba(28,25,23,0.30)] sm:rounded-[2rem]">
-          <nav
-            aria-label="Rutas de acompañamiento psicológico"
-            className="min-w-0 bg-[linear-gradient(145deg,#123f3a_0%,#0d312e_100%)] p-3 sm:p-5 md:p-6 lg:p-8"
-          >
-            <div className="h-full overflow-hidden rounded-[1.35rem] border border-white/15 bg-white/[0.025] shadow-inner sm:rounded-[1.5rem]">
-              {pathways.map((pathway) => (
-                <Link
-                  key={pathway.href}
-                  href={pathway.href}
-                  className="group grid min-w-0 gap-3 border-b border-white/10 px-5 py-5 transition-all last:border-b-0 hover:bg-white/[0.08] focus-visible:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-teal-300 sm:grid-cols-[1fr_auto] sm:items-center sm:px-6 md:px-7"
-                >
-                  <div className="min-w-0">
-                    <span className="block break-words font-serif text-xl leading-tight text-white transition-colors group-hover:text-teal-100 sm:text-2xl">
-                      {pathway.label}
-                    </span>
-                    <p className="mt-1.5 max-w-xl text-sm leading-6 text-stone-200 sm:text-[0.95rem]">
-                      {pathway.detail}
-                    </p>
-                  </div>
+      <div className="relative mx-auto max-w-7xl">
+        <div className="mb-10 flex flex-col gap-4 md:mb-14 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-3xl">
+            <span className="inline-flex rounded-full border border-stone-200/80 bg-white/80 px-3.5 py-1.5 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-teal-700 shadow-sm backdrop-blur-xl">
+              Acompañamiento
+            </span>
+            <h2 className="mt-5 max-w-2xl font-serif text-3xl leading-[1.03] tracking-[-0.025em] text-stone-950 sm:text-4xl md:text-5xl">
+              Encuentra el espacio que mejor conecta contigo
+            </h2>
+          </div>
+
+          <p className="max-w-md text-sm leading-6 text-stone-500 sm:text-base">
+            Explora las principales rutas de acompañamiento, el enfoque terapéutico y el perfil profesional.
+          </p>
+        </div>
+
+        <nav
+          aria-label="Rutas de acompañamiento psicológico"
+          className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3"
+        >
+          {pathways.map((pathway, index) => (
+            <Link
+              key={pathway.href}
+              href={pathway.href}
+              className="group relative min-h-[220px] overflow-hidden rounded-[1.8rem] border border-white/90 bg-white/72 p-6 shadow-[0_18px_60px_-36px_rgba(15,23,42,0.38)] backdrop-blur-2xl transition-all duration-300 hover:-translate-y-1.5 hover:border-teal-200/80 hover:bg-white/92 hover:shadow-[0_26px_70px_-34px_rgba(13,148,136,0.30)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60 sm:p-7"
+            >
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(20,184,166,0.10),transparent_34%)] opacity-80 transition-opacity duration-300 group-hover:opacity-100"
+              />
+
+              <div className="relative z-10 flex h-full flex-col">
+                <div className="flex items-start justify-between gap-4">
+                  <span className="inline-flex min-w-9 items-center justify-center rounded-full border border-stone-200/80 bg-white/85 px-3 py-1.5 text-[0.68rem] font-bold tracking-[0.14em] text-stone-400 shadow-sm">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
 
                   <span
                     aria-hidden="true"
-                    className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/25 text-white transition-all group-hover:border-white group-hover:bg-white group-hover:text-[#123f3a] sm:h-10 sm:w-10"
+                    className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-stone-200/90 bg-white/90 text-lg text-stone-700 shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:border-teal-600 group-hover:bg-teal-600 group-hover:text-white"
                   >
                     →
                   </span>
-                </Link>
-              ))}
-            </div>
-          </nav>
+                </div>
+
+                <div className="mt-auto pt-10">
+                  <h3 className="font-serif text-[1.7rem] leading-[1.05] tracking-[-0.02em] text-stone-900 transition-colors duration-300 group-hover:text-teal-800 sm:text-[1.9rem]">
+                    {pathway.label}
+                  </h3>
+                  <p className="mt-3 max-w-[34ch] text-sm leading-6 text-stone-500 sm:text-[0.96rem] sm:leading-7">
+                    {pathway.detail}
+                  </p>
+
+                  <div className="mt-6 flex items-center gap-2 text-sm font-semibold text-stone-500 transition-colors duration-300 group-hover:text-teal-700">
+                    <span>Explorar</span>
+                    <span className="transition-transform duration-300 group-hover:translate-x-1">
+                      →
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </nav>
       </div>
     </section>
   );
