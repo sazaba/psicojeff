@@ -123,20 +123,71 @@ export default function TargetAudience() {
           ))}
         </div>
 
-        <div className="mt-10 md:mt-14 p-8 md:p-10 rounded-3xl flex flex-col items-center text-center border border-teal-100 bg-gradient-to-b from-white to-teal-50/40 shadow-sm">
-          <div className="max-w-xl">
-            <h3 className="text-xl md:text-2xl font-serif text-teal-900 mb-3">
-              ¿Te identificas con alguno de estos escenarios?
+        <div className="mt-10 md:mt-14 rounded-3xl border border-teal-100 bg-gradient-to-b from-white to-teal-50/40 p-7 md:p-10 shadow-sm">
+          <div className="mx-auto max-w-4xl text-center">
+            <span className="text-xs font-bold uppercase tracking-[0.18em] text-teal-700">
+              Motivos de consulta
+            </span>
+            <h3 className="mt-3 text-2xl md:text-3xl font-serif text-teal-950">
+              Explora el motivo que más se acerca a lo que estás viviendo
             </h3>
-            <p className="text-stone-600 text-sm md:text-base mb-7 leading-relaxed">
-              Puedes conocer primero los motivos de consulta, la modalidad online y el enfoque terapéutico antes de decidir si quieres solicitar información.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-3">
+
+            <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
               <Link
                 href="/ansiedad-manizales"
+                className="group rounded-2xl border border-stone-200 bg-white px-5 py-5 text-left transition-all hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md"
+              >
+                <span className="block font-serif text-xl text-stone-900 group-hover:text-teal-800">
+                  Ansiedad
+                </span>
+                <span className="mt-1 block text-sm text-stone-500">
+                  Preocupación y alerta
+                </span>
+              </Link>
+
+              <Link
+                href="/depresion-manizales"
+                className="group rounded-2xl border border-stone-200 bg-white px-5 py-5 text-left transition-all hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md"
+              >
+                <span className="block font-serif text-xl text-stone-900 group-hover:text-teal-800">
+                  Depresión
+                </span>
+                <span className="mt-1 block text-sm text-stone-500">
+                  Ánimo bajo y desconexión
+                </span>
+              </Link>
+
+              <Link
+                href="/estres-burnout-manizales"
+                className="group rounded-2xl border border-stone-200 bg-white px-5 py-5 text-left transition-all hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md"
+              >
+                <span className="block font-serif text-xl text-stone-900 group-hover:text-teal-800">
+                  Estrés
+                </span>
+                <span className="mt-1 block text-sm text-stone-500">
+                  Sobrecarga y tensión
+                </span>
+              </Link>
+
+              <Link
+                href="/estres-burnout-manizales"
+                className="group rounded-2xl border border-stone-200 bg-white px-5 py-5 text-left transition-all hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md"
+              >
+                <span className="block font-serif text-xl text-stone-900 group-hover:text-teal-800">
+                  Síndrome de burnout
+                </span>
+                <span className="mt-1 block text-sm text-stone-500">
+                  Agotamiento laboral
+                </span>
+              </Link>
+            </div>
+
+            <div className="mt-7 flex flex-col sm:flex-row justify-center gap-3">
+              <Link
+                href="/motivos-de-consulta"
                 className="rounded-full bg-teal-600 px-6 py-3 font-bold text-white hover:bg-teal-700 transition-colors"
               >
-                Ver motivos de consulta
+                Ver todos los motivos
               </Link>
               <Link
                 href="/terapias-contextuales-act"
