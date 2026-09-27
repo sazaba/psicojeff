@@ -57,7 +57,13 @@ const pillarGlossaryMap: Record<string, string[]> = {
     "terapia-de-aceptacion-y-compromiso-act",
     "flexibilidad-psicologica",
     "defusion-cognitiva",
-    "aceptacion-psicologica",
+    "accion-comprometida",
+  ],
+  "/terapia-dialectico-conductual-dbt": [
+    "terapia-dialectico-conductual-dbt",
+    "regulacion-emocional",
+    "tolerancia-al-malestar",
+    "efectividad-interpersonal",
   ],
   "/sobre-jefferson-bastidas": [
     "terapias-contextuales",
