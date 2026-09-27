@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth"; 
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 // Tipado para Next.js 15+
 type Params = Promise<{ id: string }>;
@@ -44,6 +45,11 @@ export async function PUT(req: Request, { params }: { params: Params }) {
 
     console.log(`📝 Actualizando Post ID: ${postId}`);
 
+    const existingPost = await prisma.post.findUnique({
+      where: { id: postId },
+      select: { slug: true },
+    });
+
     const updatedPost = await prisma.post.update({
       where: { id: postId },
       data: {
@@ -57,6 +63,12 @@ export async function PUT(req: Request, { params }: { params: Params }) {
         isFeatured: body.isFeatured,
       },
     });
+
+    revalidatePath("/");
+    revalidatePath("/blog");
+    revalidatePath("/sitemap.xml");
+    if (existingPost?.slug) revalidatePath(`/blog/${existingPost.slug}`);
+    if (updatedPost.slug) revalidatePath(`/blog/${updatedPost.slug}`);
 
     console.log("✅ Post actualizado con éxito");
     return NextResponse.json(updatedPost);
@@ -78,7 +90,13 @@ export async function DELETE(req: Request, { params }: { params: Params }) {
   try {
     const { id } = await params;
     const postId = parseInt(id);
-    await prisma.post.delete({ where: { id: postId } });
+    const deletedPost = await prisma.post.delete({ where: { id: postId } });
+
+    revalidatePath("/");
+    revalidatePath("/blog");
+    revalidatePath("/sitemap.xml");
+    if (deletedPost.slug) revalidatePath(`/blog/${deletedPost.slug}`);
+
     return NextResponse.json({ message: "Eliminado correctamente" });
   } catch (error) {
     console.error("[DELETE_ERROR]", error);
