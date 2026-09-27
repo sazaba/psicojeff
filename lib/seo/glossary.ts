@@ -714,9 +714,81 @@ export const glossaryTerms: GlossaryTerm[] = [
         ],
       },
     ],
-    relatedSlugs: ["evitacion-experiencial", "regulacion-emocional", "rumiacion", "insomnio"],
+    relatedSlugs: ["evitacion-experiencial", "regulacion-emocional", "rumiacion", "insomnio", "estres", "depresion"],
     pillarLinks: [
       { href: "/ansiedad-manizales", label: "Ansiedad en Manizales" },
+      { href: "/psicoterapia-online", label: "Psicoterapia online" },
+    ],
+  },
+  {
+    slug: "depresion",
+    term: "Depresión",
+    category: "Motivos de consulta",
+    shortDefinition:
+      "Conjunto de síntomas que puede incluir ánimo bajo persistente, pérdida de interés o disfrute, cambios en energía, sueño, concentración y funcionamiento cotidiano.",
+    aliases: ["depresión", "depresion", "ánimo bajo", "animo bajo", "tristeza persistente"],
+    sections: [
+      {
+        heading: "¿Qué se entiende por depresión?",
+        paragraphs: [
+          "La depresión puede incluir tristeza persistente, pérdida de interés o disfrute, disminución de energía, dificultad para concentrarse, cambios en el sueño o apetito y una visión más negativa de uno mismo o del futuro.",
+          "No toda tristeza corresponde a depresión. La intensidad, duración, interferencia en la vida diaria y combinación de síntomas son aspectos relevantes para una valoración profesional.",
+        ],
+      },
+      {
+        heading: "¿Cómo puede afectar la vida cotidiana?",
+        paragraphs: [
+          "Puede dificultar iniciar actividades, sostener rutinas, relacionarse, trabajar o cuidar de uno mismo. Algunas personas describen más vacío, desconexión o agotamiento que tristeza evidente.",
+          "También puede coexistir con ansiedad, insomnio, estrés o rumiación, por lo que conviene comprender el patrón completo y no solo un síntoma aislado.",
+        ],
+      },
+      {
+        heading: "¿Cuándo buscar apoyo?",
+        paragraphs: [
+          "Es recomendable consultar cuando los síntomas se mantienen, afectan significativamente el funcionamiento o generan un sufrimiento difícil de manejar.",
+          "Si aparecen pensamientos de hacerse daño o de no querer vivir, se requiere atención inmediata a través de servicios de emergencia o redes de apoyo disponibles en el lugar donde se encuentre la persona.",
+        ],
+      },
+    ],
+    relatedSlugs: ["ansiedad", "rumiacion", "insomnio", "regulacion-emocional", "estres"],
+    pillarLinks: [
+      { href: "/psicoterapia-online", label: "Psicoterapia online" },
+      { href: "/sobre-jefferson-bastidas", label: "Perfil profesional" },
+    ],
+  },
+  {
+    slug: "estres",
+    term: "Estrés",
+    category: "Motivos de consulta",
+    shortDefinition:
+      "Respuesta de activación ante demandas o amenazas percibidas que puede ser útil a corto plazo, pero volverse problemática cuando es intensa, persistente o difícil de recuperar.",
+    aliases: ["estrés", "estres", "estrés crónico", "estres cronico", "sobrecarga"],
+    sections: [
+      {
+        heading: "¿Qué es el estrés?",
+        paragraphs: [
+          "El estrés es una respuesta de activación que aparece cuando una persona percibe demandas, presión, incertidumbre o amenazas que requieren adaptación. Puede ser útil durante períodos breves porque moviliza recursos para responder.",
+          "El problema aparece cuando la activación se mantiene durante demasiado tiempo, la recuperación es insuficiente o las demandas superan de forma sostenida los recursos disponibles.",
+        ],
+      },
+      {
+        heading: "¿Cómo puede manifestarse?",
+        paragraphs: [
+          "Puede expresarse mediante tensión, irritabilidad, cansancio, dificultad para desconectarse, problemas de sueño, sensación de urgencia constante o menor capacidad para concentrarse.",
+          "Las manifestaciones dependen del contexto y pueden compartir características con ansiedad, burnout u otras condiciones.",
+        ],
+      },
+      {
+        heading: "Estrés y contexto",
+        paragraphs: [
+          "Comprender el estrés implica revisar tanto las estrategias personales como las condiciones que lo generan o mantienen. En el trabajo, por ejemplo, la carga, los horarios, los límites y el apoyo disponible pueden ser tan relevantes como las habilidades individuales.",
+          "Una valoración ayuda a identificar qué factores pueden modificarse y cuáles requieren otras formas de apoyo.",
+        ],
+      },
+    ],
+    relatedSlugs: ["ansiedad", "burnout", "estres-laboral", "insomnio", "regulacion-emocional"],
+    pillarLinks: [
+      { href: "/estres-burnout-manizales", label: "Estrés y burnout en Manizales" },
       { href: "/psicoterapia-online", label: "Psicoterapia online" },
     ],
   },
@@ -759,7 +831,7 @@ export const glossaryTerms: GlossaryTerm[] = [
   {
     slug: "burnout",
     term: "Burnout o desgaste ocupacional",
-    category: "Trabajo y bienestar",
+    category: "Motivos de consulta",
     shortDefinition:
       "Término utilizado para describir un patrón de agotamiento asociado de manera específica al contexto laboral y a demandas ocupacionales sostenidas.",
     aliases: ["burnout", "desgaste ocupacional", "agotamiento laboral", "síndrome de burnout", "sindrome de burnout"],
