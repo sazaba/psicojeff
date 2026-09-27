@@ -31,6 +31,11 @@ const pillarRoutes: MetadataRoute.Sitemap = [
     priority: 0.85,
   },
   {
+    url: `${baseUrl}/terapia-dialectico-conductual-dbt`,
+    changeFrequency: "monthly",
+    priority: 0.85,
+  },
+  {
     url: `${baseUrl}/riesgo-psicosocial-empresas`,
     changeFrequency: "monthly",
     priority: 0.85,
