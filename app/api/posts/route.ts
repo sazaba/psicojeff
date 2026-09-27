@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth"; // O "next-auth/next" según tu versión
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function POST(req: Request) {
   // 1. Seguridad: Verificar que el usuario sea admin
@@ -33,6 +34,11 @@ export async function POST(req: Request) {
         isFeatured: isFeatured || false, 
       },
     });
+
+    revalidatePath("/");
+    revalidatePath("/blog");
+    revalidatePath(`/blog/${newPost.slug}`);
+    revalidatePath("/sitemap.xml");
 
     return NextResponse.json(newPost);
   } catch (error: any) {
