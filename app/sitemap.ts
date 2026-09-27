@@ -6,12 +6,22 @@ const baseUrl = "https://psicologojeffersonbastidas.com";
 
 const pillarRoutes: MetadataRoute.Sitemap = [
   {
+    url: `${baseUrl}/motivos-de-consulta`,
+    changeFrequency: "monthly",
+    priority: 0.95,
+  },
+  {
     url: `${baseUrl}/psicoterapia-online`,
     changeFrequency: "monthly",
     priority: 0.9,
   },
   {
     url: `${baseUrl}/ansiedad-manizales`,
+    changeFrequency: "monthly",
+    priority: 0.9,
+  },
+  {
+    url: `${baseUrl}/depresion-manizales`,
     changeFrequency: "monthly",
     priority: 0.9,
   },
