@@ -35,6 +35,21 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "www.psicologojeffersonbastidas.com",
+          },
+        ],
+        destination: "https://psicologojeffersonbastidas.com/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
