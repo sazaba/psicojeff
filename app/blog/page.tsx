@@ -5,6 +5,8 @@ import Image from "next/image";
 import { ArrowLeft, Calendar, Clock, ArrowRight, Star } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import imageJeff from "@/app/assets/Jeffseo.webp";
+import Navbar from "@/app/components/ui/Navbar";
+import Footer from "@/app/components/sections/Footer";
 
 interface BlogPost {
   id: number;
@@ -75,7 +77,9 @@ export default async function BlogIndex() {
   });
 
   return (
-    <main className="min-h-screen bg-stone-50 pb-20 pt-32">
+    <>
+      <Navbar />
+      <main className="min-h-screen bg-stone-50 pb-20 pt-32">
       <div className="container mx-auto px-6">
         <div className="mb-12">
           <Link
@@ -193,6 +197,8 @@ export default async function BlogIndex() {
           )}
         </div>
       </div>
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }
