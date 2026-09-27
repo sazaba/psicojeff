@@ -57,9 +57,9 @@ export default function TerapiasContextualesActPage() {
           description: "Explora una de las áreas donde la flexibilidad psicológica puede ser especialmente relevante.",
         },
         {
-          href: "/sobre-jefferson-bastidas",
-          label: "Sobre Jefferson Bastidas",
-          description: "Revisa su formación y trayectoria profesional.",
+          href: "/terapia-dialectico-conductual-dbt",
+          label: "Terapia Dialéctico Conductual (DBT)",
+          description: "Conoce el enfoque de aceptación y cambio y sus principales áreas de habilidades.",
         },
       ]}
     />
