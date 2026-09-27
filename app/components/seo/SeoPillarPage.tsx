@@ -41,6 +41,12 @@ const pillarGlossaryMap: Record<string, string[]> = {
     "rumiacion",
     "regulacion-emocional",
   ],
+  "/depresion-manizales": [
+    "depresion",
+    "rumiacion",
+    "regulacion-emocional",
+    "insomnio",
+  ],
   "/estres-burnout-manizales": [
     "estres-laboral",
     "burnout",
