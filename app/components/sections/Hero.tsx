@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight, Building2 } from "lucide-react";
+import { ArrowUpRight, Building2, Video } from "lucide-react";
 import Headerpsicojeff from "@/app/assets/Headerpsicojeff.webp";
 
 export default function Hero() {
@@ -69,7 +69,26 @@ export default function Hero() {
               </a>
             </div>
 
-            <div className="mt-6 flex justify-center md:justify-start">
+            <div className="mt-6 flex flex-col items-center gap-3 md:items-start">
+              <Link
+                href="/psicoterapia-online"
+                className="group inline-flex w-full sm:w-auto items-center gap-3 rounded-2xl border border-teal-200 bg-teal-50/80 px-4 py-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-teal-300 hover:bg-teal-50 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60"
+                aria-label="Psicoterapia online para el Eje Cafetero y residentes en el exterior"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-teal-700 shadow-sm">
+                  <Video size={18} aria-hidden="true" />
+                </span>
+                <span className="flex min-w-0 flex-col">
+                  <span className="text-sm font-bold text-stone-800 group-hover:text-teal-800">
+                    Psicoterapia online
+                  </span>
+                  <span className="text-xs text-stone-600 sm:text-sm">
+                    Eje Cafetero y residentes en el exterior
+                  </span>
+                </span>
+                <ArrowUpRight size={16} aria-hidden="true" className="shrink-0 text-teal-700 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+
               <Link
                 href="/riesgo-psicosocial-empresas"
                 className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-2xl border border-stone-200/90 bg-white/70 px-4 py-3 text-sm font-semibold text-stone-600 shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-teal-300 hover:bg-white hover:text-teal-800 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60"
