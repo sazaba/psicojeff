@@ -2,9 +2,9 @@ import SeoPillarPage from "@/app/components/seo/SeoPillarPage";
 import { buildSeoMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildSeoMetadata({
-  title: "Psicoterapia online para adultos",
+  title: "Psicoterapia online para adultos | Eje Cafetero",
   description:
-    "Psicoterapia online para adultos y colombianos residentes en el exterior, en español, con Jefferson Bastidas Mejía y enfoque contextual.",
+    "Psicoterapia online para adultos de Manizales, Pereira, Armenia y el Eje Cafetero, incluidas personas de la región que emigraron al exterior. Atención en español.",
   path: "/psicoterapia-online",
 });
 
@@ -13,10 +13,10 @@ export default function PsicoterapiaOnlinePage() {
     <SeoPillarPage
       eyebrow="Modalidad online"
       title="Psicoterapia online para adultos"
-      lead="Una modalidad pensada para personas adultas que necesitan flexibilidad geográfica sin renunciar a un proceso terapéutico estructurado, profundo y orientado a objetivos de vida."
+      lead="Psicoterapia online en español para personas adultas de Manizales, Pereira, Armenia y otras localidades del Eje Cafetero. También para quienes han emigrado desde la región y buscan un acompañamiento que comprenda su contexto cultural y sus objetivos de vida."
       canonicalPath="/psicoterapia-online"
-      areaServed="Atención online para adultos en Colombia y colombianos residentes en el exterior"
-      highlights={["Atención online", "Adultos", "Sesiones de 60 a 90 minutos", "ACT y terapias contextuales"]}
+      areaServed="Eje Cafetero (Caldas, Risaralda y Quindío) y personas de la región residentes en el exterior"
+      highlights={["Manizales, Pereira y Armenia", "Eje Cafetero en el exterior", "Adultos", "ACT y terapias contextuales"]}
       sections={[
         {
           heading: "¿Cómo es la psicoterapia online?",
@@ -26,15 +26,27 @@ export default function PsicoterapiaOnlinePage() {
           ],
         },
         {
-          heading: "Psicoterapia online para colombianos en el exterior",
+          heading: "Psicoterapia online en Manizales, Pereira, Armenia y el Eje Cafetero",
           paragraphs: [
-            "Para una persona colombiana que vive fuera del país, hacer terapia en español con un profesional colombiano puede facilitar la comunicación de matices culturales, familiares y personales que forman parte de su historia. Esta modalidad puede ser especialmente útil cuando se busca acompañamiento psicológico sin depender de la ubicación física en Colombia.",
-            "En el lenguaje cotidiano, muchas personas buscan este servicio como terapia online, psicólogo online, psicólogo virtual o consulta psicológica virtual. En este sitio esos términos se refieren a una atención psicológica realizada por videollamada, con objetivos terapéuticos definidos y un encuadre profesional.",
+            "La atención online está dirigida a personas adultas de Manizales, Pereira, Armenia y otros municipios de Caldas, Risaralda y Quindío. Si la distancia, el trabajo o los desplazamientos dificultan asistir a un consultorio, esta modalidad permite explorar un proceso terapéutico desde un espacio privado y con horarios acordados.",
+            "Vivir en el Eje Cafetero no significa tener que desplazarse hasta Manizales para conocer el enfoque de Jefferson Bastidas. La modalidad online busca mantener un proceso estructurado, con objetivos claros y herramientas para la vida cotidiana.",
           ],
           bullets: [
-            "Colombianos residentes en otros países que prefieren realizar el proceso terapéutico en español.",
-            "Personas que atraviesan adaptación migratoria, cambios de vida, distancia familiar, soledad o presión laboral.",
-            "Adultos que desean trabajar con un profesional colombiano y mantener continuidad aunque vivan fuera del país.",
+            "Personas de Caldas, Risaralda y Quindío que buscan psicoterapia online para adultos.",
+            "Consultantes que necesitan compatibilizar el acompañamiento con sus actividades laborales, familiares o académicas.",
+            "Personas que desean trabajar ansiedad, estrés, desánimo o cambios vitales desde un enfoque contextual.",
+          ],
+        },
+        {
+          heading: "Psicoterapia online para personas del Eje Cafetero que emigraron al exterior",
+          paragraphs: [
+            "Mudarse a otro país puede implicar cambios en las relaciones, el trabajo, el sentido de pertenencia y la forma de vivir la distancia con la familia. Para quienes salieron de Manizales, Pereira, Armenia o de otros lugares del Eje Cafetero, conversar en español con un psicólogo colombiano puede ayudar a expresar experiencias y referencias culturales que siguen siendo importantes incluso lejos de casa.",
+            "El acompañamiento online ofrece un espacio para explorar procesos de adaptación, soledad, incertidumbre o presión laboral sin perder de vista la historia personal y los vínculos con la región de origen. Antes de iniciar, se revisa la pertinencia de esta modalidad y las condiciones aplicables en el país de residencia.",
+          ],
+          bullets: [
+            "Adultos del Eje Cafetero residentes en el exterior que prefieren hablar de su experiencia en español.",
+            "Personas que atraviesan cambios migratorios, nostalgia, distancia familiar o adaptación a nuevas rutinas.",
+            "Colombianos que buscan continuidad terapéutica al cambiar de ciudad o país.",
           ],
         },
         {

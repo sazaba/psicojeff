@@ -69,12 +69,6 @@ export default function Footer() {
                 </div>
               </div>
 
-              <Link
-                href="/psicoterapia-online"
-                className="inline-flex text-sm font-bold text-teal-400 hover:text-teal-300 transition-colors"
-              >
-                Psicoterapia online, también para colombianos en el exterior →
-              </Link>
             </div>
           </div>
         </div>
