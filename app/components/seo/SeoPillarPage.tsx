@@ -195,25 +195,25 @@ export default function SeoPillarPage({
             <div className={heroImage ? "grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(280px,360px)] items-center gap-10 lg:gap-12" : ""}>
               <div>
                 <span className="inline-block text-xs font-bold uppercase tracking-[0.2em] text-teal-700 mb-5">
-              {eyebrow}
-            </span>
-            <h1 className="font-serif text-4xl md:text-6xl font-semibold leading-tight text-stone-900 max-w-4xl">
-              {title}
-            </h1>
-            <p className="mt-7 text-lg md:text-xl leading-relaxed text-stone-600 max-w-3xl">
-              {lead}
-            </p>
-
-            <div className="mt-10 flex flex-wrap gap-3" aria-label="Aspectos clave">
-              {highlights.map((highlight) => (
-                <span
-                  key={highlight}
-                  className="rounded-full border border-teal-200 bg-white px-4 py-2 text-sm font-semibold text-teal-800 shadow-sm"
-                >
-                  {highlight}
+                  {eyebrow}
                 </span>
-              ))}
-            </div>
+                <h1 className={`font-serif text-4xl ${heroImage ? "md:text-5xl" : "md:text-6xl"} font-semibold leading-tight text-stone-900 max-w-4xl`}>
+                  {title}
+                </h1>
+                <p className="mt-7 text-lg md:text-xl leading-relaxed text-stone-600 max-w-3xl">
+                  {lead}
+                </p>
+
+                <div className="mt-10 flex flex-wrap gap-3" aria-label="Aspectos clave">
+                  {highlights.map((highlight) => (
+                    <span
+                      key={highlight}
+                      className="rounded-full border border-teal-200 bg-white px-4 py-2 text-sm font-semibold text-teal-800 shadow-sm"
+                    >
+                      {highlight}
+                    </span>
+                  ))}
+                </div>
               </div>
 
               {heroImage && (
