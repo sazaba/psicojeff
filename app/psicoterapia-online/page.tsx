@@ -1,4 +1,5 @@
 import SeoPillarPage from "@/app/components/seo/SeoPillarPage";
+import Headerpsicojeff from "@/app/assets/Headerpsicojeff.webp";
 import { buildSeoMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildSeoMetadata({
@@ -11,6 +12,7 @@ export const metadata = buildSeoMetadata({
 export default function PsicoterapiaOnlinePage() {
   return (
     <SeoPillarPage
+      heroImage={{ src: Headerpsicojeff, alt: "Retrato del psicólogo Jefferson Bastidas" }}
       eyebrow="Modalidad online"
       title="Psicoterapia online para adultos"
       lead="Psicoterapia online en español para personas adultas de Manizales, Pereira, Armenia y otras localidades del Eje Cafetero. También para quienes han emigrado desde la región y buscan un acompañamiento que comprenda su contexto cultural y sus objetivos de vida."
