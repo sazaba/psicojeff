@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image, { type StaticImageData } from "next/image";
 import Navbar from "@/app/components/ui/Navbar";
 import Footer from "@/app/components/sections/Footer";
 import { AUTHOR_NAME, SITE_URL } from "@/lib/seo/metadata";
@@ -26,6 +27,7 @@ interface SeoPillarPageProps {
   relatedLinks: SeoRelatedLink[];
   schemaType?: "Service" | "ProfilePage";
   areaServed?: string;
+  heroImage?: { src: StaticImageData; alt: string };
 }
 
 const pillarGlossaryMap: Record<string, string[]> = {
@@ -89,6 +91,7 @@ export default function SeoPillarPage({
   relatedLinks,
   schemaType = "Service",
   areaServed = "Manizales, Caldas, Colombia",
+  heroImage,
 }: SeoPillarPageProps) {
   const pageUrl = `${SITE_URL}${canonicalPath}`;
   const personId = `${SITE_URL}/#person`;
@@ -189,7 +192,9 @@ export default function SeoPillarPage({
               </span>
             </nav>
 
-            <span className="inline-block text-xs font-bold uppercase tracking-[0.2em] text-teal-700 mb-5">
+            <div className={heroImage ? "grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(280px,360px)] items-center gap-10 lg:gap-12" : ""}>
+              <div>
+                <span className="inline-block text-xs font-bold uppercase tracking-[0.2em] text-teal-700 mb-5">
               {eyebrow}
             </span>
             <h1 className="font-serif text-4xl md:text-6xl font-semibold leading-tight text-stone-900 max-w-4xl">
@@ -208,6 +213,25 @@ export default function SeoPillarPage({
                   {highlight}
                 </span>
               ))}
+            </div>
+              </div>
+
+              {heroImage && (
+                <div className="relative mx-auto w-full max-w-[340px] lg:max-w-[360px]">
+                  <div
+                    className="absolute inset-x-5 top-8 bottom-12 rounded-full bg-teal-100/50 blur-3xl"
+                    aria-hidden="true"
+                  />
+                  <Image
+                    src={heroImage.src}
+                    alt={heroImage.alt}
+                    className="relative h-auto w-full object-contain drop-shadow-xl [mask-image:linear-gradient(to_bottom,black_88%,transparent_100%)]"
+                    priority
+                    placeholder="blur"
+                    sizes="(max-width: 1024px) 340px, 360px"
+                  />
+                </div>
+              )}
             </div>
           </div>
         </section>
