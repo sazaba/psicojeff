@@ -3,7 +3,7 @@ import Headerpsicojeff from "@/app/assets/Headerpsicojeff.webp";
 import { buildSeoMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildSeoMetadata({
-  title: "Psicólogo online en Pereira | Psicoterapia para adultos",
+  title: "Psicólogo online en Pereira",
   description:
     "Psicoterapia online para adultos en Pereira, Risaralda. Atención con Jefferson Bastidas para ansiedad, depresión, estrés y burnout desde terapias contextuales.",
   path: "/psicologo-online-pereira",
@@ -20,7 +20,7 @@ export default function PsicologoOnlinePereiraPage() {
       title="Psicólogo online en Pereira: psicoterapia para adultos"
       lead="Si resides en Pereira, puedes acceder a un proceso de psicoterapia online con Jefferson Bastidas Mejía sin desplazarte a otra ciudad. La atención dirigida a Pereira se realiza exclusivamente por videollamada, en un espacio privado y con objetivos terapéuticos acordados."
       canonicalPath="/psicologo-online-pereira"
-      areaServed="Pereira, Risaralda, Colombia (atención exclusivamente online)"
+      areaServed="Pereira, Risaralda, Colombia"
       highlights={[
         "Personas adultas en Pereira",
         "Sesiones por videollamada",
