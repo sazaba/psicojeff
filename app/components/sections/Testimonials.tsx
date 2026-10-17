@@ -7,7 +7,7 @@ import { Star, CheckCircle2, ArrowRight } from "lucide-react";
 import google from "@/app/assets/logo.svg";
 
 // --- TUS DATOS (Sin cambios) ---
-const reviews = [
+export const reviews = [
   {
     id: 1,
     name: "Johana Fernández Restrepo",
