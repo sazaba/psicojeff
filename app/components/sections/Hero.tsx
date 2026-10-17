@@ -71,9 +71,9 @@ export default function Hero() {
 
             <div className="mt-6 flex flex-col items-center gap-3 md:items-start">
               <Link
-                href="/psicoterapia-online"
+                href="/psicologo-online-pereira"
                 className="group inline-flex w-full sm:w-auto items-center gap-3 rounded-2xl border border-teal-200 bg-teal-50/80 px-4 py-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-teal-300 hover:bg-teal-50 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/60"
-                aria-label="Psicoterapia online para el Eje Cafetero y residentes en el exterior"
+                aria-label="Psicoterapia online para adultos en Pereira"
               >
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-teal-700 shadow-sm">
                   <Video size={18} aria-hidden="true" />
@@ -83,7 +83,7 @@ export default function Hero() {
                     Psicoterapia online
                   </span>
                   <span className="text-xs text-stone-600 sm:text-sm">
-                    Eje Cafetero y residentes en el exterior
+                    Pereira, Risaralda · Atención 100 % online
                   </span>
                 </span>
                 <ArrowUpRight size={16} aria-hidden="true" className="shrink-0 text-teal-700 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
