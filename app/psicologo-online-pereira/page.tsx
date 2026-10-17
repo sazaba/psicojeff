@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -161,7 +162,7 @@ function ContactButton({
   light = false,
   className = "",
 }: {
-  children?: React.ReactNode;
+  children?: ReactNode;
   light?: boolean;
   className?: string;
 }) {
@@ -185,7 +186,7 @@ function ContactButton({
   );
 }
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+function SectionLabel({ children }: { children: ReactNode }) {
   return (
     <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-teal-700">
       {children}
