@@ -3,90 +3,93 @@ import Headerpsicojeff from "@/app/assets/Headerpsicojeff.webp";
 import { buildSeoMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildSeoMetadata({
-  title: "Psicoterapia online para adultos | Eje Cafetero",
+  title: "Psicoterapia online en el Eje Cafetero y el exterior",
   description:
-    "Psicoterapia online para adultos de Manizales, Pereira, Armenia y el Eje Cafetero, incluidas personas de la región que emigraron al exterior. Atención en español.",
+    "Psicoterapia online para adultos del Eje Cafetero y personas de la región residentes en el exterior. Acompañamiento en español con Jefferson Bastidas.",
   path: "/psicoterapia-online",
 });
 
 export default function PsicoterapiaOnlinePage() {
   return (
     <SeoPillarPage
-      heroImage={{ src: Headerpsicojeff, alt: "Retrato del psicólogo Jefferson Bastidas" }}
-      eyebrow="Modalidad online"
-      title="Psicoterapia online para adultos"
-      lead="Psicoterapia online en español para personas adultas de Manizales, Pereira, Armenia y otras localidades del Eje Cafetero. También para quienes han emigrado desde la región y buscan un acompañamiento que comprenda su contexto cultural y sus objetivos de vida."
+      heroImage={{ src: Headerpsicojeff, alt: "Retrato del psicólogo Jefferson Bastidas Mejía" }}
+      eyebrow="Modalidad online · Eje Cafetero"
+      title="Psicoterapia online en el Eje Cafetero y el exterior"
+      lead="Atención psicológica online para personas adultas de Caldas, Risaralda y Quindío, y para quienes emigraron desde el Eje Cafetero y desean conversar en español con un profesional que comprende el contexto de su región."
       canonicalPath="/psicoterapia-online"
       areaServed="Eje Cafetero (Caldas, Risaralda y Quindío) y personas de la región residentes en el exterior"
-      highlights={["Manizales, Pereira y Armenia", "Eje Cafetero en el exterior", "Adultos", "ACT y terapias contextuales"]}
+      highlights={[
+        "Caldas, Risaralda y Quindío",
+        "Personas del Eje Cafetero en el exterior",
+        "Adultos",
+        "ACT y terapias contextuales",
+      ]}
       sections={[
         {
-          heading: "¿Cómo es la psicoterapia online?",
+          heading: "¿En qué consiste la psicoterapia online?",
           paragraphs: [
-            "La consulta online mantiene el foco clínico del proceso presencial y permite desarrollar las sesiones desde un entorno privado elegido por el consultante. El trabajo se organiza alrededor de objetivos claros, patrones de comportamiento y herramientas que puedan aplicarse en la vida cotidiana.",
-            "El enfoque de Jefferson Bastidas integra Terapia de Aceptación y Compromiso (ACT), Terapia Dialéctico Conductual (DBT) y otras terapias contextuales de tercera generación, con una atención especialmente dirigida a personas adultas en etapa productiva.",
+            "Las sesiones se desarrollan por videollamada desde un lugar privado elegido por el consultante. El proceso parte de una evaluación individual y permite trabajar objetivos terapéuticos concretos, sin que la distancia sea necesariamente una barrera para solicitar acompañamiento.",
+            "Jefferson Bastidas Mejía integra Terapia de Aceptación y Compromiso (ACT), Terapia Dialéctico Conductual (DBT) y otros recursos de las terapias contextuales de tercera generación para el trabajo con adultos.",
           ],
         },
         {
-          heading: "Psicoterapia online en Manizales, Pereira, Armenia y el Eje Cafetero",
+          heading: "Atención online para adultos del Eje Cafetero",
           paragraphs: [
-            "La atención online está dirigida a personas adultas de Manizales, Pereira, Armenia y otros municipios de Caldas, Risaralda y Quindío. Si la distancia, el trabajo o los desplazamientos dificultan asistir a un consultorio, esta modalidad permite explorar un proceso terapéutico desde un espacio privado y con horarios acordados.",
-            "Vivir en el Eje Cafetero no significa tener que desplazarse hasta Manizales para conocer el enfoque de Jefferson Bastidas. La modalidad online busca mantener un proceso estructurado, con objetivos claros y herramientas para la vida cotidiana.",
+            "Esta modalidad puede ser útil para quienes viven en municipios de Caldas, Risaralda o Quindío y tienen dificultades para asistir a una consulta presencial por razones de distancia, trabajo o disponibilidad.",
+            "Aunque el consultorio presencial de Jefferson está en Manizales, las personas de otras localidades pueden consultar por la modalidad virtual. La atención se organiza de acuerdo con las necesidades del caso y con los horarios disponibles.",
           ],
           bullets: [
-            "Personas de Caldas, Risaralda y Quindío que buscan psicoterapia online para adultos.",
-            "Consultantes que necesitan compatibilizar el acompañamiento con sus actividades laborales, familiares o académicas.",
-            "Personas que desean trabajar ansiedad, estrés, desánimo o cambios vitales desde un enfoque contextual.",
+            "Personas adultas con jornadas de trabajo, estudio o responsabilidades familiares exigentes.",
+            "Consultantes interesados en abordar ansiedad, desánimo, estrés o cambios vitales.",
+            "Personas que prefieren desarrollar su proceso desde un espacio conocido y privado.",
           ],
         },
         {
-          heading: "Psicoterapia online para personas del Eje Cafetero que emigraron al exterior",
+          heading: "Psicoterapia en español para personas del Eje Cafetero que emigraron",
           paragraphs: [
-            "Mudarse a otro país puede implicar cambios en las relaciones, el trabajo, el sentido de pertenencia y la forma de vivir la distancia con la familia. Para quienes salieron de Manizales, Pereira, Armenia o de otros lugares del Eje Cafetero, conversar en español con un psicólogo colombiano puede ayudar a expresar experiencias y referencias culturales que siguen siendo importantes incluso lejos de casa.",
-            "El acompañamiento online ofrece un espacio para explorar procesos de adaptación, soledad, incertidumbre o presión laboral sin perder de vista la historia personal y los vínculos con la región de origen. Antes de iniciar, se revisa la pertinencia de esta modalidad y las condiciones aplicables en el país de residencia.",
+            "Emigrar puede traer cambios en el sentido de pertenencia, las relaciones familiares, la estabilidad laboral y las rutinas. Hablar con un profesional que conoce el contexto cultural colombiano puede facilitar la exploración de estas experiencias sin perder de vista la historia personal.",
+            "El acompañamiento puede abordar adaptación, soledad, incertidumbre o estrés, siempre desde una evaluación individual. Antes de iniciar se revisa la pertinencia de la atención a distancia y las condiciones profesionales y normativas aplicables en el país de residencia del consultante.",
           ],
           bullets: [
-            "Adultos del Eje Cafetero residentes en el exterior que prefieren hablar de su experiencia en español.",
-            "Personas que atraviesan cambios migratorios, nostalgia, distancia familiar o adaptación a nuevas rutinas.",
-            "Colombianos que buscan continuidad terapéutica al cambiar de ciudad o país.",
+            "Adultos de la región residentes fuera de Colombia que prefieren expresarse en español.",
+            "Personas que atraviesan cambios migratorios o dificultades de adaptación.",
+            "Consultantes que desean explorar opciones de continuidad terapéutica tras mudarse.",
           ],
         },
         {
-          heading: "¿Para quién puede ser útil esta modalidad?",
+          heading: "¿Qué se trabaja durante el proceso?",
           paragraphs: [
-            "La psicoterapia online puede ser una alternativa práctica cuando la distancia, los viajes, los horarios o la rutina dificultan asistir de manera presencial a un consultorio en Manizales.",
-            "Antes de iniciar se confirma la viabilidad de la atención según las necesidades del caso y las condiciones aplicables en el lugar de residencia de la persona consultante.",
-          ],
-          bullets: [
-            "Personas que viven fuera de Manizales o fuera de Colombia.",
-            "Adultos que necesitan integrar la terapia con jornadas laborales o académicas exigentes.",
-            "Personas que prefieren realizar el proceso desde un espacio privado y conocido.",
-            "Consultantes que buscan continuidad cuando cambian temporalmente de ciudad o país.",
+            "Además de conversar sobre las dificultades del presente, la terapia busca identificar patrones de pensamiento, emoción y conducta en situaciones específicas, desarrollar respuestas más flexibles y orientar acciones hacia lo que cada persona considera importante.",
+            "Los objetivos y la frecuencia de las sesiones se acuerdan según la valoración y las circunstancias individuales. No existe un proceso único que se aplique de la misma manera a todas las personas.",
           ],
         },
         {
-          heading: "Un proceso orientado a significado, valores y acción",
+          heading: "¿Cómo solicitar información?",
           paragraphs: [
-            "El objetivo no es limitar la sesión a hablar de lo que ocurrió durante la semana. El proceso busca identificar cómo funcionan los pensamientos, emociones y conductas en contextos concretos, y desarrollar respuestas más flexibles frente a ellos.",
-            "La meta terapéutica se conecta con una idea central del enfoque de Jefferson: avanzar hacia una vida con mayor claridad, presencia y dirección, incluso cuando aparecen emociones difíciles.",
+            "Puedes escribir para consultar disponibilidad, modalidad y pasos para iniciar. Si resides en Pereira y buscas específicamente atención online en esa ciudad, también encontrarás una página con información dedicada a este servicio entre los enlaces relacionados.",
           ],
         },
       ]}
       relatedLinks={[
         {
-          href: "/terapias-contextuales-act",
-          label: "Terapias contextuales y ACT",
-          description: "Conoce el enfoque terapéutico que orienta buena parte del trabajo clínico.",
+          href: "/psicologo-online-pereira",
+          label: "Psicólogo online en Pereira",
+          description: "Conoce la atención de psicoterapia virtual dirigida a personas adultas que viven en Pereira.",
         },
         {
-          href: "/ansiedad-manizales",
-          label: "Ansiedad en Manizales",
-          description: "Explora cómo se aborda la preocupación, la alerta y el desborde emocional.",
+          href: "/motivos-de-consulta",
+          label: "Motivos de consulta",
+          description: "Explora ansiedad, depresión, estrés y burnout, entre otros temas posibles de consulta.",
+        },
+        {
+          href: "/terapias-contextuales-act",
+          label: "Terapias contextuales y ACT",
+          description: "Conoce el enfoque terapéutico que orienta el trabajo clínico.",
         },
         {
           href: "/sobre-jefferson-bastidas",
           label: "Sobre Jefferson Bastidas",
-          description: "Revisa formación, experiencia y trayectoria profesional.",
+          description: "Revisa su perfil, formación y trayectoria profesional.",
         },
       ]}
     />
