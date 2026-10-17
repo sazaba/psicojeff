@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
@@ -44,7 +45,7 @@ const questions = [
   { q: "¿Se pueden abordar ansiedad, depresión, estrés o burnout?", a: "Son algunos de los motivos de consulta que pueden explorarse en el proceso. Cada situación requiere una valoración individual para definir la pertinencia y los objetivos del acompañamiento." },
 ];
 
-function Contact({ children, light = false, className = "" }: { children: React.ReactNode; light?: boolean; className?: string }) {
+function Contact({ children, light = false, className = "" }: { children: ReactNode; light?: boolean; className?: string }) {
   return (
     <a href={contactUrl} target="_blank" rel="noopener noreferrer"
       className={"inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 py-3.5 text-center text-sm font-bold shadow-[0_12px_30px_-14px_rgba(15,118,110,0.65)] transition duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-teal-300 " + (light ? "bg-white text-teal-900 hover:bg-teal-50 " : "bg-teal-700 text-white hover:bg-teal-800 ") + className}>
@@ -53,11 +54,11 @@ function Contact({ children, light = false, className = "" }: { children: React.
   );
 }
 
-function Eyebrow({ children, inverted = false }: { children: React.ReactNode; inverted?: boolean }) {
+function Eyebrow({ children, inverted = false }: { children: ReactNode; inverted?: boolean }) {
   return <p className={"mb-4 text-xs font-bold uppercase tracking-[0.18em] " + (inverted ? "text-teal-200" : "text-teal-700")}>{children}</p>;
 }
 
-function Entrance({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+function Entrance({ children, className = "" }: { children: ReactNode; className?: string }) {
   const reduced = useReducedMotion();
   return <motion.div className={className} initial={reduced ? false : { opacity: 0, y: 18 }} whileInView={reduced ? undefined : { opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.13 }} transition={{ duration: 0.55, ease: "easeOut" }}>{children}</motion.div>;
 }
