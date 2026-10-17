@@ -291,10 +291,10 @@ export default function PereiraLandingClient() {
             <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-cyan-300/15 blur-3xl" aria-hidden="true" />
             <div className="relative mx-auto max-w-3xl">
               <Eyebrow inverted>Tu siguiente paso</Eyebrow>
-              <h2 className="font-serif text-3xl font-semibold leading-tight md:text-5xl">Puedes empezar con una sola pregunta</h2>
-              <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/85">Si vives en Pereira y quieres explorar la psicoterapia online, escribe para resolver tus dudas y consultar disponibilidad. Sin compromisos antes de conocer el servicio.</p>
+              <h2 className="font-serif text-3xl font-semibold leading-tight text-white md:text-5xl">Puedes empezar con una sola pregunta</h2>
+              <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/95">Si vives en Pereira y quieres explorar la psicoterapia online, escribe para resolver tus dudas y consultar disponibilidad. Sin compromisos antes de conocer el servicio.</p>
               <div className="mt-9"><Contact light>Escribir por WhatsApp</Contact></div>
-              <p className="mt-6 text-xs text-teal-100/80">Atención online para Pereira · Consulta presencial únicamente en Manizales</p>
+              <p className="mt-6 text-xs text-teal-50/90">Atención online para Pereira · Consulta presencial únicamente en Manizales</p>
             </div>
           </Entrance>
         </section>
