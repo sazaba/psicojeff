@@ -74,6 +74,11 @@ export default function PsicoterapiaOnlinePage() {
       ]}
       relatedLinks={[
         {
+          href: "/psicologo-online-pereira",
+          label: "Psicólogo online en Pereira",
+          description: "Información sobre la atención psicológica virtual para personas adultas que viven en Pereira.",
+        },
+        {
           href: "/terapias-contextuales-act",
           label: "Terapias contextuales y ACT",
           description: "Conoce el enfoque terapéutico que orienta buena parte del trabajo clínico.",
