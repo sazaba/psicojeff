@@ -123,7 +123,7 @@ export default function HomeSeoServices() {
 
           <div className="relative grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(235px,300px)_minmax(0,1fr)] xl:grid-rows-3 xl:gap-x-7 xl:gap-y-7">
             <div className="relative order-first col-span-full flex min-h-[310px] min-w-0 items-center justify-center overflow-hidden sm:min-h-[335px] xl:order-none xl:col-span-1 xl:col-start-2 xl:row-start-1 xl:row-span-3 xl:min-h-0" aria-label="Explorador interactivo de servicios">
-              <div className="relative flex h-[282px] w-[282px] shrink-0 items-center justify-center sm:h-[310px] sm:w-[310px] xl:h-[292px] xl:w-[292px]">
+              <div className="relative flex h-[min(76vw,282px)] w-[min(76vw,282px)] shrink-0 items-center justify-center sm:h-[310px] sm:w-[310px] xl:h-[292px] xl:w-[292px]">
                 <motion.div
                   aria-hidden="true"
                   className="absolute inset-0 rounded-full bg-teal-200/55 blur-[45px]"
