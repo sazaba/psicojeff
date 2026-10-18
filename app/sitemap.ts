@@ -21,6 +21,21 @@ const pillarRoutes: MetadataRoute.Sitemap = [
     priority: 0.9,
   },
   {
+    url: `${baseUrl}/psicologo-online-armenia`,
+    changeFrequency: "monthly",
+    priority: 0.85,
+  },
+  {
+    url: `${baseUrl}/psicologo-online-medellin`,
+    changeFrequency: "monthly",
+    priority: 0.85,
+  },
+  {
+    url: `${baseUrl}/psicologo-online-bogota`,
+    changeFrequency: "monthly",
+    priority: 0.85,
+  },
+  {
     url: `${baseUrl}/ansiedad-manizales`,
     changeFrequency: "monthly",
     priority: 0.9,

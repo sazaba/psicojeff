@@ -12,7 +12,8 @@ import {
 import Headerpsicojeff from "@/app/assets/Headerpsicojeff.webp";
 import Jeffseo from "@/app/assets/Jeffseo.webp";
 import { reviews } from "@/app/components/sections/Testimonials";
-import EmotionalCheckin from "./EmotionalCheckin";
+import type { CityLandingConfig } from "@/lib/seo/onlineCityLandings";
+import { cityLandings, onlineCityOrder } from "@/lib/seo/onlineCityLandings";
 
 const contactUrl = "https://wa.link/2x3i8s";
 const reviewUrl = "https://share.google/5gs2judHeh0di1b4W";
@@ -27,7 +28,7 @@ const concerns = [
 const benefits = [
   { title: "Un espacio para entender lo que te pasa", text: "Explorar tus experiencias y emociones con una mirada profesional, sin juicios ni respuestas idénticas para todos.", Icon: HeartHandshake },
   { title: "Herramientas para la vida cotidiana", text: "Trabajar estrategias relacionadas con pensamientos, emociones, comportamientos y decisiones significativas.", Icon: Sparkles },
-  { title: "Atención desde Pereira, sin desplazarte", text: "Acceder a sesiones por videollamada desde un espacio privado, con horarios acordados previamente.", Icon: Video },
+  { title: "Atención online desde tu ciudad", text: "Conectarte por videollamada desde un lugar privado, con horarios acordados previamente, sin desplazarte hasta el consultorio en Manizales.", Icon: Video },
 ];
 
 const process = [
@@ -41,7 +42,6 @@ const questions = [
   { q: "Nunca he asistido a terapia. ¿Qué debo decir?", a: "No necesitas tenerlo todo claro. Puedes comenzar describiendo lo que estás viviendo y lo que te gustaría comprender o cambiar. Los objetivos se van aclarando durante el proceso." },
   { q: "¿Cómo se mantiene la privacidad de una videollamada?", a: "El proceso se desarrolla bajo deberes profesionales de confidencialidad y sus límites aplicables. Necesitarás un lugar donde puedas conversar sin interrupciones; consulta antes de iniciar las condiciones de conexión y manejo de información." },
   { q: "¿Cuánto cuesta y cuánto dura la consulta?", a: "La web principal informa actualmente una tarifa de $100.000 COP para residentes en Colombia y encuentros de aproximadamente 60 a 90 minutos. Confirma antes de agendar el valor y la duración vigentes." },
-  { q: "¿Tienen consultorio presencial en Pereira?", a: "La atención para personas de Pereira es exclusivamente online. El consultorio presencial publicado en el sitio se encuentra en Manizales." },
   { q: "¿Se pueden abordar ansiedad, depresión, estrés o burnout?", a: "Son algunos de los motivos de consulta que pueden explorarse en el proceso. Cada situación requiere una valoración individual para definir la pertinencia y los objetivos del acompañamiento." },
 ];
 
@@ -77,9 +77,9 @@ function AnimatedSignal() {
   );
 }
 
-export default function PereiraLandingClient() {
+export default function CityOnlineLandingClient({ city }: { city: CityLandingConfig }) {
   return (
-    <div className="min-h-screen overflow-x-clip bg-[#faf9f6] pb-20 text-stone-700 sm:pb-0">
+    <div className="min-h-screen overflow-x-clip bg-[#faf9f6] pb-24 text-stone-700 sm:pb-0">
       <header className="sticky top-0 z-40 border-b border-white/80 bg-[#faf9f6]/90 backdrop-blur-2xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-5 py-3 md:px-8">
           <Link href="/" className="flex min-w-0 items-center gap-3" aria-label="Volver al inicio de Jefferson Bastidas">
@@ -91,7 +91,7 @@ export default function PereiraLandingClient() {
           </Link>
           <nav className="hidden items-center gap-7 text-sm font-semibold text-stone-600 lg:flex" aria-label="Secciones de la página">
             <a href="#motivos" className="transition hover:text-teal-700">Motivos</a>
-            <a href="#chequeo" className="transition hover:text-teal-700">Mini chequeo</a>
+            <a href="#contexto" className="transition hover:text-teal-700">Tu ciudad</a>
             <a href="#testimonios" className="transition hover:text-teal-700">Reseñas</a>
             <a href="#preguntas" className="transition hover:text-teal-700">Preguntas</a>
           </nav>
@@ -101,24 +101,24 @@ export default function PereiraLandingClient() {
       </header>
 
       <main>
-        <section className="relative isolate overflow-hidden px-5 pb-20 pt-10 md:px-8 md:pb-28 md:pt-20">
+        <section className="relative isolate overflow-hidden px-5 pb-20 pt-10 sm:pt-14 md:px-8 md:pb-28 md:pt-20">
           <div className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_18%_20%,rgba(153,246,228,0.43),transparent_38%),radial-gradient(ellipse_at_88%_20%,rgba(186,230,253,0.38),transparent_39%)]" aria-hidden="true" />
           <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.08fr_0.92fr]">
             <Entrance>
               <nav className="mb-7 text-xs text-stone-500" aria-label="Ruta de navegación">
-                <Link href="/" className="hover:text-teal-700">Inicio</Link><span className="mx-2">/</span>Psicoterapia online Pereira
+                <Link href="/" className="hover:text-teal-700">Inicio</Link><span className="mx-2">/</span>Psicoterapia online en {city.name}
               </nav>
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white/85 px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-teal-800 shadow-sm"><MapPin size={14} aria-hidden="true" /> Pereira, Risaralda · 100 % online</div>
-              <h1 className="max-w-3xl font-serif text-[2.7rem] font-semibold leading-[1.07] tracking-[-0.035em] text-stone-950 sm:text-5xl lg:text-[4.1rem]">
-                Psicólogo online en Pereira
-                <span className="mt-3 block bg-gradient-to-r from-teal-700 to-cyan-700 bg-clip-text text-transparent">Un espacio para escucharte, comprender y avanzar</span>
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white/85 px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-teal-800 shadow-sm"><MapPin size={14} aria-hidden="true" /> {city.name}, {city.department} · 100 % online</div>
+              <h1 className="max-w-3xl font-serif text-[clamp(2.3rem,5.1vw,4.35rem)] font-semibold leading-[1.09] tracking-[-0.035em] text-stone-950">
+                Psicólogo online en {city.name}
+                <span className="mt-3 block bg-gradient-to-r from-teal-700 via-teal-600 to-sky-700 bg-clip-text text-transparent">{city.heroSubtitle}</span>
               </h1>
               <p className="mt-7 max-w-xl text-base leading-8 text-stone-600 sm:text-lg">
-                Si la ansiedad, la depresión, el estrés o el agotamiento están ocupando demasiado espacio en tu vida, conoce la psicoterapia online para adultos con Jefferson Bastidas Mejía. Comienza resolviendo tus dudas, sin desplazarte de Pereira.
+                {city.heroLead}
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                 <Contact>Consultar por WhatsApp</Contact>
-                <a href="#chequeo" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-stone-300 bg-white/90 px-6 py-3 text-sm font-bold text-stone-800 transition hover:border-teal-400 hover:text-teal-800">Hacer mini chequeo <ArrowRight size={17} aria-hidden="true" /></a>
+                <a href="#proceso" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-stone-300 bg-white/90 px-6 py-3 text-sm font-bold text-stone-800 transition hover:border-teal-400 hover:text-teal-800">Cómo funciona <ArrowRight size={17} aria-hidden="true" /></a>
               </div>
               <div className="mt-8 flex flex-wrap gap-x-5 gap-y-3 text-xs font-semibold text-stone-600 sm:text-sm">
                 <span className="flex items-center gap-2"><Video size={17} className="text-teal-700" /> Sesiones por videollamada</span>
@@ -128,13 +128,13 @@ export default function PereiraLandingClient() {
             </Entrance>
             <Entrance className="relative mx-auto w-full max-w-[510px]">
               <AnimatedSignal />
-              <div className="relative rounded-[2.75rem] border border-white/90 bg-white/60 p-5 shadow-[0_35px_100px_-48px_rgba(15,23,42,0.35)] backdrop-blur-2xl sm:p-8">
+              <div className="relative rounded-[2.5rem] border border-white/90 bg-white/60 p-4 shadow-[0_35px_100px_-48px_rgba(15,23,42,0.35)] backdrop-blur-2xl sm:rounded-[2.75rem] sm:p-8">
                 <div className="absolute inset-x-8 top-12 h-56 rounded-full bg-teal-100/70 blur-3xl" aria-hidden="true" />
-                <Image src={Headerpsicojeff} alt="Jefferson Bastidas, psicólogo que atiende online a pacientes de Pereira" className="relative z-10 mx-auto h-auto w-full object-contain [mask-image:linear-gradient(to_bottom,black_86%,transparent_100%)]" priority placeholder="blur" sizes="(max-width: 1024px) 88vw, 510px" />
-                <div className="relative z-10 -mt-3 flex items-center gap-3 rounded-[1.6rem] border border-white/95 bg-white/90 p-4 shadow-lg backdrop-blur-xl">
+                <Image src={Headerpsicojeff} alt={`Jefferson Bastidas, psicólogo que atiende por videollamada a personas de ${city.name}`} className="relative z-10 mx-auto h-auto w-full object-contain [mask-image:linear-gradient(to_bottom,black_86%,transparent_100%)]" priority placeholder="blur" sizes="(max-width: 1024px) 88vw, 510px" />
+                <div className="relative z-10 -mt-3 flex min-w-0 items-center gap-3 rounded-[1.6rem] border border-white/95 bg-white/90 p-3 shadow-lg backdrop-blur-xl sm:p-4">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-teal-50 text-teal-700"><Waves size={23} aria-hidden="true" /></div>
                   <div>
-                    <p className="font-serif text-lg font-semibold text-stone-900">Jefferson Bastidas Mejía</p>
+                    <p className="font-serif text-base font-semibold text-stone-900 sm:text-lg">Jefferson Bastidas Mejía</p>
                     <p className="text-xs leading-5 text-stone-600">Psicólogo · Especialista en Salud Ocupacional</p>
                   </div>
                 </div>
@@ -145,7 +145,7 @@ export default function PereiraLandingClient() {
 
         <section className="border-y border-white bg-white/80 px-5 py-8 md:px-8">
           <div className="mx-auto grid max-w-6xl gap-5 text-center text-sm font-semibold text-stone-700 md:grid-cols-3">
-            <p className="flex items-center justify-center gap-2"><Video size={19} className="text-teal-700" /> Modalidad virtual para Pereira</p>
+            <p className="flex items-center justify-center gap-2"><Video size={19} className="text-teal-700" /> Modalidad virtual para {city.name}</p>
             <p className="flex items-center justify-center gap-2"><LockKeyhole size={19} className="text-teal-700" /> Conversación desde un lugar privado</p>
             <p className="flex items-center justify-center gap-2"><HeartHandshake size={19} className="text-teal-700" /> Acompañamiento para adultos</p>
           </div>
@@ -172,7 +172,29 @@ export default function PereiraLandingClient() {
           </div>
         </section>
 
-        <EmotionalCheckin />
+        <section id="contexto" className="scroll-mt-28 px-5 py-20 md:px-8 md:py-28">
+          <div className="mx-auto max-w-7xl">
+            <Entrance className="mx-auto max-w-3xl">
+              <Eyebrow>Psicoterapia online en {city.name}</Eyebrow>
+              <h2 className="font-serif text-3xl font-semibold leading-[1.14] tracking-tight text-stone-950 sm:text-4xl md:text-5xl">{city.contextTitle}</h2>
+              <p className="mt-6 text-lg leading-8 text-stone-600">{city.contextLead}</p>
+              <p className="mt-4 text-base leading-8 text-stone-600">{city.contextualIntro}</p>
+            </Entrance>
+            <div className="mt-12 grid gap-5 md:grid-cols-3">
+              {city.situations.map((item, index) => (
+                <Entrance key={item.title}>
+                  <article className="group relative h-full overflow-hidden rounded-[2rem] border border-white bg-white/85 p-7 shadow-[0_24px_70px_-45px_rgba(15,23,42,0.26)] backdrop-blur-lg transition duration-300 hover:-translate-y-1 hover:shadow-xl motion-reduce:transform-none sm:p-8">
+                    <div className="absolute right-[-25px] top-[-25px] h-28 w-28 rounded-full bg-teal-100/60 blur-2xl transition-transform duration-500 group-hover:scale-150 motion-reduce:transition-none" aria-hidden="true" />
+                    <div className="relative mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-teal-100 bg-teal-50 font-serif text-xl font-semibold text-teal-800">0{index + 1}</div>
+                    <h3 className="relative font-serif text-2xl font-semibold text-stone-900">{item.title}</h3>
+                    <p className="relative mt-4 leading-7 text-stone-600">{item.description}</p>
+                  </article>
+                </Entrance>
+              ))}
+            </div>
+            <div className="mt-10 flex justify-center"><Contact>Consultar atención desde {city.name}</Contact></div>
+          </div>
+        </section>
 
         <section className="border-y border-teal-100 bg-[#ecf7f5] px-5 py-20 md:px-8 md:py-28">
           <div className="mx-auto max-w-7xl">
@@ -243,7 +265,7 @@ export default function PereiraLandingClient() {
             <Entrance className="mx-auto mb-12 max-w-3xl text-center">
               <Eyebrow>Opiniones compartidas públicamente</Eyebrow>
               <h2 className="font-serif text-3xl font-semibold leading-tight text-stone-950 md:text-5xl">Lo que otras personas han compartido sobre Jefferson</h2>
-              <p className="mt-5 text-sm leading-7 text-stone-600">Estas seis reseñas son las mismas publicadas en la página principal de Manizales. No se presentan como experiencias de pacientes de Pereira ni garantizan resultados similares.</p>
+              <p className="mt-5 text-sm leading-7 text-stone-600">Estas seis reseñas son las mismas publicadas en la página principal de Manizales. No se presentan como experiencias de pacientes de {city.name} ni garantizan resultados similares.</p>
             </Entrance>
             <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
               {reviews.map((review) => (
@@ -276,7 +298,7 @@ export default function PereiraLandingClient() {
               <div className="mt-8 hidden lg:block"><Contact>Hacer una consulta</Contact></div>
             </Entrance>
             <div className="space-y-3">
-              {questions.map((item) => (
+              {[...questions, ...city.localQuestions.map((item) => ({ q: item.question, a: item.answer }))].map((item) => (
                 <details key={item.q} className="group rounded-2xl border border-white/95 bg-white/90 px-6 py-5 shadow-sm">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-semibold text-stone-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 [&::-webkit-details-marker]:hidden">{item.q}<ChevronDown size={19} className="shrink-0 text-teal-700 transition-transform group-open:rotate-180" aria-hidden="true" /></summary>
                   <p className="pt-4 leading-7 text-stone-600">{item.a}</p>
@@ -292,11 +314,24 @@ export default function PereiraLandingClient() {
             <div className="relative mx-auto max-w-3xl">
               <Eyebrow inverted>Tu siguiente paso</Eyebrow>
               <h2 className="font-serif text-3xl font-semibold leading-tight text-white md:text-5xl">Puedes empezar con una sola pregunta</h2>
-              <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/95">Si vives en Pereira y quieres explorar la psicoterapia online, escribe para resolver tus dudas y consultar disponibilidad. Sin compromisos antes de conocer el servicio.</p>
+              <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/95">{city.finalLead} Sin compromisos antes de conocer el servicio.</p>
               <div className="mt-9"><Contact light>Escribir por WhatsApp</Contact></div>
-              <p className="mt-6 text-xs text-teal-50/90">Atención online para Pereira · Consulta presencial únicamente en Manizales</p>
+              <p className="mt-6 text-xs text-teal-50/90">Atención online para {city.name} · Consulta presencial únicamente en Manizales</p>
             </div>
           </Entrance>
+        </section>
+        <section aria-labelledby="otras-ciudades-title" className="px-5 pb-16 md:px-8 md:pb-24">
+          <div className="mx-auto max-w-6xl border-t border-stone-200 pt-9">
+            <h2 id="otras-ciudades-title" className="font-serif text-xl font-semibold text-stone-900">Atención online en otras ciudades</h2>
+            <p className="mt-2 text-sm text-stone-600">La consulta sigue siendo virtual, independientemente de la ciudad de residencia.</p>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {onlineCityOrder.filter((key) => key !== city.key).map((key) => (
+                <Link key={key} href={cityLandings[key].path} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-teal-100 bg-white px-4 py-2 text-sm font-semibold text-teal-800 transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-sm motion-reduce:transform-none">
+                  Psicólogo online en {cityLandings[key].name} <ArrowUpRight size={15} aria-hidden="true" />
+                </Link>
+              ))}
+            </div>
+          </div>
         </section>
       </main>
 
