@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
 import { glossaryTerms } from "@/lib/seo/glossary";
+import { cityLandings, onlineCityOrder } from "@/lib/seo/onlineCityLandings";
 
 const baseUrl = "https://psicologojeffersonbastidas.com";
 
@@ -15,26 +16,11 @@ const pillarRoutes: MetadataRoute.Sitemap = [
     changeFrequency: "monthly",
     priority: 0.9,
   },
-  {
-    url: `${baseUrl}/psicologo-online-pereira`,
-    changeFrequency: "monthly",
-    priority: 0.9,
-  },
-  {
-    url: `${baseUrl}/psicologo-online-armenia`,
-    changeFrequency: "monthly",
-    priority: 0.85,
-  },
-  {
-    url: `${baseUrl}/psicologo-online-medellin`,
-    changeFrequency: "monthly",
-    priority: 0.85,
-  },
-  {
-    url: `${baseUrl}/psicologo-online-bogota`,
-    changeFrequency: "monthly",
-    priority: 0.85,
-  },
+  ...onlineCityOrder.map((key) => ({
+    url: `${baseUrl}${cityLandings[key].path}`,
+    changeFrequency: "monthly" as const,
+    priority: key === "pereira" ? 0.9 : 0.85,
+  })),
   {
     url: `${baseUrl}/ansiedad-manizales`,
     changeFrequency: "monthly",
