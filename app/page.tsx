@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import Navbar from "@/app/components/ui/Navbar";
 import Hero from "@/app/components/sections/Hero";
+import HomeOnlineCities from "@/app/components/sections/HomeOnlineCities";
 import PainPoints from "@/app/components/sections/PainPoints";
 import HomeSeoServices from "@/app/components/sections/HomeSeoServices";
 import HomeBusinessServices from "@/app/components/sections/HomeBusinessServices";
@@ -138,6 +139,8 @@ export default async function Home() {
         <section id="inicio">
           <Hero />
         </section>
+
+        <HomeOnlineCities />
 
         <section id="motivos">
           <PainPoints />
