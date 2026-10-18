@@ -28,7 +28,7 @@ const concerns = [
 const benefits = [
   { title: "Un espacio para entender lo que te pasa", text: "Explorar tus experiencias y emociones con una mirada profesional, sin juicios ni respuestas idénticas para todos.", Icon: HeartHandshake },
   { title: "Herramientas para la vida cotidiana", text: "Trabajar estrategias relacionadas con pensamientos, emociones, comportamientos y decisiones significativas.", Icon: Sparkles },
-  { title: "Atención desde Pereira, sin desplazarte", text: "Acceder a sesiones por videollamada desde un espacio privado, con horarios acordados previamente.", Icon: Video },
+  { title: "Atención online desde tu ciudad", text: "Conectarte por videollamada desde un lugar privado, con horarios acordados previamente, sin desplazarte hasta el consultorio en Manizales.", Icon: Video },
 ];
 
 const process = [
