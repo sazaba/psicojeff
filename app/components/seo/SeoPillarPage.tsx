@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image, { type StaticImageData } from "next/image";
 import Navbar from "@/app/components/ui/Navbar";
 import Footer from "@/app/components/sections/Footer";
+import HomeOnlineCities from "@/app/components/sections/HomeOnlineCities";
 import { AUTHOR_NAME, SITE_URL } from "@/lib/seo/metadata";
 import { getGlossaryTerm } from "@/lib/seo/glossary";
 
@@ -28,6 +29,7 @@ interface SeoPillarPageProps {
   schemaType?: "Service" | "ProfilePage";
   areaServed?: string;
   heroImage?: { src: StaticImageData; alt: string };
+  showOnlineCities?: boolean;
 }
 
 const pillarGlossaryMap: Record<string, string[]> = {
@@ -92,6 +94,7 @@ export default function SeoPillarPage({
   schemaType = "Service",
   areaServed = "Manizales, Caldas, Colombia",
   heroImage,
+  showOnlineCities = false,
 }: SeoPillarPageProps) {
   const pageUrl = `${SITE_URL}${canonicalPath}`;
   const personId = `${SITE_URL}/#person`;
@@ -235,6 +238,8 @@ export default function SeoPillarPage({
             </div>
           </div>
         </section>
+
+        {showOnlineCities && <HomeOnlineCities />}
 
         <section className="py-20 px-6">
           <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-12 lg:gap-16 items-start">
