@@ -10,50 +10,51 @@ import {
   UserRound,
   Video,
   Waves,
+  Sparkles,
 } from "lucide-react";
 
 const pathways = [
   {
     href: "/psicoterapia-online",
     label: "Psicoterapia online",
+    eyebrow: "Atención a distancia",
+    description: "Un espacio para conversar desde el Eje Cafetero o el exterior.",
     icon: Video,
-    desktop: "left-[6%] top-[13%]",
-    mobile: "col-span-2",
   },
   {
     href: "/motivos-de-consulta",
     label: "Motivos de consulta",
+    eyebrow: "Lo que estás viviendo",
+    description: "Ansiedad, depresión, estrés y otros motivos para buscar apoyo.",
     icon: Waves,
-    desktop: "right-[8%] top-[10%]",
-    mobile: "",
   },
   {
     href: "/estres-burnout-manizales",
     label: "Estrés y burnout",
+    eyebrow: "Bienestar y trabajo",
+    description: "Explora el agotamiento y las exigencias de la vida cotidiana.",
     icon: Flame,
-    desktop: "left-[3%] bottom-[19%]",
-    mobile: "",
   },
   {
     href: "/insomnio-manizales",
     label: "Insomnio",
+    eyebrow: "Descanso y bienestar",
+    description: "Conoce el abordaje de las dificultades para descansar.",
     icon: Moon,
-    desktop: "right-[4%] bottom-[18%]",
-    mobile: "",
   },
   {
     href: "/terapias-contextuales-act",
     label: "Terapias contextuales",
+    eyebrow: "Enfoque terapéutico",
+    description: "Descubre ACT y el trabajo con lo que es importante para ti.",
     icon: Orbit,
-    desktop: "left-[31%] bottom-[6%]",
-    mobile: "col-span-2",
   },
   {
     href: "/sobre-jefferson-bastidas",
     label: "Perfil profesional",
+    eyebrow: "Conoce a Jefferson",
+    description: "Formación, trayectoria y la manera de orientar sus procesos.",
     icon: UserRound,
-    desktop: "right-[29%] top-[5%]",
-    mobile: "col-span-2",
   },
 ];
 
@@ -63,170 +64,112 @@ export default function HomeSeoServices() {
   return (
     <section
       id="servicios"
-      className="relative overflow-hidden border-y border-stone-200/60 bg-[#f6f6f4] px-4 py-12 sm:px-6 md:px-8 md:py-20"
+      aria-labelledby="servicios-heading"
+      className="relative isolate overflow-hidden border-y border-stone-200/70 bg-[#f7f8f6] px-5 py-16 sm:px-8 sm:py-20 lg:py-24"
     >
-      <h2 className="sr-only">Áreas de atención psicológica</h2>
-
-      <div className="relative mx-auto max-w-7xl">
-        <div className="relative overflow-hidden rounded-[2.2rem] border border-white/90 bg-white/55 shadow-[0_35px_100px_-55px_rgba(15,23,42,0.38)] backdrop-blur-3xl md:min-h-[640px] md:rounded-[3rem]">
-          <motion.div
-            aria-hidden="true"
-            className="absolute left-[18%] top-[12%] h-72 w-72 rounded-full bg-teal-200/45 blur-[90px]"
-            animate={
-              reduceMotion
-                ? undefined
-                : { x: [0, 36, -10, 0], y: [0, 18, 36, 0], scale: [1, 1.08, 0.96, 1] }
-            }
-            transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            aria-hidden="true"
-            className="absolute bottom-[10%] right-[16%] h-80 w-80 rounded-full bg-cyan-100/70 blur-[105px]"
-            animate={
-              reduceMotion
-                ? undefined
-                : { x: [0, -32, 10, 0], y: [0, -18, -30, 0], scale: [1, 0.95, 1.07, 1] }
-            }
-            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.72),rgba(255,255,255,0.18)_42%,rgba(15,118,110,0.035))]"
-          />
-
-          <div className="relative grid grid-cols-2 gap-3 p-4 sm:gap-4 sm:p-6 md:hidden">
-            {pathways.map((pathway, index) => {
-              const Icon = pathway.icon;
-
-              return (
-                <motion.div
-                  key={pathway.href}
-                  className={pathway.mobile}
-                  initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-                  whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.35 }}
-                  transition={{ duration: 0.45, delay: index * 0.045 }}
-                >
-                  <Link
-                    href={pathway.href}
-                    className="group block rounded-[1.6rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/60"
-                  >
-                    <motion.div
-                      whileTap={reduceMotion ? undefined : { scale: 0.985 }}
-                      className="flex min-h-[150px] flex-col justify-between rounded-[1.6rem] border border-white/95 bg-white/72 p-5 shadow-[0_18px_45px_-34px_rgba(15,23,42,0.55)] backdrop-blur-2xl"
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-stone-950 text-white shadow-sm">
-                          <Icon size={18} strokeWidth={1.7} />
-                        </span>
-                        <ArrowUpRight size={18} className="text-stone-400" />
-                      </div>
-                      <span className="font-serif text-xl leading-tight tracking-[-0.02em] text-stone-950">
-                        {pathway.label}
-                      </span>
-                    </motion.div>
-                  </Link>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          <div className="relative hidden min-h-[640px] md:block">
-            <div
-              aria-hidden="true"
-              className="absolute left-1/2 top-1/2 h-[330px] w-[330px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-stone-200/70"
-            />
-            <div
-              aria-hidden="true"
-              className="absolute left-1/2 top-1/2 h-[235px] w-[235px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-stone-200/60"
-            />
-
-            <motion.div
-              aria-hidden="true"
-              className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/90 bg-white/65 shadow-[0_22px_70px_-36px_rgba(13,148,136,0.55)] backdrop-blur-3xl"
-              animate={
-                reduceMotion
-                  ? undefined
-                  : {
-                      boxShadow: [
-                        "0 22px 70px -36px rgba(13,148,136,0.35)",
-                        "0 24px 90px -30px rgba(13,148,136,0.52)",
-                        "0 22px 70px -36px rgba(13,148,136,0.35)",
-                      ],
-                    }
-              }
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-28 top-20 -z-10 h-96 w-96 rounded-full bg-teal-100/60 blur-[100px]"
+      />
+      <div className="mx-auto max-w-7xl">
+        <div className="relative isolate grid items-center gap-7 overflow-hidden rounded-[2rem] border border-white/90 bg-gradient-to-br from-white via-[#f0fbf8] to-[#ecf8f7] px-6 py-9 shadow-[0_22px_90px_-58px_rgba(15,23,42,0.35)] sm:rounded-[2.8rem] sm:px-10 sm:py-12 lg:grid-cols-[1.35fr_0.65fr] lg:px-14 lg:py-14">
+          <div className="relative z-10 max-w-2xl">
+            <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-teal-700">
+              <Sparkles size={16} aria-hidden="true" />
+              Explora tu camino
+            </p>
+            <h2
+              id="servicios-heading"
+              className="mt-5 font-serif text-[clamp(2rem,4.4vw,3.65rem)] font-semibold leading-[1.12] tracking-[-0.03em] text-stone-950"
             >
-              <div className="absolute inset-4 rounded-full bg-[radial-gradient(circle_at_35%_30%,rgba(255,255,255,0.98),rgba(204,251,241,0.72)_42%,rgba(94,234,212,0.32)_72%,rgba(255,255,255,0.42))]" />
-              <motion.div
-                className="absolute inset-[30%] rounded-full bg-teal-500/80 blur-[1px]"
-                animate={reduceMotion ? undefined : { scale: [1, 1.14, 1], opacity: [0.6, 0.9, 0.6] }}
-                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-              />
-            </motion.div>
-
-            {pathways.map((pathway, index) => {
-              const Icon = pathway.icon;
-
-              return (
-                <motion.div
-                  key={pathway.href}
-                  className={"absolute " + pathway.desktop}
-                  initial={reduceMotion ? false : { opacity: 0, scale: 0.94, y: 14 }}
-                  whileInView={reduceMotion ? undefined : { opacity: 1, scale: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.4 }}
-                  transition={{
-                    duration: 0.55,
-                    delay: index * 0.06,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                >
-                  <Link
-                    href={pathway.href}
-                    className="group block rounded-[1.65rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/60 focus-visible:ring-offset-4 focus-visible:ring-offset-transparent"
-                  >
-                    <motion.div
-                      whileHover={
-                        reduceMotion
-                          ? undefined
-                          : {
-                              y: -7,
-                              scale: 1.025,
-                              boxShadow: "0 28px 70px -34px rgba(15,23,42,0.34)",
-                            }
-                      }
-                      transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                      className="relative min-w-[230px] overflow-hidden rounded-[1.65rem] border border-white/95 bg-white/74 px-5 py-4 shadow-[0_20px_54px_-38px_rgba(15,23,42,0.48)] backdrop-blur-2xl lg:min-w-[255px]"
-                    >
-                      <div
-                        aria-hidden="true"
-                        className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.8),rgba(255,255,255,0.12)_58%,rgba(20,184,166,0.06))]"
-                      />
-                      <div className="relative flex items-center gap-4">
-                        <motion.span
-                          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-stone-950 text-white shadow-[0_10px_24px_-14px_rgba(15,23,42,0.7)]"
-                          whileHover={reduceMotion ? undefined : { rotate: index % 2 === 0 ? -5 : 5 }}
-                        >
-                          <Icon size={19} strokeWidth={1.7} />
-                        </motion.span>
-
-                        <span className="min-w-0 flex-1 font-serif text-[1.2rem] leading-tight tracking-[-0.02em] text-stone-950 lg:text-[1.32rem]">
-                          {pathway.label}
-                        </span>
-
-                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-stone-200/80 bg-white/70 text-stone-500 transition-all duration-300 group-hover:border-stone-950 group-hover:bg-stone-950 group-hover:text-white">
-                          <ArrowUpRight
-                            size={15}
-                            className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                          />
-                        </span>
-                      </div>
-                    </motion.div>
-                  </Link>
-                </motion.div>
-              );
-            })}
+              Un espacio para lo que estás viviendo
+            </h2>
+            <p className="mt-5 max-w-xl text-base leading-8 text-stone-600 sm:text-lg">
+              Encuentra información sobre los motivos de consulta, el enfoque
+              terapéutico y las modalidades de atención de Jefferson Bastidas.
+            </p>
           </div>
+
+          <div
+            className="pointer-events-none relative mx-auto hidden h-52 w-full max-w-[260px] items-center justify-center lg:flex"
+            aria-hidden="true"
+          >
+            <div className="absolute h-48 w-48 rounded-full bg-teal-200/50 blur-3xl" />
+            <motion.svg
+              viewBox="0 0 260 220"
+              className="relative h-full w-full"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="130" cy="110" r="93" stroke="#99ded2" strokeOpacity=".55" />
+              <circle cx="130" cy="110" r="72" stroke="#7bcbbd" strokeOpacity=".45" />
+              <circle cx="130" cy="110" r="48" stroke="#0d9488" strokeOpacity=".22" />
+              <motion.circle
+                cx="130"
+                cy="110"
+                r="27"
+                fill="#99f6e4"
+                fillOpacity=".8"
+                animate={reduceMotion ? undefined : { scale: [1, 1.09, 1], opacity: [0.75, 1, 0.75] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                style={{ transformOrigin: "130px 110px" }}
+              />
+              <circle cx="130" cy="110" r="12" fill="#0d9488" fillOpacity=".7" />
+              <motion.circle
+                cx="222"
+                cy="110"
+                r="5"
+                fill="#0f766e"
+                animate={reduceMotion ? undefined : { opacity: [0.45, 1, 0.45] }}
+                transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
+              />
+            </motion.svg>
+          </div>
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:mt-7 lg:grid-cols-3 lg:gap-5">
+          {pathways.map((pathway, index) => {
+            const Icon = pathway.icon;
+            return (
+              <motion.div
+                key={pathway.href}
+                className="h-full min-w-0"
+                initial={reduceMotion ? false : { opacity: 0, y: 15 }}
+                whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.12 }}
+                transition={{ duration: 0.5, delay: index * 0.045, ease: "easeOut" }}
+              >
+                <Link
+                  href={pathway.href}
+                  className="group relative flex h-full min-h-[220px] min-w-0 flex-col overflow-hidden rounded-[1.7rem] border border-white/90 bg-white/95 p-6 shadow-[0_20px_65px_-45px_rgba(15,23,42,0.28)] transition-all duration-300 hover:-translate-y-1 hover:border-teal-200 hover:shadow-[0_24px_75px_-40px_rgba(15,118,110,0.2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 motion-reduce:transform-none motion-reduce:transition-none sm:min-h-[238px] sm:p-7"
+                >
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full bg-teal-50/80 blur-3xl transition-transform duration-500 group-hover:scale-125 motion-reduce:transform-none"
+                  />
+                  <div className="relative flex items-start justify-between gap-3">
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-teal-100 bg-gradient-to-br from-[#edfaf7] to-white text-teal-800">
+                      <Icon size={22} strokeWidth={1.7} aria-hidden="true" />
+                    </span>
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-stone-200 bg-white text-teal-800 transition duration-300 group-hover:border-teal-700 group-hover:bg-teal-700 group-hover:text-white">
+                      <ArrowUpRight size={17} aria-hidden="true" />
+                    </span>
+                  </div>
+                  <div className="relative mt-7">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-teal-700">
+                      {pathway.eyebrow}
+                    </p>
+                    <h3 className="mt-2 font-serif text-2xl font-semibold leading-snug tracking-[-0.025em] text-stone-950 group-hover:text-teal-900">
+                      {pathway.label}
+                    </h3>
+                    <p className="mt-3 text-sm leading-6 text-stone-600">
+                      {pathway.description}
+                    </p>
+                  </div>
+                </Link>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
