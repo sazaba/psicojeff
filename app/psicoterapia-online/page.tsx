@@ -21,6 +21,7 @@ export default function PsicoterapiaOnlinePage() {
       lead="Atención psicológica por videollamada con Jefferson Bastidas Mejía para personas adultas en Colombia. Puedes consultar desde Bogotá, Medellín, Pereira, Armenia, el Eje Cafetero u otras ciudades. En Manizales también se ofrece consulta presencial."
       canonicalPath="/psicoterapia-online"
       areaServed="Colombia"
+      areaServedType="Country"
       showOnlineCities
       highlights={[
         "Atención virtual desde cualquier ciudad de Colombia",
