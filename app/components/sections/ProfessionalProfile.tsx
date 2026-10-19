@@ -65,7 +65,7 @@ export default function ProfessionalProfile() {
 
           <div className="prose prose-stone text-stone-600 mb-10 leading-relaxed text-sm md:text-base">
             <p className="mb-4">
-              Egresado de la <strong>Universidad de Manizales</strong>, con dos décadas de experiencia laboral continua y formación complementaria en psicología clínica basada en evidencia, terapias complementarias y terapias contextuales.
+              Egresado de la <strong>Universidad de Manizales</strong>, con 21 años de experiencia laboral específica y continua y formación complementaria en psicología clínica basada en evidencia, terapias complementarias y terapias contextuales.
             </p>
             <p>
               Como Especialista en Salud Ocupacional de la <strong>Universidad Libre</strong>, integra también la relación entre bienestar psicológico, vida productiva, entorno laboral y contexto social.

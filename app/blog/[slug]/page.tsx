@@ -323,6 +323,29 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             </section>
           )}
 
+          <section
+            aria-labelledby="ayuda-profesional-online"
+            className="mt-14 rounded-3xl border border-teal-100 bg-teal-50/40 p-7 md:p-8"
+          >
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-teal-700">
+              Orientación sobre psicoterapia
+            </p>
+            <h2 id="ayuda-profesional-online" className="mt-3 font-serif text-2xl text-stone-900 md:text-3xl">
+              ¿Quieres saber cómo funciona la atención psicológica online?
+            </h2>
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-stone-600 md:text-base">
+              Los artículos de esta bitácora son educativos y no reemplazan una valoración individual.
+              Si estás considerando iniciar un proceso, puedes conocer la psicoterapia virtual
+              para adultos en Colombia. La consulta presencial se ofrece únicamente en Manizales.
+            </p>
+            <Link
+              href="/psicoterapia-online"
+              className="mt-5 inline-flex min-h-11 items-center rounded-full bg-teal-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-teal-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-teal-200"
+            >
+              Conocer la psicoterapia online →
+            </Link>
+          </section>
+
           <div className="mt-14">
             <AuthorTrustCard />
           </div>

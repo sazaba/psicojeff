@@ -31,7 +31,7 @@ export default async function RelatedPosts({
       slug: { not: null },
     },
     orderBy: { createdAt: "desc" },
-    take: 12,
+    take: 100,
     select: {
       id: true,
       slug: true,
@@ -44,7 +44,7 @@ export default async function RelatedPosts({
 
   const normalizedCurrentTags = new Set(currentTags.map(normalize));
 
-  const posts = candidates
+  const rankedPosts = candidates
     .map((post) => {
       const overlap = parseTags(post.category).reduce(
         (score, tag) => score + (normalizedCurrentTags.has(normalize(tag)) ? 1 : 0),
@@ -53,8 +53,11 @@ export default async function RelatedPosts({
 
       return { ...post, overlap };
     })
-    .sort((a, b) => b.overlap - a.overlap || b.createdAt.getTime() - a.createdAt.getTime())
-    .slice(0, 3);
+    .sort((a, b) => b.overlap - a.overlap || b.createdAt.getTime() - a.createdAt.getTime());
+
+  // Priorizar coincidencias de tema. Si no las hay, mostrar publicaciones recientes.
+  const matchingPosts = rankedPosts.filter((post) => post.overlap > 0);
+  const posts = (matchingPosts.length > 0 ? matchingPosts : rankedPosts).slice(0, 3);
 
   if (posts.length === 0) return null;
 

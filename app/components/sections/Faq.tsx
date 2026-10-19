@@ -14,12 +14,12 @@ const faqData = [
     id: "profesional",
     question: "¿Quién es el profesional a cargo y cuál es su experiencia?",
     answerText:
-      "El servicio es liderado por Jefferson Bastidas Mejía, psicólogo egresado de la Universidad de Manizales, con 20 años de experiencia laboral continua y formación complementaria en salud ocupacional, psicología clínica basada en evidencia, terapias complementarias y terapias de tercera generación.",
+      "El servicio es liderado por Jefferson Bastidas Mejía, psicólogo egresado de la Universidad de Manizales, con 21 años de experiencia laboral específica y continua y formación complementaria en salud ocupacional, psicología clínica basada en evidencia, terapias complementarias y terapias de tercera generación.",
     icon: UserCheck,
     answer: (
       <>
         <p>
-          El servicio es liderado por <strong>Jefferson Bastidas Mejía</strong>, psicólogo egresado de la Universidad de Manizales, con <strong>20 años de experiencia laboral continua</strong>.
+          El servicio es liderado por <strong>Jefferson Bastidas Mejía</strong>, psicólogo egresado de la Universidad de Manizales, con <strong>21 años de experiencia laboral específica y continua</strong>.
         </p>
         <ul className="mt-4 list-disc pl-5 space-y-2">
           <li>Especialista en Salud Ocupacional — Universidad Libre.</li>

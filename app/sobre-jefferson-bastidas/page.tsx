@@ -13,10 +13,10 @@ export default function SobreJeffersonBastidasPage() {
     <SeoPillarPage
       eyebrow="Perfil profesional"
       title="Jefferson Bastidas Mejía, psicólogo en Manizales"
-      lead="Psicólogo egresado de la Universidad de Manizales, con dos décadas de experiencia laboral continua y formación complementaria en salud ocupacional, psicología clínica basada en la evidencia y terapias de tercera generación. Ofrece atención presencial en Manizales y psicoterapia online para adultos en Colombia."
+      lead="Psicólogo egresado de la Universidad de Manizales, con 21 años de experiencia laboral específica y continua y formación complementaria en salud ocupacional, psicología clínica basada en la evidencia y terapias de tercera generación. Ofrece atención presencial en Manizales y psicoterapia online para adultos en Colombia."
       canonicalPath="/sobre-jefferson-bastidas"
       schemaType="ProfilePage"
-      highlights={["20 años de experiencia", "Universidad de Manizales", "Especialista en Salud Ocupacional", "ACT y DBT"]}
+      highlights={["21 años de experiencia laboral específica y continua", "Universidad de Manizales", "Especialista en Salud Ocupacional", "ACT y DBT"]}
       sections={[
         {
           heading: "Formación y trayectoria",
