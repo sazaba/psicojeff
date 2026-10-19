@@ -3,11 +3,7 @@ import { Lock, MapPin } from "lucide-react";
 
 const exploreLinks = [
   { name: "Inicio", href: "/#inicio" },
-  { name: "Psicoterapia online", href: "/psicoterapia-online" },
-  { name: "Psicólogo online en Pereira", href: "/psicologo-online-pereira" },
-  { name: "Psicólogo online en Armenia", href: "/psicologo-online-armenia" },
-  { name: "Psicólogo online en Medellín", href: "/psicologo-online-medellin" },
-  { name: "Psicólogo online en Bogotá", href: "/psicologo-online-bogota" },
+  { name: "Psicoterapia online en Colombia", href: "/psicoterapia-online" },
   { name: "Ansiedad en Manizales", href: "/ansiedad-manizales" },
   { name: "Estrés y burnout", href: "/estres-burnout-manizales" },
   { name: "Terapias ACT", href: "/terapias-contextuales-act" },
