@@ -52,7 +52,6 @@ export default function TerapiaDialecticoConductualDbtPage() {
             "El uso de habilidades DBT se adapta al contexto clínico. Cuando existen crisis recurrentes, conductas de riesgo o necesidades de atención de mayor intensidad, es importante valorar el nivel de tratamiento y los apoyos requeridos.",
           ],
         },
-      ]}
         {
           heading: "¿Aprender habilidades DBT es lo mismo que realizar el tratamiento DBT completo?",
           paragraphs: [
