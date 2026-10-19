@@ -87,7 +87,7 @@ export default function ValueProposition() {
                 </h2>
 
                 <p className="text-lg md:text-xl text-stone-400 max-w-md leading-relaxed mb-8">
-                    En 20 años he confirmado una verdad: entender tu historia no es suficiente. Necesitas estrategias concretas para destrabar tu presente.
+                    En mis 21 años de experiencia laboral específica y continua he confirmado algo importante: entender tu historia es solo una parte del proceso. También necesitamos explorar estrategias que tengan sentido en tu vida cotidiana.
                 </p>
 
                 {/* Badge Disruptivo */}
