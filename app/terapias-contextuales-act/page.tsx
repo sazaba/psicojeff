@@ -45,7 +45,6 @@ export default function TerapiasContextualesActPage() {
             "La terapia se adapta a la historia, necesidades y contexto de cada consultante. El uso de un enfoque específico no reemplaza la valoración individual de lo que ocurre en cada caso.",
           ],
         },
-      ]}
         {
           heading: "¿Aceptar significa resignarse a lo que ocurre?",
           paragraphs: [
