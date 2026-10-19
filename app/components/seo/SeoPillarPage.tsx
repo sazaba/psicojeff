@@ -28,6 +28,7 @@ interface SeoPillarPageProps {
   relatedLinks: SeoRelatedLink[];
   schemaType?: "Service" | "ProfilePage";
   areaServed?: string;
+  areaServedType?: "Country" | "AdministrativeArea";
   heroImage?: { src: StaticImageData; alt: string };
   showOnlineCities?: boolean;
 }
@@ -93,6 +94,7 @@ export default function SeoPillarPage({
   relatedLinks,
   schemaType = "Service",
   areaServed = "Manizales, Caldas, Colombia",
+  areaServedType = "AdministrativeArea",
   heroImage,
   showOnlineCities = false,
 }: SeoPillarPageProps) {
@@ -139,7 +141,7 @@ export default function SeoPillarPage({
             url: SITE_URL,
           },
           areaServed: {
-            "@type": "AdministrativeArea",
+            "@type": areaServedType,
             name: areaServed,
           },
           availableChannel: {
@@ -239,7 +241,7 @@ export default function SeoPillarPage({
           </div>
         </section>
 
-        {showOnlineCities && <HomeOnlineCities />}
+        {showOnlineCities && <HomeOnlineCities showExploreLink={false} />}
 
         <section className="py-20 px-6">
           <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-12 lg:gap-16 items-start">
