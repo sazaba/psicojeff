@@ -36,7 +36,19 @@ const nextConfig: NextConfig = {
     ],
   },
   async redirects() {
+    const cityLandingsToConsolidate = [
+      "/psicologo-online-pereira",
+      "/psicologo-online-armenia",
+      "/psicologo-online-medellin",
+      "/psicologo-online-bogota",
+    ];
+
     return [
+      ...cityLandingsToConsolidate.map((source) => ({
+        source,
+        destination: "/psicoterapia-online",
+        permanent: true,
+      })),
       {
         source: "/:path*",
         has: [
