@@ -2,9 +2,9 @@ import SeoPillarPage from "@/app/components/seo/SeoPillarPage";
 import { buildSeoMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildSeoMetadata({
-  title: "Jefferson Bastidas Mejía, psicólogo en Manizales",
+  title: "Jefferson Bastidas | Psicólogo en Manizales y online",
   description:
-    "Conoce la formación, experiencia y enfoque profesional de Jefferson Bastidas Mejía, psicólogo en Manizales con atención presencial y online.",
+    "Conoce la formación y enfoque de Jefferson Bastidas, psicólogo en Manizales. Psicoterapia presencial y atención virtual para adultos en toda Colombia.",
   path: "/sobre-jefferson-bastidas",
 });
 
@@ -13,7 +13,7 @@ export default function SobreJeffersonBastidasPage() {
     <SeoPillarPage
       eyebrow="Perfil profesional"
       title="Jefferson Bastidas Mejía, psicólogo en Manizales"
-      lead="Psicólogo egresado de la Universidad de Manizales, con dos décadas de experiencia laboral continua y formación complementaria en salud ocupacional, psicología clínica basada en la evidencia y terapias de tercera generación."
+      lead="Psicólogo egresado de la Universidad de Manizales, con dos décadas de experiencia laboral continua y formación complementaria en salud ocupacional, psicología clínica basada en la evidencia y terapias de tercera generación. Ofrece atención presencial en Manizales y psicoterapia online para adultos en Colombia."
       canonicalPath="/sobre-jefferson-bastidas"
       schemaType="ProfilePage"
       highlights={["20 años de experiencia", "Universidad de Manizales", "Especialista en Salud Ocupacional", "ACT y DBT"]}
@@ -45,9 +45,24 @@ export default function SobreJeffersonBastidasPage() {
           ],
         },
         {
-          heading: "Dónde atiende en Manizales",
+          heading: "¿Dónde atiende? Manizales presencial y Colombia online",
           paragraphs: [
-            "La atención presencial se presta en el Centro Médico Santa Elena, Avenida Paralela #49-46, Manizales. La modalidad online está disponible como alternativa para personas que no pueden desplazarse al consultorio.",
+            "La atención presencial se presta en el Centro Médico Santa Elena, Avenida Paralela #49-46, Manizales. Esta es la única sede presencial anunciada en el sitio.",
+            "Para personas adultas que se encuentran en Bogotá, Medellín, Pereira, Armenia, el Eje Cafetero u otras ciudades de Colombia, la atención se ofrece por videollamada. Antes de comenzar se confirma la disponibilidad y si esta modalidad es pertinente para el motivo de consulta.",
+          ],
+        },
+        {
+          heading: "¿Qué puedes consultar antes de comenzar un proceso?",
+          paragraphs: [
+            "Puedes solicitar información sobre la modalidad de atención, la disponibilidad, la duración de las sesiones y las condiciones económicas vigentes. No es necesario conocer de antemano un diagnóstico para plantear tus dudas sobre el proceso.",
+            "El acompañamiento parte de comprender la situación individual y acordar objetivos de trabajo. Los recursos de ACT y DBT se emplean cuando resultan pertinentes, sin ofrecer respuestas universales ni prometer resultados idénticos para todas las personas.",
+          ],
+        },
+        {
+          heading: "¿Cómo elegir entre consulta presencial y virtual?",
+          paragraphs: [
+            "Si vives en Manizales, puedes preguntar por las dos modalidades. Si estás en otra ciudad de Colombia, el servicio que se anuncia es exclusivamente online. En ambos casos se revisa si las condiciones de atención son adecuadas para tus necesidades.",
+            "Si resides en el exterior, es necesario verificar previamente las condiciones profesionales y normativas aplicables al país desde el que deseas conectarte.",
           ],
         },
       ]}
@@ -61,6 +76,16 @@ export default function SobreJeffersonBastidasPage() {
           href: "/psicoterapia-online",
           label: "Psicoterapia online",
           description: "Conoce la modalidad de atención para quienes requieren flexibilidad geográfica.",
+        },
+        {
+          href: "/terapia-dialectico-conductual-dbt",
+          label: "Herramientas de DBT y regulación emocional",
+          description: "Conoce qué habilidades se integran al enfoque contextual y cómo se diferencian de un programa DBT integral.",
+        },
+        {
+          href: "/motivos-de-consulta",
+          label: "Motivos de consulta",
+          description: "Explora ansiedad, depresión, estrés y burnout, entre otras situaciones por las que consultar.",
         },
         {
           href: "/blog",
