@@ -34,7 +34,7 @@ export default function AuthorTrustCard({ compact = false }: AuthorTrustCardProp
             Jefferson Bastidas Mejía
           </h2>
           <p className="mt-2 text-sm md:text-base leading-7 text-stone-600">
-            Psicólogo egresado de la Universidad de Manizales, Especialista en Salud Ocupacional y con 20 años de experiencia laboral continua. Cuenta con formación complementaria en psicología clínica basada en evidencia, terapias complementarias y terapias contextuales de tercera generación.
+            Psicólogo egresado de la Universidad de Manizales, Especialista en Salud Ocupacional y con 21 años de experiencia laboral específica y continua. Cuenta con formación complementaria en psicología clínica basada en evidencia, terapias complementarias y terapias contextuales de tercera generación.
           </p>
           <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm font-bold">
             <Link
