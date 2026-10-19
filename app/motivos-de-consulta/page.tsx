@@ -12,9 +12,9 @@ import Footer from "@/app/components/sections/Footer";
 import { buildSeoMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = buildSeoMetadata({
-  title: "Motivos de consulta psicológica en Manizales",
+  title: "Motivos de consulta | Ansiedad, depresión, estrés y burnout",
   description:
-    "Acompañamiento psicológico para adultos en Manizales y online por ansiedad, depresión, estrés y síndrome de burnout.",
+    "Conoce los motivos de consulta psicológica: ansiedad, depresión, estrés y burnout. Psicoterapia online para adultos en Colombia y presencial en Manizales.",
   path: "/motivos-de-consulta",
 });
 
@@ -65,6 +65,13 @@ export default function MotivosDeConsultaPage() {
             <h1 className="mt-4 max-w-4xl font-serif text-4xl leading-[0.98] tracking-[-0.035em] text-stone-950 sm:text-5xl md:text-6xl">
               Acompañamiento psicológico según lo que estás viviendo
             </h1>
+            <p className="mt-7 max-w-3xl text-base leading-8 text-stone-600 md:text-lg">
+              La ansiedad, la depresión, el estrés y el agotamiento laboral pueden
+              manifestarse de distintas maneras. Conoce estos motivos de consulta
+              y explora si la psicoterapia puede ser pertinente para tu situación.
+              Jefferson ofrece atención virtual para adultos en Colombia y
+              atención presencial y virtual en Manizales.
+            </p>
           </div>
         </section>
 
@@ -94,6 +101,28 @@ export default function MotivosDeConsultaPage() {
                 </Link>
               );
             })}
+          </div>
+          <div className="mx-auto mt-12 max-w-6xl rounded-[2rem] border border-teal-100 bg-white p-7 shadow-sm md:p-10">
+            <div className="grid gap-7 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-teal-700">Atención por videollamada</p>
+                <h2 className="mt-3 font-serif text-2xl text-stone-950 md:text-3xl">
+                  Psicoterapia online para adultos en toda Colombia
+                </h2>
+                <p className="mt-3 max-w-2xl leading-7 text-stone-600">
+                  Si buscas acompañamiento psicológico virtual desde Bogotá, Medellín,
+                  Pereira, Armenia, el Eje Cafetero o cualquier otra ciudad de Colombia,
+                  conoce cómo funciona la modalidad online y cómo solicitar información.
+                  El consultorio presencial se encuentra únicamente en Manizales.
+                </p>
+              </div>
+              <Link
+                href="/psicoterapia-online"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-teal-700 px-6 py-3 text-center text-sm font-bold text-white transition hover:bg-teal-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-teal-200"
+              >
+                Conocer psicoterapia online <ArrowUpRight size={17} aria-hidden="true" />
+              </Link>
+            </div>
           </div>
         </section>
       </main>
