@@ -69,7 +69,25 @@ export default function Footer() {
                   </p>
                 </div>
               </div>
-
+              <div className="flex items-start gap-4">
+                <div className="p-2 bg-stone-900 rounded-lg border border-stone-800 text-teal-500">
+                  <MapPin size={20} />
+                </div>
+                <div>
+                  <p className="text-white font-medium">Psicoterapia online en Colombia</p>
+                  <p className="text-stone-500 text-sm mt-1 leading-6">
+                    Atención por videollamada para adultos desde diferentes ciudades del país.
+                  </p>
+                  <a
+                    href="https://wa.link/2x3i8s"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-block text-sm font-bold text-teal-400 hover:text-teal-300"
+                  >
+                    Consultar disponibilidad por WhatsApp →
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
