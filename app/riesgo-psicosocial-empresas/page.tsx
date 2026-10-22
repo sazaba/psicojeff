@@ -22,18 +22,27 @@ export const metadata = buildSeoMetadata({
 const serviceItems = [
   {
     icon: ClipboardCheck,
-    title: "Aplicación de la batería de riesgo psicosocial",
-    text: "Acompañamiento profesional para organizar, aplicar y analizar la evaluación de factores de riesgo psicosocial en la población trabajadora, de acuerdo con el alcance definido para la organización.",
-  },
-  {
-    icon: HeartPulse,
-    title: "Promoción y prevención",
-    text: "Orientación para convertir los resultados en acciones comprensibles de promoción, prevención e intervención, priorizando los factores que requieren seguimiento dentro del SG-SST.",
+    number: "01",
+    category: "Evaluación",
+    title: "Batería de riesgo psicosocial",
+    text: "Aplicación y acompañamiento técnico para organizar, evaluar y analizar los factores de riesgo psicosocial en el trabajo, según el alcance acordado con la organización.",
+    detail: "Hallazgos que ayudan a identificar prioridades de gestión.",
   },
   {
     icon: GraduationCap,
-    title: "Capacitaciones para empresas",
-    text: "Espacios formativos en riesgo psicosocial, manejo del estrés, bienestar emocional, autocuidado, relaciones de trabajo y herramientas prácticas para equipos y líderes.",
+    number: "02",
+    category: "Formación",
+    title: "Capacitaciones para equipos",
+    text: "Espacios formativos para equipos y líderes sobre riesgo psicosocial, prevención, autocuidado, manejo del estrés y bienestar emocional en el entorno laboral.",
+    detail: "Contenidos ajustados a las necesidades de cada equipo.",
+  },
+  {
+    icon: HeartPulse,
+    number: "03",
+    category: "Promoción y prevención",
+    title: "Promoción y prevención",
+    text: "Acciones orientadas a fortalecer prácticas de cuidado, prevención y gestión psicosocial en las organizaciones, articuladas con los hallazgos de la evaluación cuando corresponda.",
+    detail: "Orientación para dar continuidad al cuidado y al seguimiento.",
   },
 ];
 
@@ -196,29 +205,40 @@ export default function RiesgoPsicosocialEmpresasPage() {
           </div>
         </section>
 
-        <section className="px-5 sm:px-6 py-20 md:py-24 bg-white">
+        <section aria-labelledby="servicios-empresas" className="px-5 sm:px-6 py-20 md:py-24 bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="max-w-3xl">
-              <span className="text-xs uppercase tracking-[0.18em] font-bold text-teal-700">Qué incluye</span>
-              <h2 className="mt-4 text-3xl md:text-5xl font-serif leading-tight">Una gestión que no termina con aplicar un cuestionario</h2>
+              <span className="text-xs uppercase tracking-[0.18em] font-bold text-teal-700">Servicios para empresas</span>
+              <h2 id="servicios-empresas" className="mt-4 text-3xl md:text-5xl font-serif leading-tight">
+                Evaluar, formar y prevenir: tres líneas de acompañamiento
+              </h2>
               <p className="mt-5 text-lg leading-8 text-stone-600">
-                La evaluación es un punto de partida. El valor para la organización está en comprender los hallazgos, priorizar necesidades y convertir la información en decisiones preventivas que puedan integrarse al Sistema de Gestión de Seguridad y Salud en el Trabajo.
+                La batería de riesgo psicosocial, las capacitaciones y las acciones de promoción y prevención pueden desarrollarse de manera independiente o complementaria, según las necesidades de la organización. Cuando se articulan, los hallazgos orientan las prioridades y las acciones de cuidado.
               </p>
             </div>
 
-            <div className="mt-12 grid md:grid-cols-3 gap-5">
-              {serviceItems.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <article key={item.title} className="rounded-[1.75rem] border border-stone-200 bg-[#fffcf8] p-7 md:p-8">
-                    <div className="h-12 w-12 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center">
-                      <Icon size={23} />
-                    </div>
-                    <h3 className="mt-6 text-2xl font-serif">{item.title}</h3>
-                    <p className="mt-3 text-stone-600 leading-7">{item.text}</p>
-                  </article>
-                );
-              })}
+            <div className="mt-12 overflow-hidden rounded-[1.75rem] bg-[linear-gradient(145deg,#173d38_0%,#102c29_100%)] p-4 shadow-[0_30px_80px_-50px_rgba(13,55,50,0.65)] sm:p-6 md:rounded-[2rem] md:p-8">
+              <div className="grid gap-4 lg:grid-cols-3 lg:gap-5">
+                {serviceItems.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <article key={item.title} className="flex h-full flex-col rounded-[1.4rem] border border-white/15 bg-white/[0.045] p-6 sm:p-7">
+                      <div className="flex items-center justify-between gap-4">
+                        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-teal-200/20 bg-teal-200/10 text-teal-200">
+                          <Icon size={23} aria-hidden="true" />
+                        </span>
+                        <span className="text-sm font-bold tracking-widest text-teal-200/75">{item.number}</span>
+                      </div>
+                      <p className="mt-7 text-xs font-bold uppercase tracking-[0.15em] !text-teal-200">{item.category}</p>
+                      <h3 className="mt-2 font-serif text-2xl leading-tight !text-white">{item.title}</h3>
+                      <p className="mt-4 text-base leading-7 !text-stone-100">{item.text}</p>
+                      <p className="mt-auto border-t border-white/15 pt-5 text-sm leading-6 !text-teal-100 sm:mt-8">
+                        {item.detail}
+                      </p>
+                    </article>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </section>
