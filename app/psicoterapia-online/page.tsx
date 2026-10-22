@@ -3,7 +3,7 @@ import Headerpsicojeff from "@/app/assets/Headerpsicojeff.webp";
 import { buildSeoMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildSeoMetadata({
-  title: "Psicólogo online en Colombia | Psicoterapia virtual para adultos",
+  title: "Psicólogo online en Colombia",
   description:
     "Psicólogo online en Colombia: psicoterapia virtual para adultos con Jefferson Bastidas. Atención desde Bogotá, Medellín, Pereira, Armenia y el Eje Cafetero.",
   path: "/psicoterapia-online",
@@ -95,8 +95,8 @@ export default function PsicoterapiaOnlinePage() {
         {
           heading: "¿Cuánto cuesta la psicoterapia online y cómo puedo comenzar?",
           paragraphs: [
-            "Puedes escribir para confirmar la tarifa vigente, la duración de las sesiones, los horarios disponibles y cómo se realiza el primer encuentro. No es necesario comprometerte a iniciar un proceso para solicitar esta información.",
-            "Si deseas recibir orientación inicial, utiliza el botón «Solicitar información». También puedes consultar el perfil profesional de Jefferson y los contenidos sobre motivos de consulta antes de tomar una decisión.",
+            "La tarifa publicada para residentes en Colombia es de $100.000 COP por sesión, con una duración aproximada de 60 a 90 minutos. Puedes confirmar el valor vigente, los horarios disponibles y las condiciones de atención antes de agendar.",
+            "Para comenzar, escribe por WhatsApp y comenta que estás interesado en psicoterapia online. Podrás consultar disponibilidad y resolver dudas sobre el proceso. Antes de iniciar se valora si la atención virtual es apropiada para tu situación; solicitar información no implica compromiso de empezar.",
           ],
         },
       ]}
