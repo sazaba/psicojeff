@@ -96,7 +96,6 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Psicoterapia online", href: "/psicoterapia-online" },
-    { name: "Motivos de consulta", href: "/motivos-de-consulta" },
     { name: "Empresas", href: "/riesgo-psicosocial-empresas" },
     { name: "Perfil", href: "/#sobre-mi" },
     { name: "Blog", href: "/blog" },
