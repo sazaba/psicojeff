@@ -46,13 +46,21 @@ export default function HomeOnlineCities({ showExploreLink = true }: HomeOnlineC
           })}
         </div>
         {showExploreLink ? (
-          <div className="mt-9 flex justify-center">
+          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/psicoterapia-online"
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-teal-700 px-6 py-3 text-center text-sm font-bold text-white shadow-sm transition hover:bg-teal-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-teal-200"
             >
               Conoce la psicoterapia online en Colombia <ArrowRight size={17} aria-hidden="true" />
             </Link>
+            <a
+              href="https://wa.link/2x3i8s"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-12 items-center justify-center rounded-full border border-teal-300 bg-white px-6 py-3 text-center text-sm font-bold text-teal-800 transition hover:bg-teal-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-teal-200"
+            >
+              Consultar disponibilidad
+            </a>
           </div>
         ) : (
           <p className="mx-auto mt-8 max-w-2xl text-center text-sm leading-7 text-stone-600">
