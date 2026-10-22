@@ -1,0 +1,108 @@
+/*
+ * Movimiento orbital exclusivo del Hero: animaciones CSS baratas de transform/opacity.
+ * No añade JavaScript ni modifica los elementos semánticos o el contenido SEO.
+ */
+.orbitStage {
+  position: absolute;
+  inset: -4% -7%;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.orbitAura,
+.orbitOuter,
+.orbitInner {
+  grid-area: 1 / 1;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.orbitAura {
+  width: 75%;
+  background: radial-gradient(circle, rgba(153, 246, 228, 0.32), rgba(153, 246, 228, 0) 72%);
+  filter: blur(18px);
+  animation: heroOrbitBreathe 9s ease-in-out infinite;
+}
+
+.orbitOuter,
+.orbitInner {
+  position: relative;
+  border: 1px solid rgba(20, 184, 166, 0.28);
+  transform-origin: center;
+}
+
+.orbitOuter {
+  width: min(111%, 570px);
+  animation: heroOrbitClockwise 36s linear infinite;
+}
+
+.orbitInner {
+  width: min(87%, 450px);
+  border-color: rgba(45, 212, 191, 0.36);
+  animation: heroOrbitCounterclockwise 27s linear infinite;
+}
+
+.orbitDotOuter,
+.orbitDotSecondary,
+.orbitDotInner {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  box-shadow: 0 0 17px rgba(20, 184, 166, 0.4);
+}
+
+.orbitDotOuter {
+  top: -5px;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  background: #2dd4bf;
+  transform: translateX(-50%);
+}
+
+.orbitDotSecondary {
+  right: -3px;
+  bottom: 27%;
+  width: 6px;
+  height: 6px;
+  background: #67e8f9;
+}
+
+.orbitDotInner {
+  bottom: -5px;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  background: #14b8a6;
+  transform: translateX(-50%);
+}
+
+@keyframes heroOrbitClockwise {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes heroOrbitCounterclockwise {
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes heroOrbitBreathe {
+  0%, 100% { opacity: 0.45; transform: scale(0.94); }
+  50% { opacity: 0.8; transform: scale(1.04); }
+}
+
+@media (max-width: 640px) {
+  .orbitStage { inset: 0 -2%; }
+  .orbitOuter { width: 105%; }
+  .orbitInner { width: 82%; }
+}
+
+/* Respeta preferencias de accesibilidad para visitantes sensibles al movimiento. */
+@media (prefers-reduced-motion: reduce) {
+  .orbitAura,
+  .orbitOuter,
+  .orbitInner {
+    animation: none;
+  }
+}
