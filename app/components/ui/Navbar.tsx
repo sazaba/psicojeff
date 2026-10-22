@@ -95,10 +95,10 @@ export default function Navbar() {
   }, [pathname]);
 
   const navLinks = [
+    { name: "Psicoterapia online", href: "/psicoterapia-online" },
+    { name: "Motivos de consulta", href: "/motivos-de-consulta" },
     { name: "Empresas", href: "/riesgo-psicosocial-empresas" },
     { name: "Perfil", href: "/#sobre-mi" },
-    { name: "Ubicación", href: "/#ubicacion" },
-    { name: "Glosario", href: "/glosario" },
     { name: "Blog", href: "/blog" },
   ];
 
@@ -164,8 +164,8 @@ export default function Navbar() {
             </div>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-5 xl:gap-7 min-w-0">
-            <div className="flex items-center gap-4 xl:gap-6">
+          <div className="hidden lg:flex items-center gap-3 xl:gap-6 min-w-0">
+            <div className="flex items-center gap-3 xl:gap-5">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
@@ -183,9 +183,9 @@ export default function Navbar() {
               href="https://wa.link/2x3i8s"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#14b8a6] hover:bg-[#0f766e] text-white text-sm font-semibold transition-all duration-300 shadow-md shadow-teal-100 hover:shadow-lg hover:-translate-y-0.5 whitespace-nowrap"
+              className="group flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#14b8a6] hover:bg-[#0f766e] text-white text-sm font-semibold transition-all duration-300 shadow-md shadow-teal-100 hover:shadow-lg hover:-translate-y-0.5 whitespace-nowrap"
             >
-              Solicitar Información
+              Consultar disponibilidad
               <ArrowRight size={16} className="text-white group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
@@ -234,7 +234,7 @@ export default function Navbar() {
               onClick={() => setIsMobileMenuOpen(false)}
               className="inline-flex px-8 sm:px-10 py-4 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 text-white font-bold shadow-xl shadow-teal-500/20 active:scale-95 transition-transform"
             >
-              Agendar Sesión
+              Consultar disponibilidad
             </a>
           </div>
         </div>

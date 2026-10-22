@@ -40,14 +40,14 @@ export default function Hero() {
           <div className="text-center md:text-left z-10 relative">
             <div className="inline-block mb-8 mt-4 md:mt-0 px-5 py-2 rounded-full border border-teal-100 bg-white/50 backdrop-blur-sm">
               <span className="text-xs md:text-sm font-bold text-teal-700 tracking-widest uppercase font-sans">
-                Psicólogo en Manizales y Online
+                Presencial en Manizales · Online en Colombia
               </span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium tracking-tight text-stone-800 mb-8 leading-[1.1] font-serif">
+            <h1 className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-medium tracking-tight text-stone-800 mb-8 leading-[1.1] font-serif">
               Psicólogo en Manizales y <br className="hidden lg:block" />
               <span className="relative inline-block text-teal-700/90 italic mt-2 md:mt-0">
-                psicoterapia online para adultos
+                psicoterapia online en Colombia
                 <svg
                   className="absolute w-full h-3 md:h-4 -bottom-1 left-0 text-teal-200 -z-10 opacity-70"
                   viewBox="0 0 100 10"
@@ -60,7 +60,7 @@ export default function Hero() {
             </h1>
 
             <p className="text-lg md:text-xl text-stone-600 mb-10 max-w-lg mx-auto md:mx-0 leading-relaxed font-sans font-medium">
-              Un espacio terapéutico de alta precisión para trabajar bienestar mental con significado, propósito y herramientas aplicables a tu vida cotidiana.
+              Psicoterapia individual para adultos que atraviesan ansiedad, estrés laboral, agotamiento emocional o dificultades para encontrar claridad y dirección. Atención por videollamada desde cualquier ciudad de Colombia.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center">
@@ -70,16 +70,20 @@ export default function Hero() {
                 rel="noopener noreferrer"
                 className="px-8 py-4 rounded-full bg-teal-600 hover:bg-teal-700 text-white font-bold text-lg transition-all hover:-translate-y-1 shadow-lg shadow-teal-600/20 w-full sm:w-auto text-center cursor-pointer"
               >
-                Solicitar Información
+                Consultar disponibilidad
               </a>
 
-              <a
-                href="#servicios"
+              <Link
+                href="/psicoterapia-online"
                 className="cursor-pointer px-8 py-4 rounded-full border border-stone-300 hover:border-teal-400 bg-transparent text-stone-600 hover:text-teal-700 font-medium transition-all w-full sm:w-auto text-center"
               >
-                Explorar acompañamiento
-              </a>
+                Conocer la terapia online
+              </Link>
             </div>
+
+            <p className="mt-4 text-sm text-stone-500 text-center md:text-left">
+              Sesiones de 60 a 90 minutos · Tarifa publicada en Colombia: $100.000 COP. Confirma las condiciones al contactar.
+            </p>
 
             <div className="mt-6 flex flex-col items-center gap-3 md:items-start">
               <Link
