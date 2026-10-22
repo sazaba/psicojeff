@@ -21,7 +21,7 @@ const homeSocialImage = `${siteUrl}/Logo.webp`;
 export const metadata: Metadata = {
   title: "Psicólogo en Manizales | Jefferson Bastidas",
   description:
-    "Psicólogo en Manizales para adultos. Atención presencial y psicoterapia online con enfoque en terapias contextuales, ACT y DBT.",
+    "Psicólogo en Manizales y psicoterapia online para adultos en Colombia. Acompañamiento en ansiedad, estrés y regulación emocional con enfoque ACT y DBT.",
   alternates: {
     canonical: "/",
   },
