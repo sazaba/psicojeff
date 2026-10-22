@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight, Building2 } from "lucide-react";
 import Headerpsicojeff from "@/app/assets/Headerpsicojeff.webp";
+import styles from "./HeroOrbit.module.css";
 
 export default function Hero() {
   return (
@@ -13,11 +14,22 @@ export default function Hero() {
           <div className="relative order-last md:order-first flex justify-center md:justify-end">
             <div className="absolute top-10 left-1/2 -translate-x-1/2 w-3/4 h-3/4 bg-teal-200/30 rounded-full blur-[60px] -z-10 transform-gpu" />
 
-            <div className="relative w-full max-w-[500px]">
+            <div className="relative isolate w-full max-w-[500px]">
+              {/* Decoración orbital: CSS únicamente, sin JS ni contenido rastreable adicional. */}
+              <div className={styles.orbitStage} aria-hidden="true">
+                <span className={styles.orbitAura} />
+                <span className={styles.orbitOuter}>
+                  <span className={styles.orbitDotOuter} />
+                  <span className={styles.orbitDotSecondary} />
+                </span>
+                <span className={styles.orbitInner}>
+                  <span className={styles.orbitDotInner} />
+                </span>
+              </div>
               <Image
                 src={Headerpsicojeff}
                 alt="Psicólogo Jefferson Bastidas - Terapia Online y Presencial"
-                className="w-full h-auto object-contain drop-shadow-2xl z-10 [mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)]"
+                className="relative z-10 w-full h-auto object-contain drop-shadow-2xl [mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)]"
                 priority
                 placeholder="blur"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 500px"
