@@ -4,6 +4,7 @@ import Navbar from "@/app/components/ui/Navbar";
 import Footer from "@/app/components/sections/Footer";
 import HomeOnlineCities from "@/app/components/sections/HomeOnlineCities";
 import OnlineConsultationCta from "@/app/components/seo/OnlineConsultationCta";
+import orbitStyles from "@/app/components/sections/HeroOrbit.module.css";
 import { AUTHOR_NAME, SITE_URL } from "@/lib/seo/metadata";
 import { getGlossaryTerm } from "@/lib/seo/glossary";
 
@@ -101,6 +102,7 @@ export default function SeoPillarPage({
 }: SeoPillarPageProps) {
   const pageUrl = `${SITE_URL}${canonicalPath}`;
   const personId = `${SITE_URL}/#person`;
+  const showHeroOrbit = canonicalPath === "/psicoterapia-online";
   const glossaryLinks = (pillarGlossaryMap[canonicalPath] || [])
     .map((slug) => getGlossaryTerm(slug))
     .filter((value): value is NonNullable<typeof value> => Boolean(value));
@@ -223,11 +225,23 @@ export default function SeoPillarPage({
               </div>
 
               {heroImage && (
-                <div className="relative mx-auto w-full max-w-[340px] lg:max-w-[360px]">
+                <div className="relative isolate mx-auto w-full max-w-[340px] lg:max-w-[360px]">
                   <div
                     className="absolute inset-x-5 top-8 bottom-12 rounded-full bg-teal-100/50 blur-3xl"
                     aria-hidden="true"
                   />
+                  {showHeroOrbit && (
+                    <div className={orbitStyles.orbitStage} aria-hidden="true">
+                      <span className={orbitStyles.orbitAura} />
+                      <span className={orbitStyles.orbitOuter}>
+                        <span className={orbitStyles.orbitDotOuter} />
+                        <span className={orbitStyles.orbitDotSecondary} />
+                      </span>
+                      <span className={orbitStyles.orbitInner}>
+                        <span className={orbitStyles.orbitDotInner} />
+                      </span>
+                    </div>
+                  )}
                   <Image
                     src={heroImage.src}
                     alt={heroImage.alt}
