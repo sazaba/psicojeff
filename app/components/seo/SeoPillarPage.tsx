@@ -3,6 +3,7 @@ import Image, { type StaticImageData } from "next/image";
 import Navbar from "@/app/components/ui/Navbar";
 import Footer from "@/app/components/sections/Footer";
 import HomeOnlineCities from "@/app/components/sections/HomeOnlineCities";
+import OnlineConsultationCta from "@/app/components/seo/OnlineConsultationCta";
 import { AUTHOR_NAME, SITE_URL } from "@/lib/seo/metadata";
 import { getGlossaryTerm } from "@/lib/seo/glossary";
 
@@ -241,6 +242,7 @@ export default function SeoPillarPage({
           </div>
         </section>
 
+        {canonicalPath === "/psicoterapia-online" && <OnlineConsultationCta />}
         {showOnlineCities && <HomeOnlineCities showExploreLink={false} />}
 
         <section className="py-20 px-6">
@@ -275,10 +277,14 @@ export default function SeoPillarPage({
                 Orientación inicial
               </p>
               <h2 className="font-serif text-2xl text-stone-900 mb-4">
-                ¿Quieres saber si este enfoque encaja contigo?
+                {canonicalPath === "/psicoterapia-online"
+                  ? "¿Quieres consultar por una primera sesión online?"
+                  : "¿Quieres saber si este enfoque encaja contigo?"}
               </h2>
               <p className="text-stone-600 leading-7 mb-6">
-                Puedes solicitar información sobre modalidad, disponibilidad y el proceso de atención antes de agendar.
+                {canonicalPath === "/psicoterapia-online"
+                  ? "Atención para adultos en Colombia. Tarifa publicada: $100.000 COP por sesión de 60 a 90 minutos. Consulta horarios y confirma las condiciones antes de agendar."
+                  : "Puedes solicitar información sobre modalidad, disponibilidad y el proceso de atención antes de agendar."}
               </p>
               <a
                 href="https://wa.link/2x3i8s"
@@ -286,7 +292,7 @@ export default function SeoPillarPage({
                 rel="noopener noreferrer"
                 className="inline-flex w-full justify-center rounded-full bg-teal-600 px-6 py-3.5 font-bold text-white hover:bg-teal-700 transition-colors"
               >
-                Solicitar información
+                Consultar disponibilidad por WhatsApp
               </a>
               <Link
                 href="/blog"
