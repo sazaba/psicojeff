@@ -11,7 +11,7 @@ export default function Hero() {
 
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
-          <div className="relative order-last md:order-first flex justify-center md:justify-end">
+          <div className="relative order-last md:order-first flex flex-col items-center md:items-end">
             <div className="absolute top-10 left-1/2 -translate-x-1/2 w-3/4 h-3/4 bg-teal-200/30 rounded-full blur-[60px] -z-10 transform-gpu" />
 
             <div className="relative isolate w-full max-w-[500px]">
@@ -35,6 +35,9 @@ export default function Hero() {
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 500px"
               />
             </div>
+            <p className="relative z-10 mt-4 w-full max-w-[500px] px-4 text-center font-serif text-lg font-semibold italic leading-relaxed text-teal-800 md:text-xl">
+              Impactar vidas a través del bienestar mental con significado y propósito
+            </p>
           </div>
 
           <div className="text-center md:text-left z-10 relative">
