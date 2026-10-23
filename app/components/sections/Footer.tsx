@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MapPin } from "lucide-react";
+import { MapPin, Video } from "lucide-react";
 import FooterAdminAccess from "@/app/components/sections/FooterAdminAccess";
 
 const exploreLinks = [
@@ -70,19 +70,31 @@ export default function Footer() {
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="p-2 bg-stone-900 rounded-lg border border-stone-800 text-teal-500">
-                  <MapPin size={20} />
+                <div className="p-2 bg-stone-900 rounded-lg border border-stone-800 text-teal-400">
+                  <Video size={20} aria-hidden="true" />
                 </div>
                 <div>
-                  <p className="text-white font-medium">Psicoterapia online en Colombia</p>
-                  <p className="text-stone-500 text-sm mt-1 leading-6">
-                    Atención por videollamada para adultos desde diferentes ciudades del país.
+                  <p className="text-white font-medium">Psicoterapia online en toda Colombia</p>
+                  <p className="mt-2 text-sm leading-7 text-stone-300">
+                    Atención psicológica virtual para adultos desde Manizales,
+                    La Dorada (Caldas), Pereira, Armenia, Bogotá, Medellín, Cali,
+                    Barranquilla, Bucaramanga y otras ciudades del país.
                   </p>
+                  <p className="mt-2 text-sm leading-6 text-stone-400">
+                    Atención presencial únicamente en Manizales. En las demás
+                    ciudades, la atención es exclusivamente por videollamada.
+                  </p>
+                  <Link
+                    href="/psicoterapia-online"
+                    className="mt-4 inline-block text-sm font-bold text-teal-300 underline underline-offset-4 hover:text-teal-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-300"
+                  >
+                    Conocer la psicoterapia online en Colombia →
+                  </Link>
                   <a
                     href="https://wa.link/2x3i8s"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-3 inline-block text-sm font-bold text-teal-400 hover:text-teal-300"
+                    className="mt-3 block text-sm font-bold text-teal-300 hover:text-teal-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-300"
                   >
                     Consultar disponibilidad por WhatsApp →
                   </a>
