@@ -225,31 +225,38 @@ export default function SeoPillarPage({
               </div>
 
               {heroImage && (
-                <div className="relative isolate mx-auto w-full max-w-[340px] lg:max-w-[360px]">
-                  <div
-                    className="absolute inset-x-5 top-8 bottom-12 rounded-full bg-teal-100/50 blur-3xl"
-                    aria-hidden="true"
-                  />
+                <div className="mx-auto w-full max-w-[340px] lg:max-w-[360px]">
+                  <div className="relative isolate w-full">
+                    <div
+                      className="absolute inset-x-5 top-8 bottom-12 rounded-full bg-teal-100/50 blur-3xl"
+                      aria-hidden="true"
+                    />
+                    {showHeroOrbit && (
+                      <div className={orbitStyles.orbitStage} aria-hidden="true">
+                        <span className={orbitStyles.orbitAura} />
+                        <span className={orbitStyles.orbitOuter}>
+                          <span className={orbitStyles.orbitDotOuter} />
+                          <span className={orbitStyles.orbitDotSecondary} />
+                        </span>
+                        <span className={orbitStyles.orbitInner}>
+                          <span className={orbitStyles.orbitDotInner} />
+                        </span>
+                      </div>
+                    )}
+                    <Image
+                      src={heroImage.src}
+                      alt={heroImage.alt}
+                      className="relative z-10 h-auto w-full object-contain drop-shadow-xl [mask-image:linear-gradient(to_bottom,black_88%,transparent_100%)]"
+                      priority
+                      placeholder="blur"
+                      sizes="(max-width: 1024px) 340px, 360px"
+                    />
+                  </div>
                   {showHeroOrbit && (
-                    <div className={orbitStyles.orbitStage} aria-hidden="true">
-                      <span className={orbitStyles.orbitAura} />
-                      <span className={orbitStyles.orbitOuter}>
-                        <span className={orbitStyles.orbitDotOuter} />
-                        <span className={orbitStyles.orbitDotSecondary} />
-                      </span>
-                      <span className={orbitStyles.orbitInner}>
-                        <span className={orbitStyles.orbitDotInner} />
-                      </span>
-                    </div>
+                    <p className="relative z-10 mt-4 w-full px-4 text-center font-serif text-lg font-semibold italic leading-relaxed text-teal-800 md:text-xl">
+                      Impactar vidas a través del bienestar mental con significado y propósito
+                    </p>
                   )}
-                  <Image
-                    src={heroImage.src}
-                    alt={heroImage.alt}
-                    className="relative h-auto w-full object-contain drop-shadow-xl [mask-image:linear-gradient(to_bottom,black_88%,transparent_100%)]"
-                    priority
-                    placeholder="blur"
-                    sizes="(max-width: 1024px) 340px, 360px"
-                  />
                 </div>
               )}
             </div>
