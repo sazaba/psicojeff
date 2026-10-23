@@ -77,7 +77,8 @@ export default function Footer() {
                   <p className="text-white font-medium">Psicoterapia online en toda Colombia</p>
                   <p className="mt-2 text-sm leading-7 text-stone-300">
                     Atención psicológica virtual para adultos desde Manizales,
-                    La Dorada (Caldas), Pereira, Armenia, Bogotá, Medellín, Cali,
+                    Chinchiná (Caldas), La Dorada (Caldas), Pereira, Armenia,
+                    Bogotá, Medellín, Cali,
                     Barranquilla, Bucaramanga y otras ciudades del país.
                   </p>
                   <p className="mt-2 text-sm leading-6 text-stone-400">
