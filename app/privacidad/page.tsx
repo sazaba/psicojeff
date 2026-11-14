@@ -42,6 +42,20 @@ export default function PrivacyPage() {
             </section>
 
             <section>
+              <h2 className="font-serif text-3xl text-stone-900 mb-4">Estadísticas de navegación</h2>
+              <p>
+                Este sitio utiliza Google Analytics 4 para conocer las visitas, las páginas consultadas y la procedencia del tráfico. Este servicio puede utilizar cookies para medir la navegación. La integración no envía el contenido de consultas o conversaciones de WhatsApp, y tiene desactivadas las señales de Google y las señales de personalización publicitaria.
+              </p>
+              <p className="mt-4">
+                Puedes consultar la{" "}
+                <a href="https://policies.google.com/privacy?hl=es" className="text-teal-700 underline">
+                  política de privacidad de Google
+                </a>{" "}
+                y gestionar las cookies desde la configuración de tu navegador.
+              </p>
+            </section>
+
+            <section>
               <h2 className="font-serif text-3xl text-stone-900 mb-4">Servicios de terceros</h2>
               <p>
                 Este sitio puede enlazar a servicios externos, por ejemplo WhatsApp, mapas o plataformas donde se alojan imágenes y otros recursos. Cada servicio externo gestiona sus propias condiciones y políticas de privacidad.

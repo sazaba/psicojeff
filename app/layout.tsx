@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Playfair_Display, Lato } from "next/font/google";
 import "./globals.css";
 import imageJeff from "@/app/assets/Jeffseo.webp";
@@ -88,6 +89,21 @@ export default function RootLayout({
         />
 
         {children}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-PBZSHVMWMC"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-PBZSHVMWMC', {
+              allow_google_signals: false,
+              allow_ad_personalization_signals: false
+            });
+          `}
+        </Script>
       </body>
     </html>
   );
