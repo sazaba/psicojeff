@@ -102,6 +102,28 @@ export default function RootLayout({
               allow_google_signals: false,
               allow_ad_personalization_signals: false
             });
+
+            // Delegate clicks so links added during client-side navigation are covered.
+            document.addEventListener('click', function(event) {
+              if (!(event.target instanceof Element)) return;
+              var link = event.target.closest('a[href]');
+              if (!link) return;
+              var destination;
+              try { destination = new URL(link.href); } catch { return; }
+              var hosts = ['wa.link', 'wa.me', 'api.whatsapp.com', 'web.whatsapp.com'];
+              if (destination.protocol !== 'https:' || !hosts.includes(destination.hostname)) return;
+              var path = window.location.pathname;
+              if (path === '/admin' || path.startsWith('/admin/') || path === '/login') return;
+
+              // Never send the WhatsApp URL, phone number, or message text.
+              gtag('event', 'whatsapp_click', {
+                send_to: 'G-PBZSHVMWMC',
+                contact_method: 'whatsapp',
+                page_path: window.location.pathname,
+                page_location: window.location.origin + window.location.pathname,
+                transport_type: 'beacon'
+              });
+            }, true);
           `}
         </Script>
       </body>
