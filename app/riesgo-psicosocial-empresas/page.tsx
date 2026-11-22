@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   Building2,
@@ -8,6 +9,8 @@ import {
   HeartPulse,
   ShieldCheck,
 } from "lucide-react";
+import Headerpsicojeff from "@/app/assets/Headerpsicojeff.webp";
+import orbitStyles from "@/app/components/sections/HeroOrbit.module.css";
 import Navbar from "@/app/components/ui/Navbar";
 import Footer from "@/app/components/sections/Footer";
 import { buildSeoMetadata, SITE_URL } from "@/lib/seo/metadata";
@@ -163,43 +166,103 @@ export default function RiesgoPsicosocialEmpresasPage() {
       <Navbar />
 
       <main>
-        <section className="px-5 sm:px-6 pt-16 md:pt-24 pb-20 md:pb-28 bg-[radial-gradient(circle_at_top_left,_rgba(20,184,166,0.12),_transparent_38%),linear-gradient(180deg,#fffcf8_0%,#f5f2ec_100%)]">
+        <section className="relative overflow-hidden px-5 sm:px-6 pt-28 sm:pt-32 md:pt-36 pb-16 md:pb-24 bg-[radial-gradient(circle_at_top_left,_rgba(20,184,166,0.12),_transparent_38%),linear-gradient(180deg,#fffcf8_0%,#f5f2ec_100%)]">
           <div className="max-w-7xl mx-auto">
-            <nav aria-label="Breadcrumb" className="text-sm text-stone-500 mb-10">
+            <nav aria-label="Breadcrumb" className="text-sm text-stone-500 mb-8 md:mb-10">
               <Link href="/" className="hover:text-teal-700 transition-colors">Inicio</Link>
               <span className="mx-2">/</span>
               <span>Riesgo psicosocial para empresas</span>
             </nav>
 
-            <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-16 items-center">
-              <div className="min-w-0">
-                <span className="inline-flex items-center gap-2 text-teal-700 font-bold tracking-[0.18em] text-xs uppercase mb-5">
-                  <Building2 size={17} />
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.12fr)_minmax(0,0.88fr)] gap-10 lg:gap-14 items-center">
+              <div className="min-w-0 text-left">
+                <span className="inline-flex items-center gap-2 text-teal-700 font-bold tracking-[0.18em] text-xs uppercase mb-4 md:mb-5">
+                  <Building2 size={17} aria-hidden="true" />
                   Servicios para empresas
                 </span>
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif leading-[0.98] tracking-tight break-words">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-serif leading-[1.04] tracking-tight text-stone-900 break-words">
                   Batería de riesgo psicosocial y bienestar para empresas
                 </h1>
-                <p className="mt-7 text-lg md:text-xl leading-8 text-stone-600 max-w-3xl">
+                <p className="mt-5 md:mt-6 text-base sm:text-lg md:text-xl leading-7 sm:leading-8 text-stone-600 max-w-2xl">
                   Acompañamiento profesional para organizaciones que necesitan evaluar factores de riesgo psicosocial, fortalecer su gestión preventiva y desarrollar acciones de bienestar emocional con sus equipos de trabajo.
                 </p>
-                <div className="mt-8 flex flex-wrap gap-3 text-sm font-semibold text-stone-700">
-                  <span className="rounded-full border border-stone-200 bg-white px-4 py-2">Batería de riesgo psicosocial</span>
-                  <span className="rounded-full border border-stone-200 bg-white px-4 py-2">Capacitaciones</span>
-                  <span className="rounded-full border border-stone-200 bg-white px-4 py-2">Bienestar emocional</span>
-                  <span className="rounded-full border border-stone-200 bg-white px-4 py-2">SG-SST</span>
+
+                <div className="mt-7 flex flex-col sm:flex-row gap-3.5 sm:items-center">
+                  <a
+                    href="https://wa.link/2x3i8s"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex w-full sm:w-auto items-center justify-center gap-2.5 rounded-full bg-teal-700 px-7 py-3.5 text-base font-bold !text-white shadow-lg shadow-teal-900/15 transition-all hover:-translate-y-0.5 hover:bg-teal-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-teal-300"
+                  >
+                    Solicitar cotización
+                    <ArrowRight size={18} aria-hidden="true" />
+                  </a>
+                  <a
+                    href="#servicios-empresas"
+                    className="inline-flex w-full sm:w-auto items-center justify-center rounded-full border border-stone-300 bg-white/80 px-7 py-3.5 text-base font-semibold text-stone-700 transition-colors hover:border-teal-400 hover:bg-white hover:text-teal-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-teal-200"
+                  >
+                    Ver líneas de servicio
+                  </a>
+                </div>
+
+                <div className="mt-7 flex flex-wrap gap-2.5 text-xs sm:text-sm font-semibold text-stone-700">
+                  <span className="rounded-full border border-stone-200/90 bg-white/90 px-4 py-1.5">Batería de riesgo psicosocial</span>
+                  <span className="rounded-full border border-stone-200/90 bg-white/90 px-4 py-1.5">Capacitaciones</span>
+                  <span className="rounded-full border border-stone-200/90 bg-white/90 px-4 py-1.5">Bienestar emocional</span>
+                  <span className="rounded-full border border-stone-200/90 bg-white/90 px-4 py-1.5">SG-SST</span>
                 </div>
               </div>
 
-              <div className="rounded-[1.75rem] md:rounded-[2rem] bg-[linear-gradient(145deg,#155e56_0%,#0f4f49_100%)] text-white p-6 sm:p-8 md:p-10 shadow-2xl shadow-teal-900/10 ring-1 ring-white/10">
-                <ShieldCheck size={34} className="text-teal-200" />
-                <h2 className="mt-6 text-2xl sm:text-3xl font-serif text-white leading-tight">Marco técnico y normativo</h2>
-                <p className="mt-4 text-stone-100/90 leading-7 md:leading-8">
-                  El servicio toma como referencia la Resolución 2646 de 2008, que establece responsabilidades frente a la identificación, evaluación, prevención, intervención y monitoreo de los factores de riesgo psicosocial en el trabajo.
+              <div className="relative flex flex-col items-center lg:items-end">
+                <div
+                  className="pointer-events-none absolute top-10 left-1/2 -translate-x-1/2 w-3/4 h-3/4 bg-teal-200/30 rounded-full blur-[60px] -z-10 transform-gpu"
+                  aria-hidden="true"
+                />
+
+                <div className="relative isolate w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[460px]">
+                  <div className={orbitStyles.orbitStage} aria-hidden="true">
+                    <span className={orbitStyles.orbitAura} />
+                    <span className={orbitStyles.orbitOuter}>
+                      <span className={orbitStyles.orbitDotOuter} />
+                      <span className={orbitStyles.orbitDotSecondary} />
+                    </span>
+                    <span className={orbitStyles.orbitInner}>
+                      <span className={orbitStyles.orbitDotInner} />
+                    </span>
+                  </div>
+                  <Image
+                    src={Headerpsicojeff}
+                    alt="Jefferson Bastidas Mejía, psicólogo especialista en Salud Ocupacional y riesgo psicosocial en Manizales y Eje Cafetero"
+                    width={Headerpsicojeff.width}
+                    height={Headerpsicojeff.height}
+                    className="relative z-10 w-full h-auto object-contain drop-shadow-2xl [mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)]"
+                    priority
+                    placeholder="blur"
+                    sizes="(max-width: 640px) 340px, (max-width: 1024px) 420px, 460px"
+                  />
+                </div>
+                <p className="relative z-10 mt-3 w-full max-w-[460px] px-4 text-center font-serif text-base sm:text-lg font-semibold italic leading-relaxed text-teal-800">
+                  Jefferson Bastidas Mejía · Psicólogo y Especialista en Salud Ocupacional
                 </p>
-                <p className="mt-4 text-stone-100/90 leading-7 md:leading-8">
-                  La Resolución 2764 de 2022 adopta la batería de instrumentos, la guía técnica general y protocolos específicos para la gestión de estos factores en la población trabajadora.
-                </p>
+              </div>
+            </div>
+
+            <div className="mt-14 lg:mt-16 rounded-[1.75rem] md:rounded-[2rem] bg-[linear-gradient(145deg,#155e56_0%,#0f4f49_100%)] text-white p-6 sm:p-8 md:p-10 shadow-2xl shadow-teal-900/10 ring-1 ring-white/10">
+              <div className="grid gap-6 lg:grid-cols-[auto_1fr] lg:items-start lg:gap-8">
+                <div className="flex items-center gap-4 lg:flex-col lg:items-start">
+                  <ShieldCheck size={34} className="shrink-0 text-teal-200" aria-hidden="true" />
+                  <h2 className="text-2xl sm:text-3xl font-serif !text-white leading-tight lg:max-w-[240px]">
+                    Marco técnico y normativo
+                  </h2>
+                </div>
+                <div className="grid gap-4 md:grid-cols-2 md:gap-8">
+                  <p className="!text-stone-100/90 leading-7 md:leading-8">
+                    El servicio toma como referencia la Resolución 2646 de 2008, que establece responsabilidades frente a la identificación, evaluación, prevención, intervención y monitoreo de los factores de riesgo psicosocial en el trabajo.
+                  </p>
+                  <p className="!text-stone-100/90 leading-7 md:leading-8">
+                    La Resolución 2764 de 2022 adopta la batería de instrumentos, la guía técnica general y protocolos específicos para la gestión de estos factores en la población trabajadora.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
